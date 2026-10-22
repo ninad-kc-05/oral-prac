@@ -1,51 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Index</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: #121a2d;
+      --panel-2: #172139;
+      --panel-3: #1c2944;
+      --line: #2b3854;
+      --text: #edf2ff;
+      --muted: #9caac6;
+      --accent: #8b9cff;
+      --accent-2: #65e2c3;
+      --warning: #ffd58a;
+      --danger: #ff9baf;
+      --radius: 10px;
+      --shadow: none;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg);
+      color: var(--text); font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width:100%; max-width:none; margin:0; padding:18px clamp(10px, 1.5vw, 22px) 32px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:28px; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand-mark { display:grid; place-items:center; width:44px; height:44px; border-radius:10px; background:#273653; color:var(--text); font-weight:800; font-size:16px; box-shadow:none; }
+    .brand h1 { margin:0; font-size:clamp(18px,2.2vw,24px); letter-spacing:-.04em; }
+    .brand p { margin:2px 0 0; color:var(--muted); font-size:12px; }
+    .top-actions { display:flex; align-items:center; gap:8px; }
+    .badge { border:1px solid var(--line); background:#121a2dbb; border-radius:999px; padding:8px 12px; color:var(--muted); font-size:12px; white-space:nowrap; }
+    .hero, .hero-main, .hero-side, .stat-grid, .stat, .progress-head, .progress-track, .progress-fill { display:none; }
+    .eyebrow { color:var(--muted); font-size:11px; font-weight:700; }
+      .brand-mark { width:34px; height:34px; border-radius:8px; box-shadow:none; }
+    .brand h1 { font-size:18px; font-weight:700; letter-spacing:0; }
+    .tabs { display:flex; gap:8px; padding:7px; border:1px solid var(--line); border-radius:10px; background:var(--panel); margin-bottom:20px; overflow-x:auto; }
+    .tab { border:0; color:var(--muted); background:transparent; border-radius:8px; padding:12px 16px; white-space:nowrap; font-weight:750; }
+    .tab[aria-selected="true"] { color:var(--text); background:var(--panel-3); box-shadow:inset 0 0 0 1px #3a4b70; }
+    .view { display:none; }
+    .view.active { display:block; }
+    .section-head { display:flex; justify-content:space-between; align-items:flex-end; gap:15px; margin:0 0 16px; }
+    .section-head h2 { margin:0; font-size:23px; letter-spacing:-.04em; }
+    .section-head p { margin:4px 0 0; color:var(--muted); }
+    .layout { display:grid; grid-template-columns:260px minmax(0,1fr); gap:14px; align-items:start; width:100%; }
+    .sidebar, .content-card { border:1px solid var(--line); background:rgba(18,26,45,.91); border-radius:var(--radius); box-shadow:none; }
+    .sidebar { padding:14px; position:sticky; top:14px; }
+    .field-label { display:block; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; margin:4px 0 7px; }
+    .control { width:100%; background:#0b1222; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:11px 12px; outline:none; }
+    .control:focus { border-color:var(--accent); box-shadow:0 0 0 3px #8b9cff20; }
+    .experiment-list { display:grid; gap:6px; margin-top:14px; max-height:520px; overflow:auto; }
+    .exp-item { text-align:left; border:1px solid transparent; background:transparent; color:var(--muted); border-radius:8px; padding:11px; display:flex; gap:10px; align-items:flex-start; }
+    .exp-item:hover { background:#1b2740; color:var(--text); }
+    .exp-item.active { background:#202c49; border-color:#3d4f79; color:var(--text); }
+    .exp-num { display:grid; place-items:center; flex:0 0 28px; height:28px; border-radius:9px; background:#293653; color:#c4ceff; font-size:11px; font-weight:850; }
+    .exp-item.done .exp-num { background:#16463f; color:#8ff3d7; }
+    .exp-name { display:block; font-size:13px; line-height:1.35; font-weight:700; }
+    .exp-meta { display:block; font-size:11px; margin-top:4px; color:var(--muted); }
+    .content-card { min-width:0; overflow:hidden; }
+    .card-head { padding:22px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:15px; align-items:flex-start; }
+    .card-head h3 { margin:0; font-size:22px; letter-spacing:-.035em; }
+    .card-head p { color:var(--muted); margin:5px 0 0; }
+    .card-body { padding:24px; min-width:0; }
+    .pill { display:inline-flex; align-items:center; border:1px solid var(--line); color:#c3cfff; background:#1b2640; padding:5px 9px; border-radius:999px; font-size:11px; font-weight:800; }
+    .actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .btn { border:1px solid var(--line); border-radius:8px; background:#202b45; color:var(--text); padding:9px 12px; font-size:12px; font-weight:800; }
+    .btn:hover { border-color:#697cb2; filter:brightness(1.08); }
+    .btn.primary { background:#34456b; color:var(--text); border-color:#52658f; }
+    .btn.success { background:#153c37; color:#a0f2dc; border-color:#276a5e; }
+    .btn:disabled { opacity:.5; cursor:not-allowed; }
+    .template-paper { background:var(--panel-2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:clamp(18px,3vw,32px); }
+    .template-paper h1 { text-align:center; font-size:22px; margin:0 0 20px; color:var(--text); }
+    .template-paper h2 { font-size:15px; margin:20px 0 6px; border-bottom:1px solid var(--line); padding-bottom:5px; color:#bfcaff; }
+    .template-paper p, .template-paper li { font-size:13px; }
+    .fill-line { display:inline-block; min-width:140px; border-bottom:1px dashed #98a2b8; height:1em; vertical-align:baseline; }
+    .template-paper ol, .template-paper ul { padding-left:22px; }
+    .diagram-wrap { background:#0c1323; border:1px solid var(--line); border-radius:6px; padding:10px; overflow:auto; width:100%; max-width:100%; min-height:220px; max-height:72vh; }
+    .diagram-wrap .mermaid { min-width:0; display:block; width:max-content; min-width:100%; }
+    .diagram-wrap svg { display:block; max-width:none !important; width:auto; height:auto; }
+    .diagram-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+    .diagram-note { font-size:12px; color:var(--muted); }
+    .legend-table, .path-table { width:100%; border-collapse:collapse; font-size:13px; margin:10px 0 16px; }
+    .legend-table th,.legend-table td,.path-table th,.path-table td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    .legend-table th,.path-table th { background:var(--panel); color:var(--text); }
+    pre.code-block { white-space:pre-wrap !important; overflow-wrap:anywhere; word-break:normal; line-height:1.7; font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; max-width:100%; overflow-x:auto; }
+    .diagram-legend { margin-top:14px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .subpanel { border:1px solid var(--line); border-radius:10px; padding:17px; background:#10182a; min-width:0; }
+    .subpanel h4 { margin:0 0 9px; }
+    .subpanel p { margin:0; color:var(--muted); font-size:13px; }
+    .source-editor { min-height:210px; resize:vertical; font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .viva-answer { display:none; color:#c5d0e8; margin-top:10px; padding:12px; background:#0c1323; border-radius:10px; border:1px solid var(--line); font-size:13px; }
+    .viva-answer.show { display:block; }
+    .question { border:1px solid var(--line); border-radius:10px; padding:16px; background:#121b2f; }
+    .question + .question { margin-top:10px; }
+    .question h4 { margin:0; font-size:14px; }
+    .question .qmeta { color:var(--muted); font-size:11px; margin-top:6px; }
+    .question .btn { margin-top:12px; }
+    .viva-dropdown { padding:0; }
+    .viva-dropdown summary, .mini-viva summary { cursor:pointer; list-style:none; padding:13px 15px; display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:13px; font-weight:650; }
+    .viva-dropdown summary::-webkit-details-marker, .mini-viva summary::-webkit-details-marker { display:none; }
+    .viva-dropdown summary::after, .mini-viva summary::after { content:"+"; color:var(--muted); font-size:18px; font-weight:400; }
+    .viva-dropdown[open] summary::after, .mini-viva[open] summary::after { content:"−"; }
+    .viva-dropdown .viva-answer { display:block; margin:0 12px 12px; }
+    .mini-viva { border:1px solid var(--line); border-radius:10px; margin-top:7px; background:#10182a; }
+    .mini-viva p { margin:0; padding:0 15px 13px; color:var(--muted); font-size:13px; }
+    .empty-state { color:var(--muted); padding:25px; text-align:center; }
+    .toast { position:fixed; left:50%; bottom:20px; transform:translate(-50%,20px); opacity:0; pointer-events:none; background:#eaf0ff; color:#10182a; padding:10px 16px; border-radius:8px; font-size:13px; font-weight:800; box-shadow:none; transition:.2s; z-index:20; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    .footer { color:#72809c; font-size:11px; text-align:center; padding-top:24px; }
+    @media (max-width:900px) {
+      .layout { grid-template-columns:1fr; }
+      .sidebar { position:static; }
+      .experiment-list { grid-template-columns:repeat(2,minmax(0,1fr)); max-height:unset; }
+      .exp-item { padding:9px; }
+    }
+    @media (max-width:620px) {
+      .topbar { align-items:flex-start; }
+      .top-actions .badge { display:none; }
+      .hero-side { padding:16px; }
+      .section-head { align-items:flex-start; flex-direction:column; }
+      .card-head { padding:17px; flex-direction:column; }
+      .card-body { padding:16px; }
+      .two-col { grid-template-columns:1fr; }
+      .experiment-list { grid-template-columns:1fr; }
+      .diagram-wrap .mermaid { min-width:0; }
+    }
+    @media print {
+      body { background:#fff; color:#111; }
+      .topbar,.hero,.tabs,.sidebar,.actions,.diagram-top,.footer { display:none!important; }
+      .shell { padding:0; max-width:none; }
+      .view { display:none!important; }
+      .view.active { display:block!important; }
+      .layout { display:block; }
+      .content-card { box-shadow:none; border:0; background:#fff; }
+      .card-head { color:#111; border-bottom:1px solid #ccc; padding:0 0 12px; }
+      .card-head p { color:#555; }
+      .card-body { padding:12px 0; }
+      .diagram-wrap { background:#fff; border:1px solid #ddd; }
+      .diagram-wrap .mermaid { min-width:0; }
+      .subpanel { background:#fff; border-color:#ddd; }
+    }
+  
+/* White-box code must retain line breaks and remain readable at normal viewport width. */
+.code-block { white-space: pre-wrap !important; overflow-wrap: anywhere; word-break: normal; max-width: 100%; box-sizing: border-box; line-height: 1.65; }
+.legend-table, .path-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.legend-table th, .legend-table td, .path-table th, .path-table td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+.legend-table th, .path-table th { font-weight: 700; }
 
-<style>
-:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#58657a;--accent:#3156d3;--line:#dce3ef;--soft:#edf2ff;--green:#18794e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-header{padding:28px 18px 20px;background:linear-gradient(135deg,#14234b,#3156d3);color:white}
-header .wrap,main{max-width:1100px;margin:auto}h1{margin:0 0 6px;font-size:clamp(24px,4vw,36px)}header p{margin:0;color:#e1e8ff}
-main{padding:18px}
-.tabs{display:flex;gap:8px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5}
-.tabbtn{border:1px solid var(--line);background:white;padding:12px 18px;border-radius:12px;font-weight:750;cursor:pointer;color:var(--ink)}
-.tabbtn.active{background:var(--accent);color:white;border-color:var(--accent)}
-.panel{display:none}.panel.active{display:block}
-.note{background:#fff8df;border:1px solid #f0df9b;padding:12px 14px;border-radius:12px;color:#594a17;margin:12px 0 18px}
-.search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin:0 0 14px;font:inherit;background:white}
-details.exp{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;overflow:hidden;box-shadow:0 2px 8px #16254a08}
-details.exp>summary{padding:15px 16px;cursor:pointer;font-weight:800;list-style:none;display:flex;gap:10px;align-items:center}
-details.exp>summary::-webkit-details-marker{display:none}details.exp>summary:before{content:"＋";font-size:18px;color:var(--accent)}details[open].exp>summary:before{content:"−"}
-.badge{font-size:11px;text-transform:uppercase;letter-spacing:.04em;background:var(--soft);color:var(--accent);padding:4px 8px;border-radius:20px;margin-left:auto;white-space:nowrap}
-.content{padding:0 16px 18px;border-top:1px solid var(--line)}h2{font-size:21px;margin:22px 0 8px}h3{font-size:16px;margin:16px 0 5px}p{margin:7px 0}ul,ol{padding-left:23px;margin:7px 0}li{margin:4px 0}
-pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#111827;color:#e5efff;border-radius:10px;padding:13px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
-code{background:#edf0f7;padding:2px 5px;border-radius:4px;font-family:ui-monospace,monospace}pre code{background:transparent;padding:0}
-.q{padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin:7px 0;background:#fff}.q b{color:var(--accent)}.answer{color:var(--muted);margin-top:3px}
-table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px}td,th{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}th{background:#eef2fb}
-.small{font-size:13px;color:var(--muted)}.codewrap{position:relative;margin:10px 0 14px}.codewrap pre{margin:0;padding-top:42px}.copybtn{position:absolute;right:8px;top:8px;border:1px solid #53627b;background:#263449;color:#fff;border-radius:7px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer}.copybtn:hover{background:#3b4b65}.copybtn.copied{background:#18794e;border-color:#18794e}.code-desc{font-size:13px;color:var(--muted);margin:0 0 6px}.where{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#334155;background:#e7ebf3;padding:3px 7px;border-radius:5px;margin:0 0 6px}.tag{display:inline-block;background:#e7f7ee;color:var(--green);border-radius:5px;padding:2px 6px;font-size:12px;margin-right:4px}
-@media(max-width:650px){main{padding:12px}.tabs{top:0}.tabbtn{flex:1;padding:10px 8px}.badge{display:none}td,th{padding:6px}}
 
-/* Simulated endpoint/browser error demo */
-#errorLanding{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:9vh 22px 36px;background:#fff;color:#202124}
-.error-inner{width:min(790px,100%);font-family:Arial,Helvetica,sans-serif}
-.error-icon{margin-bottom:28px;line-height:0}
-.error-inner h1{font-size:28px;font-weight:500;color:#202124;margin:0 0 28px;letter-spacing:0}
-.error-inner p{color:#5f6368;margin:8px 0;font-size:16px;line-height:1.55}
-.error-inner p strong{font-weight:700;color:#202124}
-.error-inner .diagnostic{color:#1a73e8;margin-top:30px}
-.error-inner .error-code{font-size:12px;color:#5f6368;margin-top:32px}
-.error-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:88px}
-.error-actions button{border:1px solid #dadce0;border-radius:6px;background:#1a73e8;padding:10px 26px;cursor:pointer;font-weight:600;color:white;font-size:14px;box-shadow:0 1px 2px #0002}
-.demo-hint{display:none!important}.inline-open{border:0;background:transparent;color:#1a73e8;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
-#guideApp{display:none}
-#guideApp.visible{display:block}
-
+/* DNS-style landing page */
+#errorLanding {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 9vh 22px 36px;
+  background: #fff;
+  color: #202124;
+}
+.error-inner {
+  width: min(790px, 100%);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.error-icon { margin-bottom: 28px; line-height: 0; }
+.error-inner h1 {
+  font-size: 28px;
+  font-weight: 500;
+  color: #202124;
+  margin: 0 0 28px;
+  letter-spacing: 0;
+}
+.error-inner p {
+  color: #5f6368;
+  margin: 8px 0;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.error-inner p strong { font-weight: 700; color: #202124; }
+.error-inner .diagnostic { color: #1a73e8; margin-top: 30px; }
+.error-inner .error-code { font-size: 12px; color: #5f6368; margin-top: 32px; }
+.error-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 88px; }
+.error-actions button {
+  border: 1px solid #1a73e8;
+  border-radius: 6px;
+  background: #1a73e8;
+  padding: 10px 26px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 1px 2px #0002;
+}
+#guideApp { display: none; }
+#guideApp.visible { display: block; }
+.inline-open {
+  border: 0;
+  background: transparent;
+  color: #1a73e8;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+@media (max-width: 600px) {
+  #errorLanding { padding: 8vh 20px 28px; }
+  .error-inner h1 { font-size: 25px; }
+  .error-actions { margin-top: 56px; }
+}
 </style>
-</head>
-<body>
 
 <div id="errorLanding" role="main">
   <div class="error-inner">
@@ -58,303 +228,144 @@ table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px}td,th{bord
     </div>
     <h1>This site can’t be reached</h1>
     <p><strong>unstop.com</strong>’s DNS address could not be found. Diagnosing the problem.</p>
-    <p class="diagnostic">Try running Windows Network Diagnostics<a href="#" class="guide-dot-link" aria-label="Open study guide" style="text-decoration:none;color:inherit;" onclick="event.preventDefault(); openStudyGuide();">.</a></p>
+    <p class="diagnostic">Try running Windows Network Diagnostics<a href="#" class="inline-open" aria-label="Open Software Engineering study guide" style="text-decoration:none;color:inherit" onclick="event.preventDefault(); openStudyGuide();">.</a></p>
     <p class="error-code">DNS_PROBE_STARTED</p>
-    <div class="error-actions">
-      <button class="primary" id="retryDemo" onclick="window.location.reload()">
-    Reload
-</button>
-    </div>
+    <div class="error-actions"><button type="button" id="retryDemo">Reload</button></div>
   </div>
 </div>
 <div id="guideApp">
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">US</div>
+      <div><h1>Index</h1></div>
+    </div>
+  </header>
 
-<main>
-<div class="tabs" role="tablist">
-<button class="tabbtn active" data-tab="exps">1 · Experiments</button>
-<button class="tabbtn" data-tab="theory">2 · Theory & Viva</button>
+  <nav class="tabs" role="tablist" aria-label="Main sections">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="templatesView" data-view="templatesView">Templates</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="projectView" data-view="projectView">Project Lab</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="vivaView" data-view="vivaView">Viva Questions</button>
+  </nav>
+
+  <main>
+    <section id="templatesView" class="view active" role="tabpanel">
+      <div class="section-head">
+        <div><h2>What the experiment expects</h2><p>Choose a question to see the required content, notation, and common mistakes — not a pre-filled report.</p></div>
+        <span class="pill">Guidance · Not a report</span>
+      </div>
+      <div class="layout">
+        <aside class="sidebar">
+          <label class="field-label" for="templateSearch">Find an experiment</label>
+          <input class="control" id="templateSearch" placeholder="Search templates…" />
+          <div class="experiment-list" id="templateList"></div>
+        </aside>
+        <article class="content-card">
+          <div class="card-head">
+            <div><span class="pill" id="templateTag">EXPERIMENT 01</span><h3 id="templateTitle" style="margin-top:10px">Study Software Process Models</h3><p>Question interpretation, expected deliverables, notation, and checks.</p></div>
+            <div class="actions"><button class="btn" id="copyTemplate">Copy text</button><button class="btn" id="printTemplate">Print</button><button class="btn success" id="markTemplateDone">Mark complete</button></div>
+          </div>
+          <div class="card-body"><div class="template-paper" id="templatePaper"></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projectView" class="view" role="tabpanel">
+      <div class="section-head">
+        <div><h2>Project lab</h2><p>Select a case study, then switch experiments. Content and diagrams update together.</p></div>
+      </div>
+      <div class="layout">
+        <aside class="sidebar">
+          <label class="field-label" for="projectSelect">Project idea</label>
+          <select id="projectSelect" class="control">
+            <option value="attendance">Student Attendance Management</option>
+            <option value="hospital">Hospital Management</option>
+            <option value="railway">Railway Reservation</option>
+            <option value="library">Library Management</option>
+            <option value="shopping">Online Shopping</option>
+          </select>
+          <label class="field-label" for="projectExperiment" style="margin-top:17px">Experiment</label>
+          <select id="projectExperiment" class="control"></select>
+          <div class="subpanel" style="margin-top:16px">
+            <h4>Project snapshot</h4>
+            <p id="projectSummary"></p>
+          </div>
+          <div style="margin-top:16px">
+            <label class="field-label" for="diagramMode">Diagram view</label>
+            <select id="diagramMode" class="control">
+              <option value="main">Main diagram</option>
+              <option value="alternate">Alternate / detail</option>
+            </select>
+            <p id="diagramAvailability" class="diagram-note" style="margin:7px 0 0;line-height:1.45"><span style="color:#8fe3c1">●</span> Additional diagram available — choose Alternate / detail to view it.</p>
+          </div>
+        </aside>
+        <article class="content-card">
+          <div class="card-head">
+            <div><span class="pill" id="projectExperimentTag">PROJECT EXPERIMENT</span><h3 id="projectExperimentTitle" style="margin-top:10px">System Overview</h3><p id="projectExperimentIntro"></p></div>
+            <div class="actions"><button class="btn" id="copyProjectContent">Copy content</button><button class="btn" id="copyDiagramSource">Copy diagram source</button><button class="btn" id="printProject">Print</button></div>
+          </div>
+          <div class="card-body" id="projectContent"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="vivaView" class="view" role="tabpanel">
+      <div class="section-head">
+        <div><h2>Viva preparation</h2><p>Unit-wise quick answers with reveal-on-demand explanations.</p></div>
+        <span class="pill">Recall · Explain · Follow up</span>
+      </div>
+      <div class="content-card">
+        <div class="card-head">
+          <div><h3>Question bank</h3><p>Questions are grouped by the six Software Engineering syllabus units.</p></div>
+          <div class="actions"><button class="btn" id="randomViva">Random question</button><button class="btn" id="expandAll">Expand all</button><button class="btn" id="collapseAll">Collapse all</button></div>
+        </div>
+        <div class="card-body">
+          <div class="two-col" style="margin-bottom:18px">
+            <div><label class="field-label" for="vivaUnit">Unit</label><select id="vivaUnit" class="control"><option value="all">All units</option><option value="1">Unit 1 · Process Models</option><option value="2">Unit 2 · Requirements</option><option value="3">Unit 3 · Estimation</option><option value="4">Unit 4 · Design</option><option value="5">Unit 5 · Testing</option><option value="6">Unit 6 · Risk, SCM & Quality</option></select></div>
+            <div><label class="field-label" for="vivaSearch">Search questions</label><input class="control" id="vivaSearch" placeholder="e.g. cohesion, DFD, RMMM…" /></div>
+          </div>
+          <div id="vivaQuestions"></div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<section id="exps" class="panel active">
-<input class="search" id="expSearch" placeholder="Search experiments, code, commands, software…">
-<div id="expList"></div>
-</section>
-<section id="theory" class="panel">
-<input class="search" id="theorySearch" placeholder="Search theory, acronyms, viva questions…">
-<div id="theoryList"></div>
-</section>
-<p class="small">Tip: use Ctrl/Cmd+F to find a command or acronym. Expand each experiment card. Code is instructional; adapt paths, interface names, IP addresses and ports to your lab.</p>
-</main>
-</div><!-- /guideApp -->
-<script>
-const data = [
-{
-n:1,title:"Comparative Analysis of Network Simulators",kind:"Software / theory",
-does:"Compare tools used to model or practise computer networks without requiring a full physical network. Compare their purpose, interface, scripting, cost/licensing and typical use.",
-full:[["NS-2","Network Simulator 2"],["NS-3","Network Simulator 3"],["OMNeT++","Objective Modular Network Testbed in C++"],["OPNET","Optimized Network Engineering Tools (historical expansion commonly used)"],["GUI","Graphical User Interface"],["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["LAN","Local Area Network"],["WAN","Wide Area Network"]],
-steps:["Choose the simulators specified by your instructor (the record discusses NS-2, NS-3, OMNeT++, OPNET/Riverbed Modeler and Cisco Packet Tracer).","Compare developer/community, licence, interface, scripting/programming, protocol support, visualization, learning curve and use cases.","Write one strength and one limitation for each tool.","Conclude that the right tool depends on whether the task is protocol research, detailed simulation, or learning/configuring Cisco-style networks."],
-commands:"No single mandatory command. For a lab comparison, open each installed tool and record its version/about page. Do not claim a tool is installed unless you have checked.",
-code:"No program required. Compare the tools by their main use and interaction style.",
-questions:[["What is a network simulator?","Software that models network behavior so protocols and designs can be tested without building the entire physical network."],["Why use simulation?","It reduces cost and risk and makes repeatable experiments possible."],["What is NS-2?","A discrete-event network simulator used in networking research and education."],["What is NS-3?","A newer network simulator project with its own architecture and APIs."],["What is OMNeT++?","A modular, component-based discrete-event simulation framework."],["What is Cisco Packet Tracer mainly used for?","Learning network concepts and practising configurations in a simulated Cisco-like environment."],["What is GNS3 used for?","Building virtual network labs, often using emulated network operating systems."],["What is Wireshark?","A packet analyzer for capturing and inspecting network traffic."],["What is packet loss?","Packets that fail to reach their destination."],["What is throughput?","The rate of successful data delivery over a period."],["What is latency?","The time taken for data to travel from source to destination."],["Which simulator should you choose?","Choose based on required fidelity, supported protocols, ease of use, licensing and resources."]]
-},
-{
-n:2,title:"TCP/IP Utility / Networking Commands",kind:"Command based",
-does:"Use built-in commands to inspect IP configuration, test reachability, resolve names, view routes and inspect local network information.",
-full:[["TCP/IP","Transmission Control Protocol / Internet Protocol"],["IP","Internet Protocol"],["DNS","Domain Name System"],["DHCP","Dynamic Host Configuration Protocol"],["MAC","Media Access Control"],["ARP","Address Resolution Protocol"],["ICMP","Internet Control Message Protocol"],["NIC","Network Interface Card"],["TTL","Time To Live"]],
-steps:["Open Command Prompt on Windows or a terminal on Linux.","Run one command at a time and read its output; record what it shows.","Compare name resolution, reachability, path tracing, interface configuration and routing-table commands.","If a command is unavailable, use the OS equivalent shown below."],
-commands:"Windows:\nping 8.8.8.8\nipconfig\nipconfig /all\ntracert example.com\nnslookup example.com\nnetstat -ano\narp -a\nroute print\npathping example.com\ngetmac\n\nLinux equivalents (some options differ):\nping -c 4 8.8.8.8\nip addr\nip route\ntraceroute example.com   # may need installation\ntracepath example.com    # if available\nnslookup example.com\ndig example.com          # if installed\nss -tuln\nip neigh\nip link",
-code:"Example quick interpretation:\n- ping: reachability + round-trip time (if ICMP replies are allowed)\n- ipconfig /all or ip addr: local interface configuration\n- tracert / traceroute: path hops\n- nslookup / dig: DNS lookup\n- netstat / ss: connections and listening ports\n- arp -a / ip neigh: IP-to-link-layer neighbor entries\n- route print / ip route: routing table\n- getmac / ip link: interface MAC address\n- pathping: path plus loss statistics on Windows",
-questions:[["What does ping test?","Whether a destination responds to ICMP echo requests and the approximate round-trip time."],["Does failed ping always mean a host is down?","No; a firewall may block ICMP or the route may be restricted."],["What does ipconfig show?","Windows network-interface IP configuration."],["What extra information does ipconfig /all show?","Detailed adapter information such as MAC address, DHCP status and DNS servers."],["What does tracert do?","Shows intermediate hops toward a destination using TTL behavior."],["What is DNS used for?","Translating domain names to IP addresses and storing other DNS records."],["What does nslookup do?","Queries DNS name servers."],["What does netstat show?","Network connections, listening endpoints and related statistics/options."],["What is ARP?","A protocol used on IPv4 LANs to resolve an IP address to a link-layer address."],["What does route print show?","The Windows routing table."],["What is getmac used for?","Displaying MAC addresses associated with network adapters."],["What is the difference between ping and tracert?","Ping tests reachability/latency; tracert attempts to show the path."],["What is a default gateway?","The router/interface used to reach destinations outside the local subnet."]]
-},
-{
-n:3,title:"TCP Socket Programming in C — Chatbot and Calculator",kind:"C code",
-does:"Create client-server applications over TCP. The server listens on a port; clients connect and exchange text messages or calculator requests.",
-full:[["TCP","Transmission Control Protocol"],["IP","Internet Protocol"],["API","Application Programming Interface"],["ACK","Acknowledgment"],["I/O","Input/Output"],["AF_INET","Address Family: IPv4"],["SOCK_STREAM","Stream socket type commonly used with TCP"]],
-steps:["Save the server and client code into separate files, e.g. server.c and client.c.","Compile each program using a C compiler.","Start the server first; verify the port is not already in use.","Run the client in another terminal and connect to the server IP/port.","For the chatbot, send/receive messages until the exit word is used. For calculator, send a valid operation and operands.","If using separate computers, allow the server port through the lab firewall and use the server's reachable IP."],
-commands:"Linux/macOS with GCC:\ngcc server.c -o server\ngcc client.c -o client\n./server\n./client 127.0.0.1\n\nWindows: use the compiler/toolchain available in your lab. The record uses TCP ports 5000 (chatbot) and 5001 (calculator); keep client and server port numbers identical.",
-code:"TCP SOCKET FLOW (learn this order):\nSERVER: socket() → bind() → listen() → accept() → recv()/read() ↔ send()/write() → close()\nCLIENT: socket() → connect() → send()/write() ↔ recv()/read() → close()\n\nMinimal POSIX server skeleton (illustrative; add error handling and protocol logic):\n#include <stdio.h>\n#include <string.h>\n#include <unistd.h>\n#include <arpa/inet.h>\n#include <sys/socket.h>\nint main(void) {\n  int s, c; struct sockaddr_in a = {0}; char buf[1024];\n  s = socket(AF_INET, SOCK_STREAM, 0);\n  a.sin_family = AF_INET; a.sin_addr.s_addr = htonl(INADDR_ANY);\n  a.sin_port = htons(5000);\n  bind(s, (struct sockaddr*)&a, sizeof(a));\n  listen(s, 5); c = accept(s, NULL, NULL);\n  int n = (int)read(c, buf, sizeof(buf)-1);\n  if (n > 0) { buf[n] = '\\0'; printf(\"Client: %s\\\\n\", buf); write(c, \"Received\", 8); }\n  close(c); close(s); return 0;\n}\n\nThis is a teaching skeleton, not a complete robust server: check every return value, loop for multiple messages, and handle partial reads/writes in a real program.",
-questions:[["What is a socket?","A software endpoint used by a program to send/receive data over a network."],["What is TCP?","A connection-oriented transport protocol that provides an ordered byte stream and reliability mechanisms."],["What is the client-server model?","A server offers a service and a client initiates a request or connection."],["What does socket() do?","Creates a socket endpoint."],["What does bind() do?","Associates a local address and port with a socket."],["What does listen() do?","Marks a stream socket as passive and sets a pending-connection queue limit."],["What does accept() do?","Accepts a pending connection and returns a connected socket."],["What does connect() do?","Initiates a connection to a server endpoint."],["What do send()/recv() do?","Send and receive data on a socket."],["Why do client and server ports need to match?","The client must connect to the port on which the server is listening."],["What is localhost/127.0.0.1?","The loopback address referring to the same machine."],["Why is TCP reliable?","It uses acknowledgments, sequence numbers, retransmission and ordering mechanisms."],["What happens if the port is already in use?","Binding may fail; choose a free port or stop the process using it."],["Why can one read() return fewer bytes than requested?","TCP is a byte stream; message boundaries are not preserved and reads may be partial."]]
-},
-{
-n:4,title:"Router Terminal Security — Cisco Packet Tracer",kind:"Commands + software",
-does:"Protect access to a simulated router using privileged-mode, console and virtual terminal passwords; encrypt plaintext passwords in the configuration and save the setup.",
-full:[["CLI","Command-Line Interface"],["EXEC","Executive mode (Cisco IOS command mode)"],["VTY","Virtual Teletype terminal lines"],["IOS","Internetwork Operating System"],["SSH","Secure Shell"],["TFTP","Trivial File Transfer Protocol"]],
-steps:["Open Packet Tracer and place a router and a PC; connect them with a console cable if using console access.","Open the router CLI and enter privileged EXEC mode.","Enter global configuration mode and set an enable secret.","Configure console line and VTY line access passwords; enable login on those lines.","Enable service password encryption; note that this obfuscation is not strong modern encryption.","Return to privileged mode and save the running configuration to startup configuration.","Verify the configuration with show commands."],
-commands:"enable\nconfigure terminal\nenable secret classSecret\nline console 0\npassword consolePass\nlogin\nexit\nline vty 0 4\npassword remotePass\nlogin\nexit\nservice password-encryption\nend\ncopy running-config startup-config\nshow running-config\nshow startup-config\n\nUse your instructor's required passwords; these are examples only.",
-code:"Command sequence to remember:\nRouter> enable\nRouter# configure terminal\nRouter(config)# enable secret <secret>\nRouter(config)# line console 0\nRouter(config-line)# password <password>\nRouter(config-line)# login\nRouter(config-line)# exit\nRouter(config)# line vty 0 4\nRouter(config-line)# password <password>\nRouter(config-line)# login\nRouter(config-line)# exit\nRouter(config)# service password-encryption\nRouter(config)# end\nRouter# copy running-config startup-config",
-questions:[["Why configure router security?","To reduce unauthorized access to the device and its configuration."],["What does enable secret do?","Sets a protected password for privileged EXEC mode."],["What is console access?","Local management access through the router's console port."],["What are VTY lines?","Virtual terminal lines used for remote CLI sessions."],["What does login do under a line?","Requires line authentication using the configured line password or method."],["What does service password-encryption do?","Obfuscates certain plaintext passwords in the configuration; it is not strong encryption."],["What is running-config?","The active configuration currently used by the router."],["What is startup-config?","The saved configuration loaded during startup."],["Why use copy running-config startup-config?","To preserve the current configuration across a reload."],["What is privileged EXEC mode?","The higher-privilege CLI mode reached with enable."],["What is SSH preferred over Telnet for remote administration?","SSH encrypts the session; Telnet sends data, including credentials, without encryption."],["Does service password-encryption make a router fully secure?","No; use strong secrets, secure management protocols, access controls and updated software."]]
-},
-{
-n:5,title:"TCP and UDP Traffic Generation using NS-2",kind:"Tcl + AWK + commands",
-does:"Build a simulated network and generate TCP traffic using FTP and UDP traffic using CBR. Produce trace output, view packet flow with NAM, and calculate packet-loss statistics.",
-full:[["NS-2","Network Simulator 2"],["Tcl","Tool Command Language"],["AWK","A pattern-scanning and text-processing language"],["NAM","Network Animator"],["FTP","File Transfer Protocol"],["CBR","Constant Bit Rate"],["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["LAN","Local Area Network"]],
-steps:["Create a Tcl script that initializes the simulator, opens a trace file and NAM file, creates nodes and links, and defines a finish procedure.","Attach a TCP agent to a source node and a TCPSink to the receiver; attach an FTP application to the TCP agent.","Attach a UDP agent to another source and a Null receiver; configure a CBR application on the UDP agent.","Schedule application start/stop times and schedule finish.","Run the script with NS-2; inspect the trace output and open the NAM visualization if installed.","Use AWK or the provided script to count sent/dropped packets and calculate packet loss."],
-commands:"Typical commands (paths vary by installation):\nns traffic.tcl\nnam out.nam\nawk -f loss.awk out.tr\n\nCheck the exact trace format before using an AWK script; NS-2 trace formats can differ.",
-code:"Illustrative Tcl skeleton (adapt to your NS-2 version):\nset ns [new Simulator]\nset tr [open out.tr w]\n$ns trace-all $tr\nset nf [open out.nam w]\n$ns namtrace-all $nf\n\nset n0 [$ns node]\nset n1 [$ns node]\nset n2 [$ns node]\nset n3 [$ns node]\n$ns duplex-link $n0 $n2 1Mb 10ms DropTail\n$ns duplex-link $n1 $n2 1Mb 10ms DropTail\n$ns duplex-link $n2 $n3 1.7Mb 20ms DropTail\n\nset tcp [new Agent/TCP]\n$ns attach-agent $n0 $tcp\nset sink [new Agent/TCPSink]\n$ns attach-agent $n3 $sink\n$ns connect $tcp $sink\nset ftp [new Application/FTP]\n$ftp attach-agent $tcp\n\nset udp [new Agent/UDP]\n$ns attach-agent $n1 $udp\nset null [new Agent/Null]\n$ns attach-agent $n3 $null\n$ns connect $udp $null\nset cbr [new Application/Traffic/CBR]\n$cbr set packetSize_ 512\n$cbr set rate_ 200Kb\n$cbr attach-agent $udp\n\nproc finish {} {\n global ns tr nf\n $ns flush-trace\n close $tr\n close $nf\n exit 0\n}\n$ns at 0.5 \"$ftp start\"\n$ns at 1.0 \"$cbr start\"\n$ns at 4.0 \"$ftp stop\"\n$ns at 4.5 \"$cbr stop\"\n$ns at 5.0 \"finish\"\n$ns run\n\nThis is a compact teaching example; ensure the topology and traffic match the experiment record.",
-questions:[["What is NS-2?","A discrete-event network simulator used to study network protocols and traffic."],["What is Tcl used for in NS-2?","Scripting the topology, agents, applications and event schedule."],["What does FTP model here?","A bulk data transfer application running over TCP."],["What does CBR mean?","Constant Bit Rate; it generates traffic at a configured rate."],["How do TCP and UDP differ?","TCP provides reliable ordered stream delivery; UDP is connectionless with lower protocol overhead."],["What is a trace file?","A log of simulation events such as packet enqueue, send, receive and drop."],["What is NAM?","Network Animator, used to visualize a simulation."],["What is AWK used for?","Processing structured text such as trace files to calculate metrics."],["How is packet loss calculated?","Commonly (packets sent − packets received) / packets sent × 100%, with counts defined consistently."],["What is DropTail?","A queue discipline that drops arriving packets when the queue is full."],["What is a TCPSink?","The receiving endpoint/agent for TCP traffic in NS-2."],["What is a Null agent?","A sink agent commonly used as the destination for UDP traffic in NS-2."],["What does simulation time mean?","The virtual time of events inside the model, not necessarily wall-clock runtime."]]
-},
-{
-n:6,title:"Star Topology using Cisco Packet Tracer",kind:"Software + commands",
-does:"Create a star network with end devices connected to a central switch, assign addresses in the same subnet, and test connectivity.",
-full:[["LAN","Local Area Network"],["PC","Personal Computer"],["IP","Internet Protocol"],["MAC","Media Access Control"],["NIC","Network Interface Card"],["ICMP","Internet Control Message Protocol"],["CLI","Command-Line Interface"]],
-steps:["Open Packet Tracer and add one 2960 switch and five PCs (or use the count required by your record).","Connect each PC's FastEthernet interface to a separate switch port using copper straight-through cable.","Open each PC's Desktop > IP Configuration and assign a unique IPv4 address and the same subnet mask, e.g. 192.168.1.2–192.168.1.6 with mask 255.255.255.0.","Wait for link indicators to turn green.","From one PC, open Command Prompt and ping another PC's address.","If ping fails, check cables, interface status, duplicate IPs and subnet masks."],
-commands:"Example addressing:\nPC0 192.168.1.2 / 255.255.255.0\nPC1 192.168.1.3 / 255.255.255.0\nPC2 192.168.1.4 / 255.255.255.0\nPC3 192.168.1.5 / 255.255.255.0\nPC4 192.168.1.6 / 255.255.255.0\n\nFrom PC command prompt:\nping 192.168.1.3\n\nA default gateway is not needed for communication within the same subnet.",
-code:"Implementation checklist:\n1. Place a 2960 switch and five PCs.\n2. Choose Connections → Copper Straight-Through.\n3. Connect PC FastEthernet0 to a switch FastEthernet port.\n4. Configure unique IPv4 addresses and matching masks.\n5. Test PC-to-PC connectivity with ping.\n6. Save the Packet Tracer project.",
-questions:[["What is a star topology?","A topology in which devices connect to a central device, usually a switch."],["Why is a switch used?","It forwards Ethernet frames based on learned MAC addresses."],["What happens if the central switch fails?","The connected devices generally lose communication through that switch."],["Which cable is commonly used from PC to switch?","Copper straight-through Ethernet cable."],["Do PCs in the same subnet need a gateway to communicate locally?","No, not for direct same-subnet communication."],["Why must IP addresses be unique?","Duplicate addresses cause address conflicts and unreliable communication."],["What does a subnet mask do?","Separates the network portion of an IP address from the host portion."],["What does ping use?","ICMP Echo Request and Echo Reply, when permitted."],["What is a MAC address?","A link-layer address associated with a network interface."],["What is the role of ARP?","Resolving IPv4 addresses to MAC addresses on a local network."],["Why might the first ping take longer?","Address resolution and switch learning may happen first."],["What is the difference between a hub and switch?","A hub repeats bits to all ports; a switch selectively forwards frames."]]
-},
-{
-n:7,title:"Static Routing using GNS3",kind:"Software + router commands",
-does:"Configure routes manually so routers can forward packets between different IP networks.",
-full:[["GNS3","Graphical Network Simulator 3"],["IP","Internet Protocol"],["CLI","Command-Line Interface"],["OSPF","Open Shortest Path First"],["LAN","Local Area Network"],["WAN","Wide Area Network"]],
-steps:["Create a small topology with at least two routers and LANs on opposite sides.","Assign IP addresses to router interfaces and end hosts; ensure interfaces are enabled.","Configure each router with a route to the remote network using the correct next-hop IP or exit interface.","Configure host default gateways.","Verify interface status and routing table, then ping across the routers.","If it fails, check subnet masks, next hops, interface state and return routes."],
-commands:"Cisco IOS-style example only (replace addresses/interfaces with your topology):\nRouter(config)# interface g0/0\nRouter(config-if)# ip address 192.168.1.1 255.255.255.0\nRouter(config-if)# no shutdown\nRouter(config-if)# exit\nRouter(config)# ip route 192.168.2.0 255.255.255.0 10.0.0.2\nRouter# show ip interface brief\nRouter# show ip route\nRouter# ping 192.168.2.10",
-code:"Static route format:\nip route <destination-network> <subnet-mask> <next-hop-IP | exit-interface>\n\nExample:\nip route 192.168.2.0 255.255.255.0 10.0.0.2\n\nRemember: configure the reverse route on the other router as well, unless it has another valid route.",
-questions:[["What is routing?","Selecting a path and forwarding packets between IP networks."],["What is static routing?","Routes manually configured by an administrator."],["What is a next hop?","The next router/interface toward the destination network."],["What does ip route configure?","A static route in Cisco IOS."],["Why is a return route needed?","Replies must also have a valid path back to the source network."],["What is a routing table?","A list of known destination networks and forwarding information."],["What does show ip route display?","The router's IPv4 routing table."],["What does no shutdown do?","Administratively enables an interface."],["What is a directly connected route?","A route to a network attached to an active local interface."],["What is a default route?","A fallback route used when no more-specific route matches."],["Static vs dynamic routing?","Static routes are manually configured; dynamic protocols learn and update routes."],["How do you troubleshoot failed pings?","Check addressing, masks, interfaces, gateways, routes, ACL/firewall and return path."]]
-},
-{
-n:8,title:"Dynamic Routing using OSPF in GNS3",kind:"Software + router commands",
-does:"Enable OSPF on routers so they exchange routing information and learn reachable networks automatically.",
-full:[["OSPF","Open Shortest Path First"],["IP","Internet Protocol"],["CLI","Command-Line Interface"],["LSA","Link-State Advertisement"],["LSDB","Link-State Database"],["SPF","Shortest Path First"],["LAN","Local Area Network"]],
-steps:["Build a multi-router topology in GNS3 and configure IP addresses on all router interfaces.","Ensure interfaces are enabled and directly connected links can reach their neighbor IPs.","Start OSPF on each router using the same process area where the lab requires it.","Advertise each participating network in the correct area; wildcard masks must match the intended interfaces.","Verify neighbors and learned routes.","Ping between end hosts and troubleshoot OSPF adjacency, area, masks and interface state if needed."],
-commands:"Cisco IOS-style example (replace network statements with your actual networks):\nRouter(config)# router ospf 1\nRouter(config-router)# network 10.0.0.0 0.0.0.255 area 0\nRouter(config-router)# network 192.168.1.0 0.0.0.255 area 0\nRouter# show ip ospf neighbor\nRouter# show ip route ospf\nRouter# show ip protocols\nRouter# ping 192.168.2.10",
-code:"OSPF starter pattern:\nrouter ospf 1\n network <network-address> <wildcard-mask> area 0\n\nWildcard mask is the inverse of the subnet mask. For 255.255.255.0, use 0.0.0.255. Area 0 is the backbone area in a conventional multi-area OSPF design.",
-questions:[["What does OSPF stand for?","Open Shortest Path First."],["What type of routing protocol is OSPF?","A link-state interior gateway routing protocol."],["What does OSPF use to calculate paths?","The Shortest Path First algorithm, commonly associated with Dijkstra's algorithm."],["What is an OSPF area?","A logical grouping used to structure an OSPF routing domain."],["What is Area 0?","The OSPF backbone area."],["What is an LSA?","A Link-State Advertisement carrying link-state information."],["What is an LSDB?","The link-state database built from LSAs."],["What is an OSPF neighbor adjacency?","A relationship between OSPF routers that exchange protocol information."],["What is a wildcard mask?","An inverse mask used in Cisco OSPF network statements to match addresses."],["How can you verify OSPF neighbors?","Use show ip ospf neighbor."],["How can you view OSPF-learned routes?","Use show ip route ospf or show ip route."],["Static routing vs OSPF?","Static routes are entered manually; OSPF routers exchange information and recalculate routes."],["Why might OSPF neighbors fail to form?","Possible causes include mismatched area, subnet, timers/authentication, passive interface or link failure."]]
-},
-{
-n:9,title:"Wireshark Packet Analysis — TCP/TLS/DNS and Security",kind:"Software + filters",
-does:"Capture traffic and inspect protocol headers and packet exchanges. Use the capture to identify endpoints, DNS lookups, TCP behavior and encrypted TLS sessions.",
-full:[["TLS","Transport Layer Security"],["DNS","Domain Name System"],["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["IP","Internet Protocol"],["HTTP","Hypertext Transfer Protocol"],["HTTPS","Hypertext Transfer Protocol Secure"],["MAC","Media Access Control"],["NIC","Network Interface Card"]],
-steps:["Open Wireshark and choose the correct active network interface.","Start capture; generate a small amount of permitted test traffic (e.g. visit a test website or run nslookup).","Stop capture after enough packets appear.","Use display filters to isolate protocols or hosts.","Select a packet and expand Ethernet, IP, TCP/UDP, DNS or TLS sections in the packet-details pane.","Record source/destination addresses, ports, flags and relevant fields. Remember that TLS encrypts application payloads."],
-commands:"Useful Wireshark display filters:\ndns\ntcp\nudp\narp\nicmp\nhttp\ntls\nip.addr == 192.168.1.10\ntcp.port == 443\ntcp.flags.syn == 1\n\nDisplay filters are not the same as capture filters. Use only on traffic you are authorized to inspect.",
-code:"Basic workflow:\n1. Select interface → Start capture.\n2. Generate test traffic.\n3. Stop capture.\n4. Enter a display filter such as dns or tcp.port == 443.\n5. Expand packet layers and note source/destination IPs, ports, flags and protocol fields.\n6. Save the capture only if permitted by your lab rules.",
-questions:[["What is Wireshark?","A network protocol analyzer that captures and displays packets."],["What is a packet capture?","A record of network packets observed on an interface or from a capture file."],["What is a display filter?","A filter applied to packets already captured to control what is shown."],["What does the dns filter show?","Packets decoded as DNS."],["What is DNS?","A distributed naming system that maps names to records such as IP addresses."],["What is TCP's three-way handshake?","SYN, SYN-ACK, ACK."],["What does TLS provide?","Cryptographic protection for data in transit, including confidentiality and integrity and usually server authentication."],["Can Wireshark normally show HTTPS plaintext?","Not without suitable decryption secrets/keys and configuration; the payload is encrypted."],["What does tcp.port == 443 match?","TCP packets with source or destination port 443."],["What is a source port?","The transport-layer port identifying the sending application endpoint."],["What is the difference between capture and display filters?","Capture filters restrict what is recorded; display filters only restrict what is shown."],["What is ARP used for?","Resolving IPv4 addresses to MAC addresses on a local link."],["Why should packet captures be handled carefully?","They may contain private information, credentials or sensitive metadata."]]
-},
-{
-n:10,title:"UDP Socket Programming in C — File Transfer",kind:"C code",
-does:"Use UDP datagrams to exchange data between a client and server. Unlike TCP, UDP does not establish a connection or guarantee delivery/order.",
-full:[["UDP","User Datagram Protocol"],["IP","Internet Protocol"],["API","Application Programming Interface"],["DNS","Domain Name System"],["I/O","Input/Output"],["AF_INET","Address Family: IPv4"],["SOCK_DGRAM","Datagram socket type commonly used with UDP"]],
-steps:["Create separate UDP server and client programs in C.","Create a datagram socket with socket(AF_INET, SOCK_DGRAM, 0).","On the server, bind to the required local IP/port.","Use recvfrom() to receive a datagram and learn the sender address; use sendto() to reply.","For a file transfer, split the file into datagrams and define a simple protocol with filename, sequence number, length and end-of-file marker.","For reliable file transfer, add acknowledgments, retransmission, duplicate handling and integrity checks; basic UDP itself does not supply these.","Compile and run server first, then client; test with a small text file."],
-commands:"Compile (Linux/POSIX environment):\ngcc udp_server.c -o udp_server\ngcc udp_client.c -o udp_client\n./udp_server\n./udp_client 127.0.0.1\n\nExact arguments depend on your program. Keep the server port and client destination port consistent.",
-code:"UDP socket call sequence:\nSERVER: socket() → bind() → recvfrom() → sendto() → close()\nCLIENT: socket() → sendto() → recvfrom() → close()\n\nIllustrative UDP message exchange (core idea, not a complete file-transfer program):\nint s = socket(AF_INET, SOCK_DGRAM, 0);\n/* server: bind(s, ...); */\nchar buf[1024];\nstruct sockaddr_in peer; socklen_t peerlen = sizeof(peer);\nint n = recvfrom(s, buf, sizeof(buf), 0,\n                 (struct sockaddr *)&peer, &peerlen);\nif (n >= 0) {\n    sendto(s, \"ACK\", 3, 0,\n           (struct sockaddr *)&peer, peerlen);\n}\nclose(s);\n\nFor actual files, handle chunking, binary data, final-chunk signaling, errors and packet loss.",
-questions:[["What does UDP stand for?","User Datagram Protocol."],["Is UDP connection-oriented?","No; it sends datagrams without a connection handshake."],["What is a datagram?","A self-contained message sent using a packet-oriented transport service."],["What does SOCK_DGRAM mean?","A datagram socket type commonly used with UDP."],["What does bind() do for a UDP server?","Associates the socket with a local IP address and port."],["What does recvfrom() do?","Receives a datagram and can return the sender's address."],["What does sendto() do?","Sends a datagram to a specified destination address."],["Does UDP guarantee delivery?","No."],["Does UDP guarantee ordering?","No."],["Why might UDP be used instead of TCP?","Lower overhead and no connection setup; suitable when the application handles timing/loss or can tolerate loss."],["Why is basic UDP file transfer risky?","Packets can be lost, duplicated or reordered without application-level recovery."],["How can reliability be added over UDP?","Sequence numbers, acknowledgments, retransmission, timeout and integrity checks."],["Give a common UDP application.","DNS commonly uses UDP for queries, though it can also use TCP."]]
-},
-{
-n:11,title:"Wireshark Capture Filters and TCP Flags",kind:"Software + filters",
-does:"Apply packet capture/display filters to isolate traffic and inspect TCP flags and packet headers, rather than examining every packet in a capture.",
-full:[["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["IP","Internet Protocol"],["ICMP","Internet Control Message Protocol"],["ARP","Address Resolution Protocol"],["SYN","Synchronize (TCP flag)"],["ACK","Acknowledgment (TCP flag)"],["FIN","Finish (TCP flag)"],["RST","Reset (TCP flag)"],["HTTP","Hypertext Transfer Protocol"]],
-steps:["Choose the correct interface in Wireshark.","Optionally enter a capture filter before starting, if you want to restrict what is recorded.","Start capture and generate test traffic.","Stop capture and apply display filters to examine selected traffic.","Inspect TCP flags: SYN starts a connection, ACK acknowledges data/segments, FIN indicates orderly close, RST resets a connection.","Compare the packets with the TCP three-way handshake and connection termination."],
-commands:"Display filters:\ntcp\ntcp.flags.syn == 1\ntcp.flags.ack == 1\ntcp.flags.fin == 1\ntcp.flags.reset == 1\nicmp\narp\nip.addr == 192.168.1.10\n\nExamples of capture filters (BPF syntax):\ntcp\nudp port 53\nhost 192.168.1.10\n\nCapture-filter syntax differs from display-filter syntax.",
-code:"TCP three-way handshake:\nClient → Server: SYN\nServer → Client: SYN, ACK\nClient → Server: ACK\n\nTypical display filter for initial SYN packets:\ntcp.flags.syn == 1 && tcp.flags.ack == 0\n\nTo view packets sent to/from a particular host:\nip.addr == 192.168.1.10",
-questions:[["What is a capture filter?","A rule that limits which packets are captured and saved."],["What is a display filter?","A rule that hides packets from the current view without removing them from the capture."],["What does SYN mean?","Synchronize; it is used to initiate a TCP connection."],["What does ACK mean?","Acknowledgment; it indicates acknowledgment information is valid."],["What does FIN mean?","Finish; it is used for orderly TCP connection shutdown."],["What does RST mean?","Reset; it aborts or resets a TCP connection."],["Describe the TCP three-way handshake.","SYN → SYN-ACK → ACK."],["What is tcp.flags.syn == 1 filtering for?","TCP packets with the SYN flag set."],["Why might SYN and ACK both be set?","A server's SYN-ACK response acknowledges the client's SYN while synchronizing its own sequence number."],["What does udp port 53 mean as a capture filter?","Capture UDP traffic with port 53 as source or destination."],["What does host 192.168.1.10 mean in a capture filter?","Capture packets to or from that host."],["Can a capture filter be written exactly like a display filter?","No; the two syntaxes differ."],["What is ICMP often used for?","Network-layer control/diagnostic messages such as ping echo requests and replies."]]
-},
-{
-n:12,title:"DHCP Server and Client — Implementation and Analysis",kind:"Software + protocol analysis",
-does:"Observe or configure automatic IPv4 address assignment. A DHCP client can obtain an address, subnet mask, default gateway, DNS server and lease information from a DHCP server.",
-full:[["DHCP","Dynamic Host Configuration Protocol"],["IP","Internet Protocol"],["UDP","User Datagram Protocol"],["DNS","Domain Name System"],["MAC","Media Access Control"],["DORA","Discover, Offer, Request, Acknowledge"],["APIPA","Automatic Private IP Addressing"]],
-steps:["Use the lab's assigned environment (Packet Tracer or an authorized DHCP-enabled lab network).","For Packet Tracer, place a server and client PCs on a LAN and connect them to a switch.","Configure the server with a static IP and enable its DHCP service/pool, including pool name, default gateway, DNS server, starting address and subnet mask.","Set a client PC to obtain its address automatically using DHCP.","Check the assigned address, mask, gateway and DNS settings.","In Wireshark, if permitted, filter for DHCP/BOOTP and observe Discover, Offer, Request and Acknowledge messages.","Avoid enabling a second DHCP server on a real network without administrator permission."],
-commands:"Windows client:\nipconfig /release\nipconfig /renew\nipconfig /all\n\nLinux (command varies by distribution/network manager):\nip addr\nip route\n\nIn Packet Tracer, configure DHCP from the server's Services > DHCP panel, then select DHCP in each PC's IP Configuration. Menu names may vary by version.",
-code:"DORA sequence:\n1. DHCP Discover — client searches for DHCP servers.\n2. DHCP Offer — server offers an address and options.\n3. DHCP Request — client requests the offered lease.\n4. DHCP Acknowledgment (ACK) — server confirms the lease.\n\nCommon UDP ports: server 67, client 68.",
-questions:[["What does DHCP stand for?","Dynamic Host Configuration Protocol."],["Why is DHCP used?","To assign IP configuration automatically and reduce manual configuration errors."],["What does DORA stand for?","Discover, Offer, Request, Acknowledge."],["Which transport protocol does DHCP use?","UDP."],["What are the common DHCPv4 ports?","UDP 67 for servers and UDP 68 for clients."],["What information can DHCP provide?","IP address, subnet mask, default gateway, DNS servers and lease time."],["What is a DHCP lease?","A time-limited assignment of an IP address/configuration to a client."],["What happens if a client cannot reach a DHCP server?","It may fail to obtain a lease; some systems may use an automatic/link-local address, depending on OS."],["What is a DHCP scope/pool?","A range of addresses and options the server can lease to clients."],["Why should a DHCP server have a stable address?","Clients need to reach it reliably and the server's configuration must remain predictable."],["Can two unauthorized DHCP servers cause problems?","Yes; clients may receive incorrect or conflicting configuration."],["How do you renew a Windows DHCP lease?","Use ipconfig /renew."],["How can you see DHCP traffic in Wireshark?","Use a suitable display filter such as bootp or dhcp, depending on the Wireshark version."]]
-}
-];
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'strict',
+    flowchart: { htmlLabels: true, curve: 'basis' },
+    class: { useMaxWidth: true },
+    gantt: { useMaxWidth: true }
+  });
+  window.mermaidRenderer = mermaid;
+  window.dispatchEvent(new Event("mermaid-ready"));
 
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-function acronymTable(full){return `<table><thead><tr><th>Acronym</th><th>Full form / meaning</th></tr></thead><tbody>${full.map(x=>`<tr><td><b>${esc(x[0])}</b></td><td>${esc(x[1])}</td></tr>`).join("")}</tbody></table>`}
-function qs(list){return list.map((q,i)=>`<div class="q"><b>Q${i+1}. ${esc(q[0])}</b><div class="answer">${esc(q[1])}</div></div>`).join("")}
-function makeCopyBlock(text, desc, where, isCommands=false){
-  if(isCommands){
-    const lines = String(text).split('\n');
-    const parts = [];
-    let pendingLabel = "";
-    for (const raw of lines) {
-      const line = raw.trim();
-      if (!line) continue;
-      // Keep explanatory headings/labels outside the copyable command blocks.
-      if (/^(Windows:|Linux equivalents.*:|Example addressing:|From PC command prompt:|Typical commands.*:|Compile.*:|Cisco IOS-style example.*:|Router CLI.*:|Display filters:|Examples of capture filters.*:|Useful Wireshark display filters:|Capture filters.*:|Common UDP ports:|DORA sequence:|TCP three-way handshake:|OSPF starter pattern:|Static route format:|Command sequence to remember:|Basic workflow:|Implementation checklist:|Windows client:|Linux \(command varies.*\):|In Packet Tracer,|Example:|Example quick interpretation:)/i.test(line)) {
-        pendingLabel = line.replace(/:$/, "");
-        parts.push(`<p class="code-desc"><b>${esc(pendingLabel)}</b></p>`);
-        continue;
-      }
-      // Do not turn prose or protocol descriptions into fake executable commands.
-      if (/^(No program required|Each command|Use only|The exact|A default gateway|A wildcard mask|Display filters are|Capture-filter syntax|This is|For actual|Common UDP|Remember:|If using|Check the exact|Exact arguments|In Packet Tracer,|For a lab comparison|Tool \| Main use|NS-2\/NS-3 \|)/i.test(line)) {
-        parts.push(`<p class="code-desc">${esc(line)}</p>`);
-        continue;
-      }
-      const inferred = commandWhere(line, where);
-      const isLikelyCommand = inferred !== "Reference / explanation" &&
-        !/^(TCP SOCKET FLOW|CLIENT:|SERVER:|1\.|2\.|3\.|4\.|5\.|6\.|PC[0-9]|Router>|Router#|Router\(config|Tool \|)/i.test(line);
-      if (isLikelyCommand) {
-        parts.push(`<div class="codewrap"><span class="where">${esc(inferred)}</span><button class="copybtn" type="button" onclick="copyText(this)">Copy command</button><pre><code>${esc(line)}</code></pre><p class="code-desc">${esc(commandDescription(line, inferred))}</p></div>`);
-      } else {
-        parts.push(`<p class="code-desc">${esc(line)}</p>`);
-      }
-    }
-    return `<p class="small">Each executable command is isolated so you can copy it independently. Explanations and headings are kept outside the copy blocks.</p>${parts.join("") || '<p class="small">No standalone commands listed for this experiment.</p>'}`;
-  }
-  return `<div class="codewrap"><span class="where">${esc(where)}</span><button class="copybtn" type="button" onclick="copyText(this)">Copy code</button><pre><code>${esc(text)}</code></pre><p class="code-desc">${esc(desc)}</p></div>`;
-}
-function commandWhere(line, fallback){
- const s=line.trim();
- if (/^(ping(?:\s|$)|ipconfig(?:\s|$)|tracert(?:\s|$)|nslookup(?:\s|$)|netstat(?:\s|$)|arp -a$|route print$|pathping(?:\s|$)|getmac(?:\s|$))/i.test(s))
-   return "Windows CMD / PowerShell";
- if (/^(ip addr|ip route|ip link|ip neigh|ss |dig |traceroute |tracepath |ping -c|awk |ns |nam |gcc |\.\/server|\.\/client)/i.test(s))
-   return "Linux terminal";
- if (/^(enable$|configure terminal$|enable secret |line console |line vty |password |login$|service password-encryption$|copy running-config|show running-config$|show startup-config$|interface |ip address |no shutdown$|ip route |show ip |router ospf|network )/i.test(s))
-   return "Cisco router CLI";
- if (/^(tcp\.|udp\.|dns$|http$|tls$|arp$|icmp$|ip\.addr|tcp$|udp$)/i.test(s))
-   return "Wireshark display filter";
- if (/^(host |udp port )/i.test(s))
-   return "Wireshark capture filter";
- if (/^(#include|int main|int s =|if \(|set |proc |global |close |exit 0|\$ns|\$ftp|\$cbr)/i.test(s))
-   return "Code editor / script file";
- return "Reference / explanation";
-}
-function commandDescription(line, where){
- const s=line.trim();
- const map=[
- [/^ping\b/i,"Tests reachability and reports round-trip timing when replies are allowed."],
- [/^ipconfig \/all/i,"Shows detailed Windows adapter configuration, including DHCP, DNS and MAC details."],
- [/^ipconfig \/release/i,"Releases the current DHCP-assigned IPv4 configuration."],
- [/^ipconfig \/renew/i,"Requests/renews DHCP configuration from a DHCP server."],
- [/^ipconfig\b/i,"Displays Windows IP configuration."],
- [/^tracert\b/i,"Shows the route hops toward the destination on Windows."],
- [/^traceroute\b/i,"Traces the route hops toward a destination on Linux/macOS."],
- [/^tracepath\b/i,"Traces a path and can report path-MTU information on supported Linux systems."],
- [/^nslookup\b/i,"Queries DNS to look up a hostname or address."],
- [/^dig\b/i,"Queries DNS and displays detailed DNS response information."],
- [/^netstat\b/i,"Displays network connections, listening ports and related statistics."],
- [/^ss\b/i,"Displays socket information on Linux."],
- [/^arp -a\b/i,"Displays the local IPv4 ARP cache on Windows."],
- [/^ip neigh\b/i,"Displays the Linux neighbor cache (IP-to-link-layer mappings)."],
- [/^route print\b/i,"Displays the Windows IP routing table."],
- [/^getmac\b/i,"Displays MAC addresses for network adapters on Windows."],
- [/^ip addr\b/i,"Displays IP addresses and interface state on Linux."],
- [/^ip route\b/i,"Displays the Linux routing table."],
- [/^ip link\b/i,"Displays Linux network interfaces and link-layer information."],
- [/^ns\b/i,"Runs an NS-2 Tcl simulation script; run this in a terminal with NS-2 installed."],
- [/^nam\b/i,"Opens the NS-2 Network Animator file, if NAM is installed."],
- [/^awk\b/i,"Runs an AWK script to process the simulation trace file."],
- [/^gcc\b/i,"Compiles the named C source file into an executable using GCC."],
- [/^\.\/server\b/i,"Starts the compiled server program in the current Linux/macOS terminal directory."],
- [/^\.\/client\b/i,"Starts the compiled client program; the example uses localhost as the server."],
- [/^enable secret\b/i,"Sets the privileged EXEC password secret on a Cisco IOS-style router CLI."],
- [/^enable$/i,"Enters privileged EXEC mode in the router CLI."],
- [/^configure terminal$/i,"Enters global configuration mode on a Cisco IOS-style router."],
- [/^line console\b/i,"Selects the local console line for configuration."],
- [/^line vty\b/i,"Selects virtual terminal lines used for remote CLI access."],
- [/^password\b/i,"Sets the line password in the selected router line configuration mode."],
- [/^login$/i,"Requires login authentication on the selected router line."],
- [/^service password-encryption$/i,"Obfuscates certain plaintext passwords in the router configuration; it is not strong encryption."],
- [/^copy running-config startup-config$/i,"Saves the current router configuration for use after reboot."],
- [/^show running-config$/i,"Displays the router's active configuration."],
- [/^show startup-config$/i,"Displays the saved startup configuration."],
- [/^interface\b/i,"Enters interface configuration mode for the named router interface."],
- [/^ip address\b/i,"Assigns an IPv4 address and subnet mask to the selected router interface."],
- [/^no shutdown$/i,"Administratively enables the selected router interface."],
- [/^ip route\b/i,"Adds a static route on a Cisco IOS-style router."],
- [/^show ip interface brief$/i,"Summarizes router interface IP addresses and operational status."],
- [/^show ip route ospf$/i,"Displays OSPF-learned routes in the routing table."],
- [/^show ip route$/i,"Displays the router's routing table."],
- [/^router ospf\b/i,"Enters OSPF routing-process configuration mode."],
- [/^network\b/i,"Advertises/matches a network for OSPF using the specified wildcard mask and area."],
- [/^show ip ospf neighbor$/i,"Displays OSPF neighbor relationships."],
- [/^show ip protocols$/i,"Displays routing-protocol parameters and configuration."],
- [/^host\b/i,"In a Wireshark capture filter, limits capture to traffic to or from the specified host."],
- [/^udp port\b/i,"In a Wireshark capture filter, selects UDP traffic using the specified port."],
- [/^tcp$/i,"Wireshark capture filter: captures TCP packets."],
- [/^udp$/i,"Wireshark capture filter: captures UDP packets."],
- [/^dns$/i,"Wireshark display filter: shows packets decoded as DNS."],
- [/^tcp\.port ==/i,"Wireshark display filter: shows TCP packets with the specified source or destination port."],
- [/^tcp\.flags\./i,"Wireshark display filter: selects TCP packets based on the specified flag."],
- [/^ip\.addr ==/i,"Wireshark display filter: shows packets to or from the specified IP address."],
- [/^arp$/i,"Wireshark display filter: shows ARP packets."],
- [/^icmp$/i,"Wireshark display filter: shows ICMP packets."],
- [/^http$/i,"Wireshark display filter: shows packets decoded as HTTP."],
- [/^tls$/i,"Wireshark display filter: shows packets decoded as TLS."]
- ];
- for(const [re,desc] of map){if(re.test(s)) return desc;}
- if(where.includes("Router CLI")) return "Enter this in the router's CLI at the configuration mode indicated by the prompt.";
- if(where.includes("Wireshark")) return "Enter this in Wireshark's appropriate filter bar; capture and display filters use different syntax.";
- if(where.includes("PowerShell")||where.includes("CMD")) return "Run this in Windows PowerShell or Command Prompt, as indicated.";
- if(where.includes("Linux")) return "Run this in a Linux terminal; the required tool may need to be installed.";
- return "Run this command in the indicated application or terminal; replace example values with your lab's actual values.";
-}
-function expCard(d){return `<details class="exp" data-search="${esc((d.title+' '+d.kind+' '+d.does+' '+d.full.flat().join(' ')+' '+d.steps.join(' ')+' '+d.commands+' '+d.code).toLowerCase())}"><summary>Experiment ${d.n}: ${esc(d.title)} <span class="badge">${esc(d.kind)}</span></summary><div class="content"><h3>What it does</h3><p>${esc(d.does)}</p><h3>Detailed implementation steps</h3><ol>${d.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol><h3>Commands / filters</h3>${makeCopyBlock(d.commands,"Each command is shown separately with a short explanation.","",true)}<h3>Code / sequence / checklist</h3>${d.n===1 ? `<table><thead><tr><th>Tool</th><th>Main use</th><th>Interaction</th></tr></thead><tbody><tr><td>NS-2 / NS-3</td><td>Protocol and network simulation</td><td>Scripts + trace analysis</td></tr><tr><td>OMNeT++</td><td>Modular discrete-event simulation</td><td>Models + IDE</td></tr><tr><td>Packet Tracer</td><td>Learning and device configuration</td><td>GUI</td></tr><tr><td>GNS3</td><td>Emulated virtual network devices</td><td>GUI + device CLI</td></tr><tr><td>Wireshark</td><td>Capture and inspect network traffic</td><td>GUI + filters</td></tr></tbody></table><p class="code-desc">No program is required for this comparison; use the table to compare each tool.</p>` : makeCopyBlock(d.code,"This block contains the code or sequence/checklist for this experiment. Read the notes and replace example values as needed before running it.","Code editor / relevant terminal",false)}<h3>Related full forms</h3>${acronymTable(d.full)}<h3>Possible viva questions with short answers</h3>${qs(d.questions)}</div></details>`}
-function theoryCard(d){return `<details class="exp" data-search="${esc((d.title+' '+d.does+' '+d.full.flat().join(' ')+' '+d.questions.flat().join(' ')).toLowerCase())}"><summary>Experiment ${d.n}: ${esc(d.title)} <span class="badge">${d.questions.length} viva Qs</span></summary><div class="content"><h3>1. What the experiment does</h3><p>${esc(d.does)}</p><h3>2. Acronyms and full forms</h3>${acronymTable(d.full)}<h3>3. Possible viva questions</h3>${qs(d.questions)}</div></details>`}
-document.getElementById('expList').innerHTML=data.map(expCard).join("");
-document.getElementById('theoryList').innerHTML=data.map(theoryCard).join("");
-document.querySelectorAll('.tabbtn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===btn.dataset.tab));}));
-function bindSearch(inputId,listId){document.getElementById(inputId).addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll(`#${listId} details.exp`).forEach(d=>{d.style.display=d.dataset.search.includes(q)?'':'none';});});}
-bindSearch('expSearch','expList');bindSearch('theorySearch','theoryList');
-async function copyText(btn){
- const code=btn.parentElement.querySelector('pre code');
- if(!code)return;
- const text=code.innerText;
- try{await navigator.clipboard.writeText(text);}
- catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
- const old=btn.textContent;btn.textContent='Copied!';btn.classList.add('copied');
- setTimeout(()=>{btn.textContent=old;btn.classList.remove('copied');},1200);
-}
-
-// Default visual DNS-error page; keyboard shortcut reveals the actual study guide.
-const landingPage = document.getElementById('errorLanding');
-const guideApp = document.getElementById('guideApp');
+// DNS landing page is the default entry point. Press ? (Shift+/) or click the small dot to open the main study page.
+const landingPage = document.getElementById("errorLanding");
+const guideApp = document.getElementById("guideApp");
 function openStudyGuide() {
-  landingPage.style.display = 'none';
-  guideApp.classList.add('visible');
+  landingPage.style.display = "none";
+  guideApp.classList.add("visible");
   window.scrollTo(0, 0);
+  // Re-render project diagrams now that their containers are visible.
+  if (typeof renderProject === "function") setTimeout(() => renderProject(), 80);
 }
-document.getElementById('retryDemo').addEventListener('click', () => {
-  // Simulate the browser retrying a failed DNS lookup.
-    window.location.reload();
-});
-document.addEventListener('keydown', e => {
-  // Shift + / (usually ?) opens the guide from the DNS page; from the guide, it reloads the file.
-  const isShortcut = e.key === '?' || (e.shiftKey && (e.key === '/' || e.code === 'Slash'));
+window.openStudyGuide = openStudyGuide;
+document.getElementById("retryDemo").addEventListener("click", () => window.location.reload());
+document.addEventListener("keydown", e => {
+  const isShortcut = e.key === "?" || (e.shiftKey && (e.key === "/" || e.code === "Slash"));
   if (isShortcut && !e.ctrlKey && !e.altKey && !e.metaKey) {
     e.preventDefault();
-    if (guideApp.classList.contains('visible')) {
-      window.location.reload();
+    if (guideApp.classList.contains("visible")) {
+      // From the study page, ? returns to the DNS landing page.
+      guideApp.classList.remove("visible");
+      landingPage.style.display = "flex";
+      window.scrollTo(0, 0);
     } else {
       openStudyGuide();
     }
@@ -362,4 +373,1079 @@ document.addEventListener('keydown', e => {
 });
 
 </script>
-</body></html>
+<script>
+const experiments = [
+  {id:1, name:"Major Software Process Models", unit:"Unit 1", sections:[
+    ["What the question expects","Explain and compare the major models: Waterfall, V-Model, Incremental, Iterative, Spiral, RAD, Agile/Scrum, and DevOps. For a scenario question, select a suitable model and justify it using requirement stability, risk, delivery speed, and feedback needs."],
+    ["Model summary to write","Waterfall: sequential phases; best when requirements are stable. V-Model: each development phase maps to verification/validation; suitable for high-reliability work. Incremental: deliver functional modules in builds. Iterative: refine a solution through repeated cycles. Spiral: iterative cycles driven by risk analysis. RAD: rapid prototyping and component reuse. Agile/Scrum: short sprints and continuous feedback. DevOps: development and operations connected through CI, automated testing, and deployment."],
+    ["Diagram instructions","Draw a separate model-specific diagram, not one generic flow for all models. Waterfall: Requirements → Design → Implementation → Testing → Deployment → Maintenance. V-Model: left descending development phases and right ascending matching test phases, meeting at implementation. Incremental: multiple build/release blocks. Iterative: a loop showing repeated refinement. Spiral: spiral cycles labelled objectives, risk analysis, development/testing, and evaluation. RAD: requirements planning, user design/prototyping, construction, cutover. Scrum: Product Backlog → Sprint Planning → Sprint Backlog → Sprint → Increment, with Review and Retrospective. DevOps: Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → feedback."],
+    ["Shape legend","Rounded oval/terminator = start or end where a flowchart is used; rectangle = phase/activity; arrow = sequence or feedback direction; diamond = decision/risk gate; loop-back arrow = iteration; cylinder = database only when data storage is shown. In UML activity notation, filled black circle = initial node and bullseye = final node. Do not confuse those UML nodes with ordinary flowchart terminators."],
+    ["Expected answer order","Aim → definition of each relevant model → model-specific diagram → approach/phases → advantages → limitations → suitable project / scenario → conclusion."],
+    ["Common mistake","Do not say every model is simply sequential. Show the defining feature: V-model test mapping, incremental releases, iterative refinement, Spiral risk analysis, RAD prototyping, Scrum sprints/feedback, or DevOps delivery/operations loop."]
+  ]},
+  {id:2, name:"Prepare SRS in IEEE Format", unit:"Unit 2", sections:[
+    ["What the question expects","Convert the problem statement into a structured requirements document. Separate what the system must do (functional requirements) from quality constraints (non-functional requirements)."],
+    ["What to fill in","Purpose, scope, product perspective, user classes, operating environment, assumptions, dependencies, constraints, interfaces, and uniquely numbered requirements."],
+    ["Requirement notation","Use IDs such as FR-01 and NFR-01. Write testable statements: “The system shall …”. Avoid vague words like fast, easy, or secure unless measurable acceptance criteria are defined."],
+    ["Expected structure","Introduction → overall description → external interface requirements → functional requirements → non-functional requirements → data / constraints → assumptions and dependencies."],
+    ["Common mistake","Do not describe design implementation as if it were a requirement. State required behaviour and measurable quality targets."]
+  ]},
+  {id:3, name:"Project Scheduling", unit:"Unit 3", sections:[
+    ["What the question expects","Break the project into activities, estimate durations, show dependencies, and derive a schedule. If asked for PERT / CPM, calculate path durations and identify the critical path."],
+    ["What to fill in","Activity ID, activity name, duration, predecessor(s), earliest start / finish, latest start / finish, and float when required."],
+    ["Diagram notation","Gantt: horizontal bars against a calendar axis. PERT / CPM: nodes or activity arrows connected by precedence relationships. Mark the critical path clearly and state total duration."],
+    ["Expected structure","Assumptions → activity table → dependency network / Gantt → calculations → critical path and total duration → conclusion."],
+    ["Common mistake","A task list without dependencies is not a complete schedule. Make sure durations and predecessor relationships agree."]
+  ]},
+  {id:4, name:"Software Estimation", unit:"Unit 3", sections:[
+    ["What the question expects","State which estimation technique is being used, provide input data and assumptions, show the formula, substitute values, and interpret the result with units."],
+    ["What to fill in","Technique: LOC / Function Points / COCOMO. Given values: ______. Assumptions: ______. Required output: size / effort / duration / cost."],
+    ["Formula presentation","Write each symbol's meaning before substitution. Keep units consistent. For COCOMO, specify the model variant and coefficients supplied by the question or textbook; do not mix variants."],
+    ["Expected structure","Given data → assumptions → formula → substitution → calculation → final result with units → limitations."],
+    ["Common mistake","Never provide only a final number. Show calculation steps and explain what the estimate represents."]
+  ]},
+  {id:5, name:"Class and Use Case Diagrams", unit:"Unit 4", sections:[
+    ["What the question expects","Use-case diagram: identify external actors, system boundary, and user goals. Class diagram: identify classes, attributes, operations, and relationships with correct UML multiplicities and relationship types."],
+    ["Use-case notation","Actor = stick figure / actor label; use case = oval; system boundary = rectangle containing use cases. «include» is a dashed arrow from the base use case to the included use case. «extend» is a dashed arrow from the extending use case to the base use case."],
+    ["Class diagram notation","Class box has compartments: class name, attributes, operations. Visibility: + public, − private, # protected, ~ package. Generalization / inheritance: solid line with hollow triangle toward the parent. Association: solid line; multiplicity labels include 1, 0..1, 1..*, and *. Aggregation: hollow diamond at the whole; composition: filled diamond at the owner."],
+    ["Relationship meaning","Generalization = “is-a”; association = connected / knows; aggregation = weak whole-part; composition = strong ownership / lifecycle. «include» is required reused behaviour; «extend» is optional or conditional behaviour in a use-case model."],
+    ["Expected structure","List actors / classes → state assumptions → draw the correct UML diagram → explain relationships and multiplicities → check that every connection has a reason."],
+    ["Common mistake","Do not use include / extend as class-diagram relationships. They belong to use-case diagrams; class diagrams use association, generalization, aggregation, composition, and dependency."]
+  ]},
+  {id:6, name:"Data Flow Diagram (DFD)", unit:"Unit 2", sections:[
+    ["What the question expects","Represent how data enters the system, is transformed by processes, is stored, and leaves the system. Use a context diagram and decompose into balanced lower-level DFDs when requested."],
+    ["External entity — rectangle","A person, organization, or external system outside the boundary that sends data to or receives data from the system. Examples: Student, Faculty, Payment Gateway."],
+    ["Process — circle / rounded process","Transforms input data into output data. Name it with a verb phrase such as “Validate Login” or “Record Attendance”. Number processes consistently, e.g. 1.0, 2.0."],
+    ["Data store — open-ended rectangle / parallel lines","A repository where data is held, such as D1 Student Records or D2 Attendance Records. Label the data being stored."],
+    ["Data flow — labelled arrow","Shows data moving between entities, processes, and stores. Name it with a noun phrase such as Login Details, Attendance Entry, or Attendance Report."],
+    ["Level rules","Context diagram: one system process and external entities. Level 0: major processes and stores. Level 1: decomposition of one Level 0 process. Keep inputs and outputs balanced across parent and child diagrams."],
+    ["Important restrictions","Do not connect entity-to-entity, store-to-store, or entity-to-store directly; route data through a process. A DFD shows data movement, not control flow, decision order, or program execution sequence."],
+    ["Expected structure","System boundary → external entities → processes → data stores → labelled data flows → context / Level 0 / Level 1 diagrams → balancing check → conclusion."]
+  ]},
+  {id:7, name:"Activity / State Transition Diagram", unit:"Unit 4", sections:[
+    ["What the question expects","Choose based on the wording: activity diagram for workflow / sequence of actions; state diagram for an object's states and events that cause transitions."],
+    ["Activity diagram notation","Initial node = filled circle; action = rounded rectangle; decision / merge = diamond with guard conditions such as [valid] and [invalid]; fork / join = thick bar; final node = bullseye. Arrows show control flow."],
+    ["State diagram notation","State = rounded rectangle; transition = arrow labelled event [guard] / action; initial pseudostate = filled circle; final state = bullseye. State labels should describe conditions, not actions."],
+    ["What to fill in","Trigger / starting condition: ______. Main actions or states: ______. Decisions / guards: ______. Alternative paths: ______. End condition: ______."],
+    ["Expected structure","State which behaviour is modelled → define symbols → draw main and alternate paths → explain transitions / guards → conclusion."],
+    ["Common mistake","Do not mix an activity flow with object-state transitions unless the question explicitly asks for both."]
+  ]},
+  {id:8, name:"RMMM Plan", unit:"Unit 6", sections:[
+    ["What the question expects","Identify risks for the named project and create a table with probability, impact, priority, mitigation, monitoring indicators, owner, and contingency response."],
+    ["Risk fields","Risk ID and description; category; probability; impact; priority / exposure; mitigation action; monitoring trigger; owner; management / contingency action if it occurs."],
+    ["Mitigation vs monitoring vs management","Mitigation reduces probability or impact in advance. Monitoring watches indicators that a risk is becoming more likely. Management is the contingency response after the risk occurs or crosses its trigger."],
+    ["How to assess","Use the scale requested in the question. If using numeric exposure, state the rule (for example, probability × impact score) and apply it consistently. No single scale is universal."],
+    ["Expected structure","Project assumptions → risk list → probability / impact assessment → prioritized RMMM table → owners and triggers → review frequency → conclusion."],
+    ["Common mistake","A list of risks alone is not an RMMM plan; include concrete mitigation, monitoring, and response actions."]
+  ]},
+  {id:9, name:"Software Configuration Management", unit:"Unit 6", sections:[
+    ["What the question expects","Explain how software artifacts are identified, versioned, changed, reviewed, built, and audited so a known baseline can be reproduced."],
+    ["Configuration items","Requirements, design diagrams, source code, test cases, build scripts, configuration files, and release documents."],
+    ["Change-control workflow","Submit change request → record and analyse impact → approve / reject → implement in a controlled branch or workspace → test and review → merge / baseline → update status and release records."],
+    ["Version-control notation","Show version / revision, date, author, change summary, and reference to the change request. Branches support parallel work; tags identify releases; commits should describe focused changes."],
+    ["Expected structure","SCM definition and objectives → configuration items → baseline → version control → change control → status accounting / audit → sample version history."],
+    ["Common mistake","Version control is one part of SCM; SCM also includes change management, configuration identification, status accounting, and configuration audits."]
+  ]},
+  {id:10, name:"White-Box Testing", unit:"Unit 5", sections:[
+    ["What the question expects","Inspect program logic, draw its control-flow graph, calculate cyclomatic complexity when asked, list independent paths, and derive test cases that exercise them."],
+    ["Control-flow graph notation","Node = statement or basic block; directed edge = possible control transfer; decision node = branch point. Connect entry and exit and represent both outcomes of each decision."],
+    ["Cyclomatic complexity","For a single connected control-flow graph, V(G) = E − N + 2; equivalently, V(G) = number of decision nodes + 1 for common structured code. Define E, N, and the graph assumption."],
+    ["Independent paths","A basis path adds at least one new edge not included in earlier paths. List each path as a node sequence and give inputs that cause the required branch outcomes."],
+    ["Expected structure","Code / assumptions → control-flow graph → E and N or decision count → complexity calculation → independent paths → test input / expected output table."],
+    ["Common mistake","Cyclomatic complexity gives the basis-path count for the graph; it does not automatically prove every possible input has been tested."]
+  ]},
+  {id:11, name:"Prototype and User Acceptance Testing", unit:"Unit 2 / 5", sections:[
+    ["What the question expects","Show how a prototype helps validate user needs and define acceptance tests tied to user requirements and business outcomes."],
+    ["Prototype content","Target user, main screens, navigation, key tasks, feedback collected, changes made, and limitations of the prototype."],
+    ["UAT case notation","Use test ID, linked requirement, precondition, user action, test data, expected result, actual result, pass / fail, and tester / date."],
+    ["Acceptance criteria","Make criteria observable and testable, e.g. “Given valid credentials, when the user signs in, then the dashboard is shown.”"],
+    ["Expected structure","Aim → users and requirements → prototype / workflow → feedback → acceptance criteria → test cases and results → conclusion."],
+    ["Common mistake","A prototype demonstrates an idea; it is not necessarily the final system. UAT checks whether the system meets user / business needs."]
+  ]},
+];
+
+const projects = {
+  attendance: {
+    name:"Student Attendance Management System",
+    summary:"Faculty records attendance; students view their attendance percentage; administrators manage users, classes, and reports.",
+    actors:["Student","Faculty","Administrator"],
+    features:["Authenticate users","Record attendance","View attendance","Generate reports","Manage classes and users"],
+    data:["User records","Class and course data","Attendance records"],
+    risks:[
+      ["Faculty forgets to record attendance","Medium","Mitigation: daily reminders and a pending-class list. Monitoring: count unsubmitted classes daily. Response: notify faculty and coordinator. Owner: Faculty lead."],
+      ["Unauthorized attendance changes","High","Mitigation: role-based permissions and reason-required edits. Monitoring: review audit logs. Response: freeze affected records, investigate, and restore approved values. Owner: System administrator."],
+      ["Attendance data loss or corruption","High","Mitigation: scheduled backups and transaction validation. Monitoring: backup status and integrity checks. Response: restore a verified backup and reconcile recent entries. Owner: Database administrator."],
+      ["Incorrect attendance percentage","High","Mitigation: define calculation rules and test edge cases. Monitoring: compare sample calculations with manual results. Response: correct the formula and recalculate summaries. Owner: Developer / tester."],
+      ["Network or server unavailable during class","Medium","Mitigation: reliable hosting and a temporary recording procedure. Monitoring: availability checks and error logs. Response: securely capture entries and reconcile after recovery. Owner: Operations."],
+      ["Student privacy exposure","High","Mitigation: least-privilege access and limited report visibility. Monitoring: review access logs and permission changes. Response: revoke access, investigate, and follow incident procedures. Owner: Administrator."]
+    ],
+    useCases:`usecase-beta
+      direction LR
+      actor Student
+      actor Faculty
+      actor Admin("Administrator")
+      systemBoundary Attendance["Student Attendance System"]
+        ViewAttendance("View attendance")
+        RecordAttendance("Record attendance")
+        ViewReport("View class report")
+        ManageClasses("Manage users and classes")
+        ValidateLogin("Validate faculty login")
+        ExportReport("Export attendance report")
+      end
+      Student --> ViewAttendance
+      Faculty --> RecordAttendance
+      Faculty --> ViewReport
+      Admin --> ManageClasses
+      RecordAttendance ..> : include ValidateLogin
+      ViewReport ..> : include ValidateLogin
+      ExportReport ..> : extend ViewReport`, 
+    dfd:`flowchart LR
+      Student[Student] -->|Login / view request| P((Attendance System))
+      Faculty[Faculty] -->|Attendance entries| P
+      Admin[Administrator] -->|User and class updates| P
+      P -->|Attendance summary| Student
+      P -->|Class report| Faculty
+      P <--> DB[(Attendance Database)]`,
+    flow:`flowchart TD
+      A([Start]) --> B[Faculty signs in]
+      B --> C{Credentials valid?}
+      C -->|No| D[Show error]
+      D --> B
+      C -->|Yes| E[Select class and date]
+      E --> F[Mark attendance]
+      F --> G[Validate entries]
+      G --> H[Save attendance]
+      H --> I[Update attendance summary]
+      I --> J([End])`,
+    state:`stateDiagram-v2
+      [*] --> NotLoggedIn
+      NotLoggedIn --> Authenticated: valid login
+      NotLoggedIn --> NotLoggedIn: invalid login
+      Authenticated --> ClassSelected: select class
+      ClassSelected --> AttendanceDraft: mark students
+      AttendanceDraft --> Saved: submit valid records
+      AttendanceDraft --> ClassSelected: cancel / edit
+      Saved --> [*]`,
+    classDiagram:`classDiagram
+      class User {
+        +userId
+        +name
+        +email
+        +login()
+      }
+      class Student {
+        +rollNumber
+        +viewAttendance()
+      }
+      class Faculty {
+        +recordAttendance()
+        +generateReport()
+      }
+      class ClassSection {
+        +classId
+        +courseName
+      }
+      class AttendanceRecord {
+        +date
+        +status
+        +save()
+      }
+      User <|-- Student
+      User <|-- Faculty
+      ClassSection "1" *-- "0..*" AttendanceRecord : contains
+      Student "1" --> "0..*" AttendanceRecord : has
+      Faculty "1" --> "0..*" AttendanceRecord : records`,
+    gantt:`gantt
+      title Illustrative Project Schedule
+      dateFormat YYYY-MM-DD
+      axisFormat %d %b
+      section Requirements
+      Gather requirements :a1, 2026-10-01, 3d
+      Prepare SRS :a2, after a1, 3d
+      section Design
+      Design data and diagrams :b1, after a2, 4d
+      Prototype screens :b2, after a2, 4d
+      section Testing
+      Test core workflows :c1, after b1, 4d
+      User acceptance review :c2, after c1, 2d`,
+    flowDescription:"Faculty authentication and attendance-recording workflow.",
+    dfdDescription:"Illustrative data-flow overview. A formal DFD may require context/Level 0/Level 1 notation and your instructor's symbol convention.",
+  },
+  hospital: {
+    name:"Hospital Management System",
+    summary:"Reception staff register patients and appointments; doctors access clinical visits; administrators manage staff and services.",
+    actors:["Patient","Receptionist","Doctor","Administrator"],
+    features:["Register patient","Book appointment","Record consultation","Manage patient records","Generate billing"],
+    data:["Patient records","Appointments","Consultation records","Billing records"],
+    risks:[
+      ["Appointment double-booking","High","Mitigation: validate slot availability at confirmation. Monitoring: detect duplicate doctor/time allocations. Response: contact affected patients and reschedule. Owner: Appointment coordinator."],
+      ["Exposure of patient information","High","Mitigation: role-based access, minimal display, and secure sessions. Monitoring: review access logs. Response: disable compromised access, investigate, and follow incident procedures. Owner: Security administrator."],
+      ["Patient record unavailable","High","Mitigation: scheduled backups and tested recovery. Monitoring: backup success and storage health. Response: restore verified data and reconcile recent updates. Owner: IT operations."],
+      ["Incorrect identity or duplicate patient record","High","Mitigation: verify identity and check existing records. Monitoring: periodic duplicate review. Response: correct records through an approved audit process. Owner: Registration supervisor."],
+      ["Consultation data entered incorrectly","Medium","Mitigation: validation rules and review before submission. Monitoring: sample audits and correction rates. Response: amend the record with an audit trail. Owner: Clinical data owner."],
+      ["Service outage during clinic hours","Medium","Mitigation: availability monitoring and a downtime procedure. Monitoring: service alerts. Response: activate downtime workflow and reconcile transactions after recovery. Owner: IT operations."]
+    ],
+    useCases:`usecase-beta
+      direction LR
+      actor Patient
+      actor Receptionist
+      actor Doctor
+      actor Admin("Administrator")
+      systemBoundary Hospital["Hospital Management System"]
+        BookAppointment("Book appointment")
+        RegisterPatient("Register patient")
+        RecordConsultation("Record consultation")
+        ManageStaff("Manage staff")
+        CheckSlot("Check slot availability")
+        RetrieveRecord("Retrieve patient record")
+        JoinWaitlist("Join waitlist")
+      end
+      Patient --> BookAppointment
+      Receptionist --> RegisterPatient
+      Doctor --> RecordConsultation
+      Admin --> ManageStaff
+      BookAppointment ..> : include CheckSlot
+      RecordConsultation ..> : include RetrieveRecord
+      JoinWaitlist ..> : extend BookAppointment`, 
+    dfd:`flowchart LR
+      Patient[Patient] -->|Registration / appointment details| P((Hospital System))
+      Reception[Receptionist] -->|Patient and booking updates| P
+      Doctor[Doctor] -->|Consultation details| P
+      P -->|Appointment confirmation| Patient
+      P -->|Patient schedule| Doctor
+      P <--> DB[(Hospital Records)]`,
+    flow:`flowchart TD
+      A([Start]) --> B[Receive appointment request]
+      B --> C[Check patient record]
+      C --> D{Slot available?}
+      D -->|No| E[Offer another slot]
+      E --> B
+      D -->|Yes| F[Save appointment]
+      F --> G[Send confirmation]
+      G --> H([End])`,
+    state:`stateDiagram-v2
+      [*] --> Requested
+      Requested --> Checked: verify patient and slot
+      Checked --> Confirmed: slot available
+      Checked --> RescheduleNeeded: slot unavailable
+      RescheduleNeeded --> Requested: choose new slot
+      Confirmed --> Completed: consultation finished
+      Confirmed --> Cancelled: appointment cancelled
+      Completed --> [*]
+      Cancelled --> [*]`,
+    classDiagram:`classDiagram
+      class Patient {
+        +patientId
+        +name
+        +contact
+      }
+      class Appointment {
+        +appointmentId
+        +dateTime
+        +status
+        +confirm()
+      }
+      class Doctor {
+        +doctorId
+        +speciality
+        +recordConsultation()
+      }
+      class MedicalRecord {
+        +recordId
+        +notes
+        +update()
+      }
+      Patient "1" --> "0..*" Appointment : books
+      Doctor "1" --> "0..*" Appointment : attends
+      Patient "1" *-- "1" MedicalRecord : owns`,
+    gantt:`gantt
+      title Illustrative Hospital System Schedule
+      dateFormat YYYY-MM-DD
+      section Analysis
+      Interview stakeholders :a1, 2026-10-01, 4d
+      Draft SRS :a2, after a1, 3d
+      section Design
+      Model appointments :b1, after a2, 4d
+      Model patient records :b2, after a2, 4d
+      section Validation
+      Test booking workflow :c1, after b1, 3d
+      Review access controls :c2, after b2, 3d`,
+    flowDescription:"Appointment booking and slot-validation workflow.",
+    dfdDescription:"Illustrative data-flow overview; use the formal DFD levels required by your instructor for submission.",
+  },
+  railway: {
+    name:"Railway Reservation System",
+    summary:"Passengers search trains and book seats; the system checks availability, stores bookings, and provides ticket status.",
+    actors:["Passenger","Booking Clerk","Administrator"],
+    features:["Search trains","Check seat availability","Book ticket","Cancel ticket","View booking status"],
+    data:["Train and route data","Seat inventory","Passenger details","Booking records"],
+    risks:[
+      ["Two users receive the same seat","High","Mitigation: allocate seats atomically and recheck availability. Monitoring: duplicate allocation checks. Response: reconcile booking records and notify affected passengers. Owner: Booking service owner."],
+      ["Payment succeeds but booking is not confirmed","High","Mitigation: track payment and booking states. Monitoring: reconcile pending transactions. Response: confirm booking or initiate controlled refund. Owner: Payment operations."],
+      ["Train schedule data is stale","Medium","Mitigation: controlled schedule updates. Monitoring: compare update timestamps and source feeds. Response: publish corrected information and notify affected users. Owner: Schedule administrator."],
+      ["Booking service unavailable during peak demand","High","Mitigation: load testing, capacity planning, and graceful error handling. Monitoring: latency and error alerts. Response: restore service and reconcile interrupted requests. Owner: Operations."],
+      ["Passenger details are incorrect","Medium","Mitigation: validate required fields before confirmation. Monitoring: correction requests and validation failures. Response: use authorized correction process. Owner: Booking support."],
+      ["Cancellation or refund processed incorrectly","High","Mitigation: test cancellation rules and safe retry handling. Monitoring: reconcile cancellation, seat, and refund records. Response: correct transaction status. Owner: Transaction support."]
+    ],
+    useCases:`usecase-beta
+      direction LR
+      actor Passenger
+      actor Clerk("Booking clerk")
+      actor Admin("Administrator")
+      systemBoundary Railway["Railway Reservation System"]
+        SearchTrains("Search trains")
+        BookTicket("Book ticket")
+        CancelTicket("Cancel ticket")
+        AssistBooking("Assist booking")
+        ManageTrains("Manage train data")
+        CheckSeats("Check seat availability")
+        ConfirmPassenger("Confirm passenger details")
+        CancellationCharge("Calculate cancellation charge")
+      end
+      Passenger --> SearchTrains
+      Passenger --> BookTicket
+      Passenger --> CancelTicket
+      Clerk --> AssistBooking
+      Admin --> ManageTrains
+      BookTicket ..> : include CheckSeats
+      BookTicket ..> : include ConfirmPassenger
+      CancellationCharge ..> : extend CancelTicket`, 
+    dfd:`flowchart LR
+      Passenger[Passenger] -->|Search / booking details| P((Reservation System))
+      P -->|Train options / ticket| Passenger
+      Clerk[Booking Clerk] -->|Booking request| P
+      Admin[Administrator] -->|Schedule updates| P
+      P <--> TrainDB[(Train and Seat Data)]
+      P <--> BookingDB[(Booking Records)]`,
+    flow:`flowchart TD
+      A([Start]) --> B[Search trains]
+      B --> C[Select train and date]
+      C --> D{Seats available?}
+      D -->|No| E[Show alternatives]
+      E --> B
+      D -->|Yes| F[Enter passenger details]
+      F --> G[Confirm booking]
+      G --> H[Allocate seat and save record]
+      H --> I[Generate ticket]
+      I --> J([End])`,
+    state:`stateDiagram-v2
+      [*] --> Draft
+      Draft --> AvailabilityChecked: search train
+      AvailabilityChecked --> AwaitingConfirmation: seats available
+      AvailabilityChecked --> Unavailable: no seats
+      Unavailable --> Draft: change search
+      AwaitingConfirmation --> Booked: confirm booking
+      Booked --> Cancelled: cancellation accepted
+      Booked --> TravelCompleted: journey completed
+      Cancelled --> [*]
+      TravelCompleted --> [*]`,
+    classDiagram:`classDiagram
+      class Passenger {
+        +passengerId
+        +name
+        +contact
+      }
+      class Train {
+        +trainNumber
+        +route
+        +checkAvailability()
+      }
+      class Booking {
+        +bookingId
+        +status
+        +create()
+        +cancel()
+      }
+      class Seat {
+        +seatNumber
+        +classType
+        +availability
+      }
+      Passenger "1" --> "0..*" Booking : makes
+      Train "1" *-- "1..*" Seat : contains
+      Booking "0..*" --> "1" Train : for
+      Booking "0..*" --> "1" Seat : reserves`,
+    gantt:`gantt
+      title Illustrative Reservation System Schedule
+      dateFormat YYYY-MM-DD
+      section Requirements
+      Define booking rules :a1, 2026-10-01, 3d
+      Prepare SRS :a2, after a1, 3d
+      section Design
+      Model train and booking data :b1, after a2, 4d
+      Design reservation flow :b2, after a2, 3d
+      section Testing
+      Test seat allocation :c1, after b1, 4d
+      Test cancellation :c2, after c1, 2d`,
+    flowDescription:"Train search, availability check, and ticket booking workflow.",
+    dfdDescription:"Illustrative data-flow overview; formal DFD decomposition should be balanced across levels.",
+  },
+  library: {
+    name:"Library Management System",
+    summary:"Members search the catalogue and borrow or return books; librarians manage inventory and lending records.",
+    actors:["Member","Librarian","Administrator"],
+    features:["Search catalogue","Issue book","Return book","Manage inventory","Track overdue items"],
+    data:["Member records","Book catalogue","Loan records"],
+    risks:[
+      ["Book availability is incorrect","Medium","Mitigation: update inventory and loan records consistently. Monitoring: reconcile physical and system status. Response: correct the record and review recent transactions. Owner: Librarian."],
+      ["Loan history is lost","Medium","Mitigation: scheduled backups and recovery tests. Monitoring: backup logs and restore results. Response: restore verified data and reconcile issue/return records. Owner: IT support."],
+      ["Unauthorized catalogue edits","Medium","Mitigation: restrict edits to authorized staff. Monitoring: audit catalogue changes. Response: revert unauthorized edits and review access. Owner: Library administrator."],
+      ["Overdue fine is calculated incorrectly","Medium","Mitigation: define due-date and fine rules. Monitoring: test representative dates against manual calculations. Response: correct calculations and adjust affected records. Owner: System maintainer."],
+      ["Duplicate book or member records","Low","Mitigation: use unique identifiers and duplicate checks. Monitoring: data-quality reports. Response: merge duplicates while preserving loan history. Owner: Data administrator."],
+      ["System unavailable at issue/return desk","Medium","Mitigation: backups and a temporary transaction log. Monitoring: service-health alerts. Response: record transactions offline and reconcile after recovery. Owner: Library operations."]
+    ],
+    useCases:`usecase-beta
+      direction LR
+      actor Member
+      actor Librarian
+      actor Admin("Administrator")
+      systemBoundary Library["Library Management System"]
+        SearchCatalogue("Search catalogue")
+        ViewLoans("View loans")
+        IssueReturn("Issue / return book")
+        ManageCatalogue("Manage catalogue")
+        CheckEligibility("Check member eligibility")
+        UpdateLoan("Update loan record")
+        OverdueFine("Calculate overdue fine")
+      end
+      Member --> SearchCatalogue
+      Member --> ViewLoans
+      Librarian --> IssueReturn
+      Admin --> ManageCatalogue
+      IssueReturn ..> : include CheckEligibility
+      IssueReturn ..> : include UpdateLoan
+      OverdueFine ..> : extend IssueReturn`, 
+    dfd:`flowchart LR
+      Member[Member] -->|Search / loan request| P((Library System))
+      Librarian[Librarian] -->|Issue / return updates| P
+      P -->|Search results / loan status| Member
+      P <--> Books[(Book Catalogue)]
+      P <--> Loans[(Loan Records)]`,
+    flow:`flowchart TD
+      A([Start]) --> B[Member requests a book]
+      B --> C[Check member and availability]
+      C --> D{Eligible and available?}
+      D -->|No| E[Explain rejection]
+      E --> F([End])
+      D -->|Yes| G[Create loan record]
+      G --> H[Update book status]
+      H --> I[Confirm issue]
+      I --> F`,
+    state:`stateDiagram-v2
+      [*] --> Available
+      Available --> Issued: issue approved
+      Issued --> Overdue: due date passed
+      Issued --> Available: returned on time
+      Overdue --> Available: returned and processed
+      Available --> [*]`,
+    classDiagram:`classDiagram
+      class Member {
+        +memberId
+        +name
+        +searchBooks()
+      }
+      class Book {
+        +isbn
+        +title
+        +availability
+      }
+      class Librarian {
+        +staffId
+        +issueBook()
+        +acceptReturn()
+      }
+      class Loan {
+        +loanId
+        +issueDate
+        +dueDate
+        +returnBook()
+      }
+      Member "1" --> "0..*" Loan : borrows
+      Book "1" --> "0..*" Loan : appears in
+      Librarian --> Loan : manages`,
+    gantt:`gantt
+      title Illustrative Library System Schedule
+      dateFormat YYYY-MM-DD
+      section Analysis
+      Identify lending rules :a1, 2026-10-01, 3d
+      Draft SRS :a2, after a1, 3d
+      section Design
+      Model catalogue and loans :b1, after a2, 4d
+      Design member workflow :b2, after a2, 3d
+      section Testing
+      Test issue and return :c1, after b1, 3d
+      Test overdue handling :c2, after c1, 2d`,
+    flowDescription:"Book issue workflow with eligibility and availability checks.",
+    dfdDescription:"Illustrative data-flow overview for the library case study.",
+  },
+  shopping: {
+    name:"Online Shopping System",
+    summary:"Customers browse products, manage a cart, place orders, and track fulfilment; administrators maintain the catalogue.",
+    actors:["Customer","Administrator","Fulfilment Staff"],
+    features:["Browse products","Manage cart","Place order","Track order","Manage catalogue"],
+    data:["Product catalogue","Cart and order data","Customer records","Payment status"],
+    risks:[
+      ["Checkout fails after order submission","High","Mitigation: validate checkout and preserve cart state. Monitoring: checkout failures and abandoned transactions. Response: reconcile order status and allow safe retry. Owner: Checkout service owner."],
+      ["Inventory becomes inaccurate","High","Mitigation: revalidate stock at confirmation. Monitoring: compare stock, order, and fulfilment records. Response: correct inventory and contact affected customers. Owner: Inventory manager."],
+      ["Customer or payment data is exposed","High","Mitigation: minimize sensitive data and apply access controls. Monitoring: access logs and security alerts. Response: restrict access, investigate, and follow incident procedures. Owner: Security administrator."],
+      ["Payment and order statuses disagree","High","Mitigation: explicit payment states and safe retry handling. Monitoring: reconcile provider and order records. Response: confirm order or initiate refund workflow. Owner: Payment operations."],
+      ["Delivery status is not updated","Medium","Mitigation: define fulfilment handoff steps. Monitoring: orders stuck beyond expected time. Response: contact fulfilment staff and update customer. Owner: Fulfilment lead."],
+      ["Traffic spike slows the service","Medium","Mitigation: load testing and capacity planning. Monitoring: latency, error rate, and resource usage. Response: scale service and communicate interruptions. Owner: Operations."]
+    ],
+    useCases:`usecase-beta
+      direction LR
+      actor Customer
+      actor Admin("Administrator")
+      actor Staff("Fulfilment staff")
+      systemBoundary Shopping["Online Shopping System"]
+        BrowseProducts("Browse products")
+        ManageCart("Manage cart")
+        PlaceOrder("Place order")
+        TrackOrder("Track order")
+        ManageCatalogue("Manage catalogue")
+        UpdateFulfilment("Update fulfilment")
+        ValidateStock("Validate stock")
+        CalculateTotal("Calculate order total")
+        ApplyDiscount("Apply discount")
+      end
+      Customer --> BrowseProducts
+      Customer --> ManageCart
+      Customer --> PlaceOrder
+      Customer --> TrackOrder
+      Admin --> ManageCatalogue
+      Staff --> UpdateFulfilment
+      PlaceOrder ..> : include ValidateStock
+      PlaceOrder ..> : include CalculateTotal
+      ApplyDiscount ..> : extend PlaceOrder`, 
+    dfd:`flowchart LR
+      Customer[Customer] -->|Search / cart / order| P((Shopping System))
+      P -->|Product details / order status| Customer
+      Admin[Administrator] -->|Catalogue updates| P
+      Staff[Fulfilment Staff] -->|Dispatch updates| P
+      P <--> Products[(Product Catalogue)]
+      P <--> Orders[(Order Records)]`,
+    flow:`flowchart TD
+      A([Start]) --> B[Browse products]
+      B --> C[Add items to cart]
+      C --> D[Proceed to checkout]
+      D --> E{Stock available?}
+      E -->|No| F[Update cart and notify customer]
+      F --> B
+      E -->|Yes| G[Confirm order]
+      G --> H[Record order and payment status]
+      H --> I[Send confirmation]
+      I --> J([End])`,
+    state:`stateDiagram-v2
+      [*] --> Cart
+      Cart --> Checkout: proceed
+      Checkout --> StockCheck: validate stock
+      StockCheck --> Cart: unavailable
+      StockCheck --> OrderPlaced: confirmed
+      OrderPlaced --> Dispatched: fulfilment begins
+      Dispatched --> Delivered: delivery confirmed
+      OrderPlaced --> Cancelled: cancellation accepted
+      Delivered --> [*]
+      Cancelled --> [*]`,
+    classDiagram:`classDiagram
+      class Customer {
+        +customerId
+        +name
+        +browseProducts()
+        +placeOrder()
+      }
+      class Product {
+        +productId
+        +name
+        +price
+        +stock
+      }
+      class Cart {
+        +cartId
+        +addItem()
+        +removeItem()
+      }
+      class Order {
+        +orderId
+        +status
+        +total
+        +confirm()
+      }
+      Customer "1" *-- "1" Cart : owns
+      Cart "1" o-- "0..*" Product : contains
+      Customer "1" --> "0..*" Order : places
+      Order "0..*" --> "1..*" Product : includes`,
+    gantt:`gantt
+      title Illustrative Shopping System Schedule
+      dateFormat YYYY-MM-DD
+      section Analysis
+      Map checkout requirements :a1, 2026-10-01, 4d
+      Prepare SRS :a2, after a1, 3d
+      section Design
+      Model catalogue and orders :b1, after a2, 4d
+      Design cart and checkout :b2, after a2, 4d
+      section Testing
+      Test order workflow :c1, after b1, 4d
+      Test stock edge cases :c2, after c1, 3d`,
+    flowDescription:"Cart checkout, stock validation, and order creation workflow.",
+    dfdDescription:"Illustrative data-flow overview; external payment integration is omitted from this first prototype.",
+  }
+};
+
+const experimentViva = {
+  overview: [
+    ["What is the main purpose of this system?","State the problem it solves, its main users, and the most important user-visible functions."],
+    ["What assumptions did you make?","Identify assumptions about users, data, operating environment, and external dependencies."]
+  ],
+  useCases: [
+    ["What is an actor in a use-case diagram?","An actor is an external role that interacts with the system to achieve a goal."],
+    ["When do you use «include»?","Use «include» when a base use case always reuses required behaviour from another use case; the dashed arrow points to the included use case."],
+    ["When do you use «extend»?","Use «extend» for optional or conditional behaviour that extends a base use case; the dashed arrow points from the extending use case to the base use case."]
+  ],
+  dfd: [
+    ["What does a DFD show?","It shows how data moves between external entities, processes, and data stores."],
+    ["What is the difference between a context diagram and Level 0 DFD?","A context diagram represents the whole system as one process with external entities; Level 0 decomposes the system into major processes and data stores."],
+    ["Why must DFD levels be balanced?","The inputs and outputs shown at a child level must remain consistent with the parent process boundary."]
+  ],
+  flow: [
+    ["What does a decision node represent?","It represents a branch in control flow, usually with guard conditions such as [valid] and [invalid]."],
+    ["How is an activity diagram different from a flowchart?","An activity diagram is a UML behaviour diagram with defined activity semantics, including actions, control/object flows, and optional concurrency constructs."]
+  ],
+  state: [
+    ["What is a state transition?","It is a change from one state to another triggered by an event, optionally constrained by a guard and accompanied by an action."],
+    ["When should you use a state diagram instead of an activity diagram?","Use a state diagram to show an object's lifecycle states; use an activity diagram to show a workflow of actions."]
+  ],
+  classDiagram: [
+    ["What does multiplicity 1..* mean?","At least one related instance; one or more."],
+    ["What is the difference between aggregation and composition?","Aggregation is a weak whole-part relationship; composition indicates stronger ownership, where the part's lifecycle is tied to the whole."],
+    ["What does a hollow triangle mean in a class diagram?","It indicates generalization / inheritance and points toward the parent class."]
+  ],
+  gantt: [
+    ["What does a Gantt chart show?","It shows project activities as bars across a time axis, making duration and overlap visible."],
+    ["What is the critical path?","The longest-duration dependency path; its activities determine the earliest possible project completion under the plan."]
+  ],
+  rmmm: [
+    ["What does RMMM stand for?","Risk Mitigation, Monitoring, and Management."],
+    ["Differentiate mitigation, monitoring, and management.","Mitigation reduces probability or impact in advance; monitoring tracks indicators; management is the response when the risk occurs or reaches its trigger."],
+    ["Why assign a risk owner?","A named owner is accountable for monitoring the risk and ensuring the planned actions are carried out."]
+  ],
+  srs: [
+    ["What is the difference between functional and non-functional requirements?","Functional requirements describe system behaviour; non-functional requirements define quality attributes or constraints."],
+    ["What makes a requirement testable?","It should be specific and measurable enough that a test or inspection can determine whether it is satisfied."]
+  ]
+};
+
+const projectExperimentOptions = [
+  ["process","Exp 01 — Software Process Models"],
+  ["srs","Exp 02 — SRS in IEEE Format"],
+  ["gantt","Exp 03 — Project Scheduling"],
+  ["estimation","Exp 04 — Software Estimation"],
+  ["useCases","Exp 05 — Class and Use-Case Diagrams"],
+  ["dfd","Exp 06 — Data Flow Diagram (DFD)"],
+  ["behavior","Exp 07 — Activity / State Transition Diagram"],
+  ["rmmm","Exp 08 — RMMM Plan"],
+  ["scm","Exp 09 — Software Configuration Management"],
+  ["whitebox","Exp 10 — White-Box Testing"],
+  ["prototype","Exp 11 — Prototype and User Acceptance Testing"]
+];
+
+const viva = [
+  [1,"What is software engineering?","Software engineering is a systematic, disciplined, and measurable approach to developing, operating, and maintaining software."],
+  [1,"What is the waterfall model?","It is a sequential process model in which phases such as requirements, design, implementation, testing, deployment, and maintenance are performed in an ordered flow."],
+  [1,"How does the incremental model work?","The product is developed and delivered in multiple increments. Each increment adds functionality to an earlier working version."],
+  [1,"What is Scrum?","Scrum is an Agile framework that organizes work into time-boxed Sprints, using defined accountabilities, events, and artifacts."],
+  [1,"Differentiate Scrum and Kanban.","Scrum commonly uses fixed-length Sprints and defined roles/events; Kanban emphasizes visualizing workflow, limiting work in progress, and continuous flow."],
+  [2,"What is an SRS?","A Software Requirements Specification documents the system's functional and non-functional requirements, interfaces, constraints, and expected behaviour."],
+  [2,"Differentiate functional and non-functional requirements.","Functional requirements describe what the system must do. Non-functional requirements describe quality attributes or constraints, such as performance, security, usability, and reliability."],
+  [2,"What is a use-case diagram?","A UML use-case diagram shows actors outside the system boundary and the goals or services they interact with in the system."],
+  [2,"What is a DFD?","A Data Flow Diagram represents data movement between external entities, processes, and data stores."],
+  [2,"What is requirement elicitation?","It is the process of discovering and gathering stakeholder needs through methods such as interviews, observation, workshops, and questionnaires."],
+  [3,"What is LOC estimation?","Lines of Code estimation predicts software size by estimating the number of source-code lines; its usefulness depends on language and counting rules."],
+  [3,"What are Function Points?","Function Points estimate software size based on user-visible functionality, such as inputs, outputs, inquiries, internal logical files, and external interface files."],
+  [3,"What is COCOMO?","COCOMO is an empirical software cost-estimation model that estimates effort from software size and other project factors; the exact model variant determines the equations."],
+  [3,"What is the critical path?","The critical path is the longest-duration path through a project network; tasks on it determine the earliest possible project completion under the schedule assumptions."],
+  [3,"What is PERT?","Program Evaluation and Review Technique estimates activity duration using optimistic, most likely, and pessimistic time estimates."],
+  [4,"What is cohesion?","Cohesion describes how strongly the responsibilities within a module relate to one another. High cohesion is generally desirable."],
+  [4,"What is coupling?","Coupling describes the degree of dependency between modules. Lower coupling is generally desirable because changes are less likely to spread."],
+  [4,"What is modularity?","Modularity divides a system into manageable components with clear responsibilities and interfaces."],
+  [4,"What is architectural design?","Architectural design identifies the major software components, their responsibilities, relationships, and the system's overall structure."],
+  [4,"What is data-centred architecture?","In a data-centred architecture, a central data store or repository is shared by components that read, write, or update the data."],
+  [5,"What is unit testing?","Unit testing checks an individual component or unit in isolation, often using stubs or drivers where dependencies are unavailable."],
+  [5,"What is integration testing?","Integration testing checks interactions and interfaces between combined components to reveal interface and interaction defects."],
+  [5,"Differentiate black-box and white-box testing.","Black-box testing designs tests from external behaviour and requirements. White-box testing uses knowledge of internal logic and structure."],
+  [5,"What is boundary value analysis?","Boundary Value Analysis tests values at and near the edges of valid input ranges because boundary defects are common."],
+  [5,"What is cyclomatic complexity?","Cyclomatic complexity measures the number of linearly independent paths in a control-flow graph. For a single connected graph, V(G) = E − N + 2."],
+  [5,"Differentiate alpha and beta testing.","Alpha testing is typically conducted at the developer's site or in a controlled environment; beta testing involves selected external users in a more realistic environment."],
+  [6,"What is software risk?","A software risk is an uncertain event or condition that could negatively affect project cost, schedule, technical performance, quality, or business goals."],
+  [6,"What is an RMMM plan?","RMMM stands for Risk Mitigation, Monitoring, and Management. It documents preventive actions, indicators to track, and responses if a risk occurs."],
+  [6,"What is SCM?","Software Configuration Management identifies and controls changes to software artifacts, maintains versions and baselines, and supports traceability and integrity."],
+  [6,"Differentiate FTR and walkthrough.","A Formal Technical Review is a structured peer review with defined roles and procedures. A walkthrough is commonly led by the author, who guides peers through the work."],
+  [6,"What is SQA?","Software Quality Assurance consists of planned activities that provide confidence that software processes and products conform to requirements, standards, and procedures."]
+];
+
+const templateList = document.getElementById("templateList");
+const templateSearch = document.getElementById("templateSearch");
+const templatePaper = document.getElementById("templatePaper");
+let selectedTemplate = 1;
+let selectedProjectExperiment = "overview";
+let currentDiagramSource = "";
+let currentDiagramSvg = "";
+let toastTimer;
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2100);
+}
+function safeText(value) {
+  return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function getDone() {
+  try { return JSON.parse(localStorage.getItem("seLabDone") || "[]"); } catch { return []; }
+}
+function setDone(ids) {
+  localStorage.setItem("seLabDone", JSON.stringify(ids));
+  updateProgress();
+  renderTemplateList();
+}
+function updateProgress() {
+  const done = getDone();
+  const pct = Math.round(done.length / experiments.length * 100);
+  const statDone = document.getElementById("statDone");
+  const progressText = document.getElementById("progressText");
+  const progressFill = document.getElementById("progressFill");
+  if (statDone) statDone.textContent = done.length;
+  if (progressText) progressText.textContent = pct + "%";
+  if (progressFill) progressFill.style.width = pct + "%";
+}
+function renderTemplateList() {
+  const q = templateSearch.value.trim().toLowerCase();
+  const done = getDone();
+  const filtered = experiments.filter(e => e.name.toLowerCase().includes(q) || e.unit.toLowerCase().includes(q));
+  templateList.innerHTML = filtered.map(e => `
+    <button class="exp-item ${e.id===selectedTemplate?"active":""} ${done.includes(e.id)?"done":""}" data-id="${e.id}">
+      <span class="exp-num">${done.includes(e.id)?"✓":String(e.id).padStart(2,"0")}</span>
+      <span><span class="exp-name">${safeText(e.name)}</span><span class="exp-meta">${safeText(e.unit)}</span></span>
+    </button>`).join("") || `<div class="empty-state">No matching experiments.</div>`;
+}
+function renderTemplate() {
+  const exp = experiments.find(e => e.id === selectedTemplate);
+  document.getElementById("templateTag").textContent = "EXPERIMENT " + String(exp.id).padStart(2,"0");
+  document.getElementById("templateTitle").textContent = exp.name;
+  const notationGuides = {
+    1: "Process-model diagram: labelled boxes are phases; arrows show order. In a flowchart-style drawing, the start is commonly an oval/terminator (or UML initial node as a filled black circle), decisions use diamonds, and the end is a terminator (or UML final-state bullseye). Match the symbol set to the exact model and notation your teacher expects.",
+    2: "SRS notation: number requirements consistently (FR-01, NFR-01, etc.); use ‘shall’ statements and traceability IDs. An SRS is primarily a structured document, not a flow diagram. Label tables, figures, and requirement IDs so each item can be referenced.",
+    3: "Scheduling notation: Gantt bars show activity duration on a time axis; arrows in PERT/CPM show dependencies. Use activity IDs and duration units consistently. A critical-path highlight should be explained in a legend; do not assume colour alone communicates meaning.",
+    4: "Estimation notation: write the selected formula, define every symbol, show units, then substitute values. For COCOMO, name the model variant and coefficients. Use tables for input assumptions and clearly label effort, duration, and cost outputs.",
+    5: "Use case: actor = stick figure; use case = oval; system boundary = rectangle; dashed «include» arrow points to the included use case, and dashed «extend» arrow points from the extension to the base. Class diagram: compartmented rectangle; + public, − private, # protected; hollow triangle points to parent; hollow diamond = aggregation; filled diamond = composition; multiplicities such as 1, 0..1, 1..*, * go near association ends.",
+    6: "DFD notation: rectangle = external entity; circle/rounded process = transformation; open-ended rectangle/parallel lines = data store; labelled arrow = data flow. Label arrows with nouns (data names). Do not use start/end symbols to imply program control in a DFD; it models data movement.",
+    7: "Activity diagram: filled black circle = initial node; rounded rectangle = action; diamond = decision/merge with guards such as [valid]; thick bar = fork/join; bullseye (filled dot inside a ring) = activity final. State diagram: rounded rectangle = state; arrow = transition labelled event [guard] / action; filled black circle = initial pseudostate; bullseye = final state. The start and end symbols are not interchangeable.",
+    8: "RMMM notation: use a table with risk ID, probability, impact, priority/exposure, mitigation, monitoring trigger, response, and owner. If using probability × impact, state the scale and scoring rule in a legend; do not rely on colour alone for risk priority.",
+    9: "SCM notation: identify configuration items and use version tags, commit IDs, branch names, change-request IDs, dates, and release labels. A workflow uses boxes for actions and arrows for the change-control sequence; distinguish proposed, approved, tested, and released states clearly.",
+    10: "Control-flow graph: each node is a statement/basic block; directed edges are possible control transfers; a decision node has outgoing branches for outcomes. Mark entry and exit clearly. The entry/exit shape can vary by drawing convention; define it in a legend and calculate E and N from the graph you actually draw.",
+    11: "Prototype/UAT: label screen wireframes and navigation arrows. In a UAT table, use test IDs and columns for precondition, steps/test data, expected result, actual result, and pass/fail. Use a clear start/end or navigation convention if showing a workflow; state what each symbol means."
+  };
+  templatePaper.innerHTML = `<h1>WHAT TO INCLUDE: ${safeText(exp.name.toUpperCase())}</h1>
+    <p><strong>Module:</strong> ${safeText(exp.unit)} &nbsp; <strong>Purpose:</strong> Understand exactly what the question asks you to produce.</p>
+    ${exp.sections.map(([heading,body])=>`<h2>${safeText(heading)}</h2><p>${safeText(body)}</p>`).join("")}
+    <h2>Diagram / notation legend — draw your own correctly</h2>
+    <p>${safeText(notationGuides[exp.id] || "Name every symbol, line, arrow, label, and relationship in a legend before drawing the diagram.")}</p>
+    <div style="overflow:auto"><table class="legend-table"><thead><tr><th>Symbol / notation</th><th>Meaning</th><th>How to use it in your answer</th></tr></thead><tbody>${(exp.id===6 ? [["Rectangle","External entity/source/sink","Name the outside user or system"],["Circle / rounded process","Transforms input data into output data","Use a verb phrase and process number"],["Open-ended box / parallel lines","Data store","Name the data collection"],["Labelled arrow","Data flow","Label with the data moving; arrows show direction"]] : exp.id===7 ? [["Filled black circle","Initial node in UML activity/state diagrams","Use one entry point"],["Rounded rectangle","Action / state depending on diagram type","Write an action verb or state name"],["Diamond","Decision or merge","Label outgoing decision edges with guards such as [yes] / [no]"],["Arrow","Control flow / transition","Show direction; for state diagrams label event [guard] / action"],["Bullseye (dot inside ring)","Final node/state","Use to mark completion"]] : exp.id===5 ? [["Stick figure","Actor","Place outside the system boundary"],["Oval","Use case","Name a user goal"],["Rectangle with compartments","Class","List name, attributes, and operations"],["Dashed arrow «include»","Required reused behaviour","Arrow points to included use case"],["Dashed arrow «extend»","Optional/conditional extra behaviour","Arrow points to the base use case"],["Hollow triangle","Generalization/inheritance","Triangle points to parent class"],["Hollow / filled diamond","Aggregation / composition","Diamond sits at the whole/owner end"],["1, 0..1, 1..*, *","Multiplicity","Place beside the relevant association end"]] : [["Box / labelled node","Phase, activity, or item (depends on diagram)","Use a concise label"],["Arrow","Sequence, dependency, or relationship","State what the arrow means in this diagram"],["Diamond","Decision where applicable","Label each branch"],["Filled black circle / bullseye","UML initial / final nodes where applicable","Do not confuse UML notation with ordinary flowchart terminators"],["Table / formula symbols","Structured calculation or plan","Define every column, variable, unit, and assumption"]]).map(r=>`<tr><td><strong>${safeText(r[0])}</strong></td><td>${safeText(r[1])}</td><td>${safeText(r[2])}</td></tr>`).join("")}</tbody></table></div>
+    <h2>Before submission — checklist</h2>
+    <ul><li>Did I answer the exact verb in the question (define, explain, draw, compare, calculate, prepare)?</li><li>Are all diagram symbols, labels, arrows, and relationships explained?</li><li>Are assumptions stated and are calculations shown step by step?</li><li>Does the conclusion match the work actually shown?</li></ul>`;
+  const done = getDone().includes(exp.id);
+  document.getElementById("markTemplateDone").textContent = done ? "✓ Completed" : "Mark complete";
+  document.getElementById("markTemplateDone").classList.toggle("success", done);
+}
+templateList.addEventListener("click", e => {
+  const btn = e.target.closest("[data-id]");
+  if (!btn) return;
+  selectedTemplate = Number(btn.dataset.id);
+  renderTemplateList(); renderTemplate();
+});
+templateSearch.addEventListener("input", renderTemplateList);
+document.getElementById("copyTemplate").addEventListener("click", async () => {
+  const text = templatePaper.innerText;
+  try { await navigator.clipboard.writeText(text); showToast("Template copied"); }
+  catch { showToast("Clipboard access unavailable — select and copy the template"); }
+});
+document.getElementById("printTemplate").addEventListener("click", () => {
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==="templatesView"));
+  window.print();
+});
+document.getElementById("markTemplateDone").addEventListener("click", () => {
+  const done = getDone();
+  if (done.includes(selectedTemplate)) setDone(done.filter(id=>id!==selectedTemplate));
+  else setDone([...done,selectedTemplate]);
+  renderTemplate();
+});
+
+async function renderMermaidInto(host, source, key) {
+  host.innerHTML = "";
+  if (!source || !window.mermaidRenderer) {
+    host.innerHTML = `<div class="empty-state">Diagram renderer is loading. If this remains blank, check your internet connection.</div>`;
+    return;
+  }
+  try {
+    const id = "mermaid-" + key + "-" + Math.random().toString(36).slice(2,8);
+    const result = await window.mermaidRenderer.render(id, source);
+    host.innerHTML = result.svg;
+    currentDiagramSvg = result.svg;
+    const svg = host.querySelector("svg");
+    if (svg) { svg.removeAttribute("style"); svg.style.maxWidth="100%"; svg.style.height="auto"; }
+  } catch (err) {
+    host.innerHTML = `<div class="empty-state" style="color:var(--danger)">Diagram could not render. Check the source syntax.<br><small>${safeText(err.message || "Mermaid error")}</small></div>`;
+    currentDiagramSvg = "";
+  }
+}
+function buildRmmm(project) {
+  return `<div class="subpanel"><h4>RMMM plan · ${safeText(project.name)}</h4>
+    <p>Illustrative risks for this case study. Probability should be assessed separately using the scale specified by your assignment.</p>
+    <div style="overflow:auto;margin-top:12px"><table style="width:100%;border-collapse:collapse;font-size:12px;min-width:760px">
+      <thead><tr><th style="text-align:left;padding:10px;border-bottom:1px solid var(--line)">Risk ID / description</th><th style="text-align:left;padding:10px;border-bottom:1px solid var(--line)">Impact</th><th style="text-align:left;padding:10px;border-bottom:1px solid var(--line)">Mitigation, monitoring, response, and owner</th></tr></thead>
+      <tbody>${project.risks.map((r,i)=>`<tr>
+        <td style="vertical-align:top;padding:11px;border-bottom:1px solid var(--line)"><strong>R${String(i+1).padStart(2,"0")}</strong><br><span style="color:var(--muted)">${safeText(r[0])}</span></td>
+        <td style="vertical-align:top;padding:11px;border-bottom:1px solid var(--line)">${safeText(r[1])}</td>
+        <td style="vertical-align:top;padding:11px;border-bottom:1px solid var(--line);color:var(--muted)">${safeText(r[2])}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>
+    <h4 style="margin-top:20px">RMMM review procedure</h4>
+    <ol style="color:var(--muted);font-size:13px">
+      <li>Review and re-rank risks at each milestone or review meeting.</li>
+      <li>Assign a named owner and an observable trigger to every high-priority risk.</li>
+      <li>Record risk status, action due date, evidence, and residual risk.</li>
+      <li>If a trigger occurs, start the response action and record the outcome.</li>
+      <li>Update the plan when scope, schedule, technology, or stakeholders change.</li>
+    </ol>
+    <p style="font-size:12px;color:var(--muted)">Mitigation is preventive; monitoring tracks warning signs; management is the response when the risk occurs or reaches its trigger.</p>
+  </div>`;
+}
+function buildSrs(project) {
+  const reqs = project.features.map((f,i)=>`<li><strong>FR-${String(i+1).padStart(2,"0")}:</strong> The system shall ${f.charAt(0).toLowerCase()+f.slice(1)}.</li>`).join("");
+  const data = project.data.map((f,i)=>`<li><strong>DR-${String(i+1).padStart(2,"0")}:</strong> ${safeText(f)}.</li>`).join("");
+  return `<article class="template-paper srs-document">
+    <h1>SOFTWARE REQUIREMENTS SPECIFICATION (SRS)</h1><p style="text-align:center"><strong>${safeText(project.name)}</strong><br>Version 1.0 · Draft for academic practical</p>
+    <h2>Document control</h2><p>Document ID: SRS-${safeText(project.name.toUpperCase().replace(/[^A-Z0-9]+/g,"-").replace(/^-|-$/g,""))}-001 · Version: 1.0 · Status: Draft · Prepared by: [Student name] · Date: [DD/MM/YYYY]</p>
+    <h2>Revision history</h2><table style="width:100%;border-collapse:collapse"><tr><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Version</th><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Date</th><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Description</th><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Author</th></tr><tr><td style="padding:6px">1.0</td><td style="padding:6px">[Date]</td><td style="padding:6px">Initial SRS draft</td><td style="padding:6px">[Name]</td></tr></table>
+    <h2>1. Introduction</h2><h3>1.1 Purpose</h3><p>This document specifies the functional and non-functional requirements for ${safeText(project.name)}. It is intended for the project team, evaluator, developers, testers, and representative users.</p><h3>1.2 Scope</h3><p>The system supports: ${safeText(project.features.join("; "))}. It defines expected externally observable behaviour and constraints; implementation details are not prescribed unless required by the problem statement.</p><h3>1.3 Definitions, acronyms, abbreviations</h3><ul><li>SRS: Software Requirements Specification.</li><li>FR: Functional Requirement.</li><li>NFR: Non-Functional Requirement.</li><li>UI: User Interface.</li><li>DB: Database.</li><li>Actor/user role: a person or external system interacting with the product.</li></ul><h3>1.4 References</h3><p>IEEE 830-1998 (historical SRS recommended practice) and ISO/IEC/IEEE 29148 (requirements engineering standard). Follow the exact IEEE format/version prescribed by the instructor if specified.</p><h3>1.5 Document overview</h3><p>Section 2 describes the product context, users, environment, constraints, assumptions, and dependencies. Section 3 specifies interfaces, functional requirements, data requirements, quality requirements, and acceptance criteria.</p>
+    <h2>2. Overall Description</h2><h3>2.1 Product perspective</h3><p>The product is a software application that coordinates the project workflows listed in this SRS. It accepts user input, validates permissions and data, processes requests, stores authorised changes, and presents status or reports.</p><h3>2.2 Product functions</h3><ul>${project.features.map(f=>`<li>${safeText(f)}</li>`).join("")}</ul><h3>2.3 User classes and characteristics</h3><ul>${project.actors.map((a,i)=>`<li><strong>${safeText(a)}:</strong> may access functions permitted to this role; authentication and authorization shall be applied to protected actions.</li>`).join("")}</ul><h3>2.4 Operating environment</h3><p>Client: modern web browser or the platform specified in the question. Server/runtime and database: [specify the chosen environment]. Network: required for multi-user access where applicable.</p><h3>2.5 Design and implementation constraints</h3><ul><li>Only authenticated, authorised users may perform restricted operations.</li><li>Input shall be validated before data is stored or processed.</li><li>Data fields and workflows shall match the project problem statement and institutional rules.</li><li>Any mandated language, platform, database, or technology shall be recorded here: [fill in].</li></ul><h3>2.6 User documentation</h3><p>Provide basic instructions for sign-in, common workflows, error handling, and report viewing relevant to each user role.</p><h3>2.7 Assumptions and dependencies</h3><ul><li>Users have valid credentials and the necessary permissions.</li><li>Required master/reference data is maintained by an authorised role.</li><li>Storage, network, and backup services are available as specified by the deployment environment.</li><li>External integrations, if any: [identify or write “None specified”].</li></ul>
+    <h2>3. Specific Requirements</h2><h3>3.1 External interface requirements</h3><p><strong>User interface:</strong> role-appropriate screens, labelled controls, validation messages, confirmation of successful operations, and clear empty/error states.</p><p><strong>Hardware interface:</strong> [state “None beyond standard client/server hardware” unless the question specifies devices].</p><p><strong>Software interface:</strong> application runtime, database, authentication service, and any specified third-party service: [list exact names/versions if known].</p><p><strong>Communication interface:</strong> use secure network communication where applicable; specify protocol and endpoint requirements if supplied by the question.</p>
+    <h3>3.2 Functional requirements</h3><ol>${reqs}<li><strong>FR-${String(project.features.length+1).padStart(2,"0")}:</strong> The system shall validate required fields and reject invalid submissions with a message identifying the correction needed.</li><li><strong>FR-${String(project.features.length+2).padStart(2,"0")}:</strong> The system shall enforce role-based access and prevent unauthorised operations.</li><li><strong>FR-${String(project.features.length+3).padStart(2,"0")}:</strong> The system shall provide confirmation or an actionable error result after each submitted operation.</li></ol><p><em>Requirement quality rule:</em> each “shall” statement should be singular, unambiguous, feasible, necessary, and verifiable. Split compound requirements when needed.</p>
+    <h3>3.3 Data requirements</h3><ul>${data}<li>Each persistent record shall have a unique identifier or a defined composite key.</li><li>Required fields and valid ranges shall be checked before saving.</li><li>Changes to important records should retain timestamps and the responsible user where required by the scenario.</li></ul><h3>3.4 Non-functional requirements</h3><ul><li><strong>NFR-01 Security:</strong> protected functions shall require authentication and role-based authorization.</li><li><strong>NFR-02 Integrity:</strong> the system shall validate data and avoid duplicate or partial updates when an operation fails.</li><li><strong>NFR-03 Usability:</strong> controls, labels, and validation feedback shall be consistent and understandable to the intended user classes.</li><li><strong>NFR-04 Performance:</strong> define a measurable response-time target from the question, e.g. “[X] seconds for [Y] concurrent users”; do not invent a target if none is given.</li><li><strong>NFR-05 Availability/recovery:</strong> define backup frequency, recovery time, and recovery point targets according to the assignment or deployment requirements.</li><li><strong>NFR-06 Maintainability:</strong> modules and configuration shall be documented and changes shall be version-controlled.</li><li><strong>NFR-07 Compatibility:</strong> list supported browsers/devices/OS versions as supplied by the question.</li><li><strong>NFR-08 Privacy:</strong> display or expose personal/sensitive data only to authorised roles.</li></ul>
+    <h3>3.5 Business rules</h3><p>Record project-specific policy rules here, such as eligibility, booking limits, attendance thresholds, approval rules, stock availability, or borrowing limits. Each rule must be supplied by the scenario or explicitly marked as an assumption.</p><h3>3.6 Error handling</h3><p>Invalid input shall be rejected without saving invalid data; unavailable records shall produce a clear message; failed operations shall not be reported as successful; technical errors shall not expose secrets or internal stack traces.</p><h3>3.7 Acceptance criteria</h3><ul><li>Each FR can be traced to at least one test case.</li><li>All role restrictions are verified with authorised and unauthorised test users.</li><li>Valid workflows complete and invalid data is handled safely.</li><li>All specified NFR targets are measured and meet the values stated in the final requirements.</li></ul>
+    <h2>4. Appendices and Traceability</h2><h3>4.1 Requirement traceability matrix</h3><table style="width:100%;border-collapse:collapse"><tr><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Requirement ID</th><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Feature / rule</th><th style="text-align:left;border-bottom:1px solid var(--line);padding:6px">Verification method</th></tr>${project.features.map((f,i)=>`<tr><td style="padding:6px;border-bottom:1px solid var(--line)">FR-${String(i+1).padStart(2,"0")}</td><td style="padding:6px;border-bottom:1px solid var(--line)">${safeText(f)}</td><td style="padding:6px;border-bottom:1px solid var(--line)">Test case TC-${String(i+1).padStart(2,"0")}</td></tr>`).join("")}</table><h3>4.2 Open issues</h3><p>Confirm response-time targets, supported environment, backup policy, retention period, and any statutory/institutional rules with the problem statement or instructor.</p>
+  </article>`;
+}
+
+function getProjectSource(project, expKey, mode) {
+  if (expKey === "process") return mode === "alternate" ? project.state : project.flow;
+  if (expKey === "useCases") return mode === "alternate" ? project.classDiagram : project.useCases;
+  if (expKey === "dfd") return mode === "alternate" ? project.flow : project.dfd;
+  if (expKey === "behavior") return mode === "alternate" ? project.state : project.flow;
+  if (expKey === "gantt") return mode === "alternate" ? project.flow : project.gantt;
+  return "";
+}
+function getDiagramExplanation(project, expKey, mode) {
+  const text = {
+    process: mode === "alternate"
+      ? `State view for ${project.name}: rounded rectangles represent lifecycle states, arrows represent transitions triggered by events, and labels may include guards/actions. The filled circle is the initial pseudostate; the bullseye is the final state.`
+      : `${project.name}: the process starts when a user signs in, checks the required information, performs the core task, and saves or returns the result. Follow arrows in order; decision branches show alternate outcomes.`,
+    useCases: mode === "alternate"
+      ? `Class view for ${project.name}: each box represents a class, its attributes, and operations. Read the multiplicity at each association end to understand how many objects may participate. Hollow-triangle arrows point to a parent class; diamonds indicate whole-part ownership.`
+      : `Use-case view for ${project.name}: actors are roles outside the system boundary, and ovals are goals provided by the system. A dashed «include» arrow points from the base use case to required reused behaviour; «extend» points from the optional extending use case to the base use case.`,
+    dfd: mode === "alternate"
+      ? `Process-flow view for ${project.name}: follow the arrows to trace the user workflow. A decision diamond branches by condition; the return arrow represents retry or correction. This is control flow, not data flow.`
+      : `DFD for ${project.name}: external entities exchange labelled data with the system process; the database/data store holds persistent records. Every arrow names data being transferred. In a detailed DFD, route entity/store interactions through a process and balance inputs/outputs across levels.`,
+    behavior: mode === "alternate"
+      ? `State view for ${project.name}: rounded rectangles represent lifecycle states, arrows represent transitions triggered by events, and labels may include guards/actions. The filled circle is the initial pseudostate; the bullseye is the final state.`
+      : `Activity/process view for ${project.name}: start at the initial node, follow arrows through actions, and take the branch matching the decision condition. The final node marks the end of this workflow.`,
+    gantt: mode === "alternate"
+      ? `Workflow companion for ${project.name}: use this process flow to explain the order of work that the schedule's tasks support. Arrows indicate precedence; use the Gantt chart for duration and calendar placement.`
+      : `Schedule for ${project.name}: each horizontal bar represents an activity over time. Dependencies determine the order; replace illustrative durations with values from your question and highlight the critical path if requested.`
+  };
+  return text[expKey] || "";
+}
+function buildProjectOnlyContent(project, expKey) {
+  if (expKey === "estimation") return `<div class="subpanel"><h4>Experiment 04 — Software estimation for ${safeText(project.name)}</h4><p><strong>First copy the given values exactly from the question.</strong> Do not invent LOC, FP counts, cost drivers, or productivity. If the question provides no numbers, show the formula and leave inputs marked “not given”.</p><h4>Method A: Basic COCOMO (only if asked / taught)</h4><p>Effort E = a × (KLOC)<sup>b</sup> person-months; Development time D = c × (E)<sup>d</sup> months; Average staff S = E / D persons.</p><p>For the Basic COCOMO model, use coefficients by mode: Organic a=2.4, b=1.05, c=2.5, d=0.38; Semi-detached a=3.0, b=1.12, c=2.5, d=0.35; Embedded a=3.6, b=1.20, c=2.5, d=0.32. Confirm these are the coefficients taught in your course and do not use them for Intermediate/Detailed COCOMO.</p><p><strong>Substitution template:</strong> Given size = [LOC] ⇒ KLOC = LOC/1000 = [value]/1000 = [KLOC]. Mode = [mode], therefore a=[ ], b=[ ], c=[ ], d=[ ]. Effort E = [a] × ([KLOC])<sup>[b]</sup> = [calculation] person-months. Duration D = [c] × ([E])<sup>[d]</sup> = [calculation] months. Average staff S = [E]/[D] = [calculation] persons. If cost per person-month = [currency value], Cost = E × cost/person-month = [calculation].</p><h4>Method B: LOC productivity</h4><p>Effort (person-months) = Estimated LOC / Productivity (LOC per person-month). Example substitution format: [LOC] / [LOC/person-month] = [effort] person-months. Duration = Effort / Team size, if the question allows this simplified assumption.</p><h4>Method C: Function Point Analysis (if asked)</h4><p>Unadjusted FP (UFP) = Σ(count of each function type × its complexity weight) for external inputs, external outputs, external inquiries, internal logical files, and external interface files. If the course uses the traditional adjustment: VAF = 0.65 + 0.01 × TDI; Adjusted FP = UFP × VAF. State weights and TDI supplied by the question/course. Do not combine this with a different FP variant.</p><h4>Answer format / procedure</h4><ol><li>Given data and units.</li><li>Assumptions and chosen technique/model.</li><li>Define every variable and coefficient.</li><li>Write formula symbolically.</li><li>Substitute numeric values explicitly.</li><li>Show intermediate arithmetic without skipping powers/division.</li><li>Report final effort, duration, staffing, and cost only if inputs permit; round sensibly and include units.</li><li>Interpret result and mention that estimates depend on size/assumptions.</li></ol><p><strong>Important:</strong> If the question specifies a COCOMO variant, formula, or coefficient table, use that exact version instead of the examples above.</p></div>`;
+  if (expKey === "scm") return `<div class="subpanel"><h4>Experiment 09 — SCM using TortoiseSVN (project: ${safeText(project.name)})</h4>
+  <p><strong>Aim:</strong> demonstrate version control and user management using Apache Subversion (SVN) through TortoiseSVN. The procedure is common to every project; only the local folder and saved evidence filename change.</p>
+  <h4>Project-specific working folder and evidence file</h4><p>Create a folder such as <code>${safeText(project.name.replace(/[^A-Za-z0-9]+/g,"_"))}_SCM</code>. Inside it, create a text file named <code>${safeText(project.name.replace(/[^A-Za-z0-9]+/g,"_"))}_SCM_Log.txt</code>. Keep the same SCM demonstration steps for all project ideas.</p>
+  <h4>Procedure — TortoiseSVN</h4><ol>
+  <li><strong>Install / verify tools:</strong> ensure TortoiseSVN is installed and Windows Explorer shows its context-menu commands. Use the repository URL supplied by your instructor/lab; do not invent a URL.</li>
+  <li><strong>Checkout:</strong> create a local working-copy parent folder, right-click it → <em>SVN Checkout…</em> → enter the supplied repository URL and checkout directory → OK. Confirm the green/check overlay or successful completion message.</li>
+  <li><strong>Create a project evidence file:</strong> in the checked-out working copy, create <code>${safeText(project.name.replace(/[^A-Za-z0-9]+/g,"_"))}_SCM_Log.txt</code>. Write the project name, date, student/user name, purpose, and the actions performed. Do not create unrelated project features; the file is a controlled configuration item used to demonstrate SVN.</li>
+  <li><strong>Inspect status:</strong> right-click the working-copy folder → <em>TortoiseSVN → Check for modifications</em>. The new file should appear as unversioned (usually marked with a question mark).</li>
+  <li><strong>Add to version control:</strong> right-click the new file → <em>TortoiseSVN → Add</em> → select the file → OK. Add schedules the file; it does not by itself publish the change to the repository.</li>
+  <li><strong>Commit revision 1:</strong> right-click the working-copy folder → <em>SVN Commit…</em>. Enter a meaningful message such as <code>R1: add SCM evidence log</code>, select the file, and commit. Record the resulting revision number.</li>
+  <li><strong>Demonstrate a controlled change:</strong> edit the same .txt file and add a short “Revision 2 change” line. Save it, inspect modifications, and commit with a message such as <code>R2: update SCM evidence log</code>. Record the second revision number.</li>
+  <li><strong>Show history and differences:</strong> right-click the file/folder → <em>TortoiseSVN → Show log</em>. Select revisions to show author, date, log message, and revision history. Use <em>Diff</em> where available to compare the two text versions.</li>
+  <li><strong>Demonstrate revert safely:</strong> if the instructor requires it, make an uncommitted test edit and use <em>Revert…</em> to discard only that local uncommitted edit. Explain that revert of a local change is different from undoing a committed repository revision. Do not revert or overwrite other students’ work.</li>
+  <li><strong>User management / permissions:</strong> access control is configured by the repository administrator/server, not by a local TortoiseSVN menu. If provided with authorized accounts, sign in as the permitted user and demonstrate allowed checkout/commit; then use the instructor-provided restricted account to show denied write access. Do not share passwords or attempt to change server permissions without authorization.</li>
+  <li><strong>Evidence and conclusion:</strong> capture checkout, status, Add, Commit, Show Log, and (if assigned) permission-denied/authorized-user evidence. Write the repository URL only if supplied by the lab, working-copy path, revision IDs, user names, and outcome in the text file/report.</li></ol>
+  <h4>Legend / expected observations</h4><div style="overflow:auto"><table class="legend-table"><thead><tr><th>Item</th><th>Meaning</th><th>Evidence to record</th></tr></thead><tbody><tr><td>Working copy</td><td>Local checked-out repository files</td><td>Local path and checkout success</td></tr><tr><td>Add</td><td>Schedules an unversioned item for version control</td><td>File status before and after Add</td></tr><tr><td>Commit</td><td>Sends selected changes to repository and creates a revision</td><td>Revision number and log message</td></tr><tr><td>Show Log</td><td>Displays revision history and authorship</td><td>Two revisions, dates, messages, user</td></tr><tr><td>Repository permissions</td><td>Server-side authorization for read/write actions</td><td>Authorized and restricted-user outcomes if supplied</td></tr></tbody></table></div>
+  <p><strong>Result:</strong> SVN version history was demonstrated by committing two revisions of a project-named text file; repository user permissions were tested only with instructor-authorized accounts.</p></div>`;
+  if (expKey === "whitebox") { const examples={attendance:["recordAttendance(present, alreadyMarked)","if (alreadyMarked) return 'Duplicate'; if (present) saveAttendance(); else saveAbsence(); return 'Saved';","Test paths: duplicate; new-present; new-absent."],hospital:["bookAppointment(slotAvailable, patientValid)","if (!patientValid) return 'Invalid patient'; if (!slotAvailable) return 'Slot unavailable'; saveAppointment(); return 'Booked';","Test paths: invalid patient; valid patient/no slot; valid patient/available slot."],railway:["bookTicket(seatsAvailable, passengerValid)","if (!passengerValid) return 'Invalid passenger'; if (!seatsAvailable) return 'Waitlist'; reserveSeat(); return 'Confirmed';","Test paths: invalid passenger; valid passenger/no seats; valid passenger/seats."],library:["issueBook(memberEligible, bookAvailable)","if (!memberEligible) return 'Not eligible'; if (!bookAvailable) return 'Unavailable'; createLoan(); return 'Issued';","Test paths: ineligible member; eligible/member book unavailable; eligible/book available."],shopping:["checkout(cartValid, stockAvailable)","if (!cartValid) return 'Invalid cart'; if (!stockAvailable) return 'Out of stock'; createOrder(); return 'Order placed';","Test paths: invalid cart; valid cart/no stock; valid cart/stock available."]}; const ex=examples[document.getElementById("projectSelect").value]||examples.attendance; return `<div class="subpanel"><h4>White-box testing — ${safeText(project.name)}</h4><p><strong>Aim:</strong> design tests using the internal control logic of a small project-related function, execute independent paths, and measure cyclomatic complexity.</p><p><strong>Function:</strong> <code style="white-space:pre-wrap;overflow-wrap:anywhere;display:block">${safeText(ex[0])}</code></p><p><strong>Pseudocode (one statement per line):</strong></p><pre class="code-block" style="white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;max-width:100%;box-sizing:border-box;background:#0c1323;border:1px solid var(--line);padding:12px;border-radius:6px;line-height:1.65">${safeText(ex[1].replace(/;\s*/g,";\n").replace(/\)\s*if/g,")\nif").replace(/;\s*return/g,";\nreturn"))}</pre><h4>Theory to write</h4><p>White-box testing (structural testing) checks internal statements, branches, conditions, and execution paths. It requires knowledge of the code structure. Common coverage measures are statement coverage, branch/decision coverage, condition coverage, and path coverage. Complete path coverage may be impractical when loops create many paths.</p><h4>Procedure</h4><ol><li>Write the function/pseudocode and identify each statement and decision.</li><li>Draw its control-flow graph (CFG): one node per statement/basic block and directed edges for possible transfers.</li><li>Count nodes N and edges E; count connected components P (normally P=1).</li><li>Calculate cyclomatic complexity: <strong>V(G) = E − N + 2P</strong>. For a single connected graph, V(G)=E−N+2; for common structured code it also equals number of decision nodes + 1.</li><li>List at least V(G) linearly independent paths and assign test data to exercise each path.</li><li>Run each test, record expected/actual output and pass/fail, and state the coverage achieved.</li></ol><h4>Decision points</h4><p>Identify each condition that can change the next step. This sample function has two decision points: <strong>D1</strong> checks the first project validation (attendance duplicate / patient eligibility / passenger validity / member eligibility / cart validity); <strong>D2</strong> checks the second condition (attendance state / appointment slot / seat availability / book availability / stock availability). Mark each outcome as True or False.</p><div style="overflow:auto"><table class="legend-table"><thead><tr><th>Decision ID</th><th>Condition to write</th><th>True branch</th><th>False branch</th></tr></thead><tbody><tr><td>D1</td><td>${safeText(ex[0])} — first if-condition</td><td>Continue to D2</td><td>Return the first validation result; terminate</td></tr><tr><td>D2</td><td>Second if-condition in the pseudocode</td><td>Return unavailable / waitlist result; terminate</td><td>Perform the project operation, then return success</td></tr></tbody></table></div><h4>Control-flow tree / graph to draw</h4><p>Copy this node structure into your diagram tool or draw it by hand. Put the condition in each diamond and label every outgoing arrow True/False.</p><div class="cfg-tree" style="display:flex;flex-direction:column;align-items:center;gap:8px;overflow-x:auto;padding:14px 6px;border:1px solid var(--line);border-radius:8px;background:var(--panel)"><div style="border:1px solid var(--line);border-radius:20px;padding:6px 18px;background:var(--surface)">1 · START</div><div aria-hidden="true">↓</div><div style="border:2px solid #d8b45b;border-radius:8px;padding:8px 14px;text-align:center;min-width:190px">2 · D1: First condition valid?</div><div style="display:flex;justify-content:center;gap:24px;align-items:flex-start;min-width:440px"><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><strong>False</strong><div>↓</div><div style="border:1px solid #d66a79;border-radius:8px;padding:8px;text-align:center">3 · Return validation error</div><div>↓</div><div style="border:1px solid var(--line);border-radius:20px;padding:5px 16px">8 · END</div></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><strong>True</strong><div>↓</div><div style="border:2px solid #d8b45b;border-radius:8px;padding:8px 14px;text-align:center">4 · D2: Second condition passes?</div><div style="display:flex;gap:20px;align-items:flex-start"><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><strong>True</strong><div>↓</div><div style="border:1px solid #d66a79;border-radius:8px;padding:8px;text-align:center">5 · Return unavailable result</div><div>↓</div><div style="border:1px solid var(--line);border-radius:20px;padding:5px 16px">8 · END</div></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><strong>False</strong><div>↓</div><div style="border:1px solid #70b88b;border-radius:8px;padding:8px;text-align:center">6 · Perform project operation</div><div>↓</div><div style="border:1px solid #70b88b;border-radius:8px;padding:8px;text-align:center">7 · Return success</div><div>↓</div><div style="border:1px solid var(--line);border-radius:20px;padding:5px 16px">8 · END</div></div></div></div></div></div><h4>CFG notation legend</h4><div style="overflow:auto"><table class="legend-table"><thead><tr><th>Shape / notation</th><th>Meaning</th><th>How to use it</th></tr></thead><tbody><tr><td>Oval / rounded terminator</td><td>Start or End</td><td>One Start and one End for this function.</td></tr><tr><td>Rectangle</td><td>Statement / process</td><td>Write an operation or return statement inside.</td></tr><tr><td>Diamond</td><td>Decision</td><td>Write a Boolean condition; draw two labelled outgoing edges.</td></tr><tr><td>Arrow</td><td>Control flow</td><td>Shows the next possible execution step.</td></tr><tr><td>True / False</td><td>Branch labels</td><td>Label each edge leaving a decision; follow the pseudocode's actual condition.</td></tr></tbody></table></div><p><strong>Cyclomatic complexity:</strong> V(G) = number of decision points + 1 = 2 + 1 = <strong>3</strong>. Cross-check using V(G) = E − N + 2P, where E = edges, N = nodes, and P = connected components (P = 1 for this graph). This is a small illustrative function; if the exam gives more conditions, count all its decisions and redraw the graph accordingly.</p><h4>Independent path table (format based on Experiment 09 in the PDF)</h4><div style="overflow:auto"><table class="path-table"><thead><tr><th>Path ID</th><th>D1</th><th>D2</th><th>Node sequence</th><th>Test input / condition</th><th>Expected result</th></tr></thead><tbody><tr><td>P1</td><td>False</td><td>—</td><td>1 → 2 → 3 → 8</td><td>First validation fails</td><td>Return the project-specific validation error; operation is not executed.</td></tr><tr><td>P2</td><td>True</td><td>True</td><td>1 → 2 → 4 → 5 → 8</td><td>First validation passes; availability/second condition fails</td><td>Return unavailable / waitlist result; operation is not executed.</td></tr><tr><td>P3</td><td>True</td><td>False</td><td>1 → 2 → 4 → 6 → 7 → 8</td><td>Both checks pass</td><td>Perform the project operation and return success.</td></tr></tbody></table></div><p><strong>Project-specific function:</strong> ${safeText(ex[0])}. <strong>Project-specific path summary:</strong> ${safeText(ex[2])}</p><p>Use the actual code and exact expected outputs supplied by the exam question if available. The three rows above are a basis-path template for the two-decision example; adjust node numbering, path count, and test values to the function actually drawn.</p></div>`; }
+  if (expKey === "prototype") return `<div class="subpanel"><h4>Prototype and UAT — ${safeText(project.name)}</h4><p><strong>Prototype scope:</strong> ${safeText(project.features.join("; "))}. Sketch the key screens and navigation needed for these tasks, then record user feedback and changes made.</p><h4>Acceptance-test examples</h4><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:620px;font-size:13px"><thead><tr><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Test ID</th><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Action / condition</th><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Expected result</th></tr></thead><tbody><tr><td style="padding:9px;border-bottom:1px solid var(--line)">UAT-01</td><td style="padding:9px;border-bottom:1px solid var(--line)">Authorized ${safeText(project.actors[0] || "user")} signs in and performs a core task.</td><td style="padding:9px;border-bottom:1px solid var(--line)">Task completes and a clear confirmation is shown.</td></tr><tr><td style="padding:9px;border-bottom:1px solid var(--line)">UAT-02</td><td style="padding:9px;border-bottom:1px solid var(--line)">User submits missing or invalid required data.</td><td style="padding:9px;border-bottom:1px solid var(--line)">Validation message appears; invalid data is not saved.</td></tr><tr><td style="padding:9px;border-bottom:1px solid var(--line)">UAT-03</td><td style="padding:9px;border-bottom:1px solid var(--line)">User requests a relevant record or report.</td><td style="padding:9px;border-bottom:1px solid var(--line)">Only authorized, correct, current information is displayed.</td></tr></tbody></table></div><p style="margin-top:12px"><strong>Notation:</strong> record test ID, linked requirement, precondition, test data, steps, expected result, actual result, pass/fail, tester, and date. Acceptance criteria should be observable and testable.</p></div>`;
+  return "";
+}
+function renderProject() {
+  const project = projects[document.getElementById("projectSelect").value];
+  const expKey = document.getElementById("projectExperiment").value || "process";
+  const mode = document.getElementById("diagramMode").value;
+  selectedProjectExperiment = expKey;
+  document.getElementById("projectSummary").textContent = project.summary;
+  document.getElementById("projectExperimentTag").textContent = "EXP " + String((projectExperimentOptions.findIndex(x=>x[0]===expKey)+1)).padStart(2,"0") + " · " + project.name.toUpperCase();
+  const titles = {
+    process:"Software Process Models", useCases:"Class and Use-Case Diagrams", dfd:"Data Flow Diagram (DFD)", behavior:"Activity / State Transition Diagram",
+    gantt:"Project Scheduling", estimation:"Software Estimation", rmmm:"RMMM Plan", srs:"SRS in IEEE Format", scm:"Software Configuration Management",
+    whitebox:"White-Box Testing", prototype:"Prototype and User Acceptance Testing"
+  };
+  const intros = {
+    process:"Choose and explain the model actually asked: Waterfall, V-Model, Incremental, Iterative, Spiral, RAD, Agile/Scrum, or DevOps. Use the diagram view selector for model-specific views where available; for other models draw the model-specific structure described in Experiment 01 template.",
+    useCases:"Switch between the use-case diagram and class diagram using Diagram view.",
+    dfd:project.dfdDescription || "Shows the main external data exchanges and data store for this project.",
+    behavior:"Switch between the activity/process flow and state-transition view using Diagram view.",
+    gantt:"Illustrative project schedule. Use Alternate / detail to view the companion workflow.",
+    estimation:"A structured estimate worksheet. Numerical values must come from the question or your course material.",
+    rmmm:"Project-specific risks with mitigation, monitoring, response, and ownership.",
+    srs:"A project-specific SRS snapshot covering purpose, users, functional and non-functional requirements, data, and assumptions.",
+    scm:"A practical configuration-management workflow and the artifacts that should be versioned for this project.",
+    whitebox:"Use the actual program logic from the question to draw a control-flow graph and calculate path complexity.",
+    prototype:"Project-specific prototype scope and sample user-acceptance tests; adjust tests to the stated requirements."
+  };
+  document.getElementById("projectExperimentTitle").textContent = titles[expKey];
+  document.getElementById("projectExperimentIntro").textContent = intros[expKey];
+  const content = document.getElementById("projectContent");
+  const source = getProjectSource(project, expKey, mode);
+  currentDiagramSource = source;
+  const diagramAvailable = !!source;
+  document.getElementById("diagramAvailability").innerHTML = diagramAvailable
+    ? '<span style="color:#8fe3c1">●</span> Additional diagram / view available — switch Main diagram and Alternate / detail to compare.'
+    : '<span style="color:#9caac6">●</span> This experiment is mainly a written plan/table; no separate diagram view is assigned here.';
+  document.getElementById("diagramMode").disabled = !["process","useCases","dfd","behavior","gantt"].includes(expKey);
+  if (expKey === "rmmm") {
+    content.innerHTML = buildRmmm(project) + `<div class="related-viva" style="margin-top:22px"><h3 style="font-size:17px;margin:0 0 10px">Viva questions for this experiment</h3>${experimentViva.rmmm.map(q=>`<details class="mini-viva"><summary>${safeText(q[0])}</summary><p>${safeText(q[1])}</p></details>`).join("")}</div>`;
+    document.getElementById("copyDiagramSource").disabled = true; return;
+  }
+  if (expKey === "srs") {
+    content.innerHTML = buildSrs(project) + `<div class="related-viva" style="margin-top:22px"><h3 style="font-size:17px;margin:0 0 10px">Viva questions for this experiment</h3>${experimentViva.srs.map(q=>`<details class="mini-viva"><summary>${safeText(q[0])}</summary><p>${safeText(q[1])}</p></details>`).join("")}</div>`;
+    document.getElementById("copyDiagramSource").disabled = true; return;
+  }
+  if (["estimation","scm","whitebox","prototype"].includes(expKey)) {
+    content.innerHTML = buildProjectOnlyContent(project, expKey);
+    document.getElementById("copyDiagramSource").disabled = true; return;
+  }
+  document.getElementById("copyDiagramSource").disabled = false;
+  const diagramLabel = expKey === "useCases" ? (mode === "alternate" ? "UML class diagram" : "UML use-case diagram") : expKey === "dfd" && mode === "alternate" ? "Process-flow companion" : (expKey === "process" && mode === "alternate") || (expKey === "behavior" && mode === "alternate") ? "State transition diagram" : expKey === "gantt" && mode === "alternate" ? "Process-flow companion" : "Mermaid diagram";
+  const explanation = getDiagramExplanation(project, expKey, mode);
+  const vivaKey = expKey === "useCases" ? (mode === "alternate" ? "classDiagram" : "useCases")
+    : expKey === "behavior" ? (mode === "alternate" ? "state" : "flow")
+    : expKey === "process" ? (mode === "alternate" ? "state" : "flow")
+    : expKey === "dfd" ? (mode === "alternate" ? "flow" : "dfd")
+    : expKey === "gantt" ? "gantt" : "overview";
+  content.innerHTML = `<div class="diagram-top"><span class="pill">${diagramLabel}</span><div class="actions"><span class="diagram-note">Scrollable diagram · zoom</span><button class="btn" id="zoomOut">−</button><button class="btn" id="zoomReset">100%</button><button class="btn" id="zoomIn">+</button></div></div>
+    <div class="diagram-wrap" id="diagramViewport"><div id="projectDiagram" class="mermaid-host"></div></div>
+    <div class="subpanel" style="margin-top:14px"><h4>How to read this diagram</h4><p>${safeText(explanation)}</p></div>
+    <div class="two-col" style="margin-top:14px">
+      <div class="subpanel"><h4>Notation used</h4><p>${safeText(expKey === "useCases" && mode !== "alternate" ? "Actor = stick figure / role label; use case = oval; system boundary = rectangle. «include» uses a dashed arrow from the base to the included use case. «extend» uses a dashed arrow from the extending use case to the base."
+      : expKey === "useCases" ? "Class rectangle has name, attributes, and operations. + public, − private, # protected. Solid line = association; hollow triangle = inheritance toward parent; hollow diamond = aggregation; filled diamond = composition; multiplicities label counts."
+      : expKey === "dfd" && mode !== "alternate" ? "Rectangle = external entity; circle/rounded process = data transformation; open-ended / parallel lines = data store; labelled arrow = data flow. The arrow label names data, not an action."
+      : expKey === "gantt" && mode !== "alternate" ? "Each horizontal bar represents a task and its duration against the calendar axis. Task dependencies determine order; the critical path should be highlighted when calculated."
+      : "Filled circle = start; rounded rectangle = action/state; diamond = decision with guard labels; arrows = flow/transition; bullseye = final node. In a state diagram, label transitions with event [guard] / action." )}</p></div>
+      <div class="subpanel"><h4>Diagram source</h4><p>Edit the Mermaid source if needed. Use Render changes to check your edits; the source is not a substitute for the formal notation your question requests.</p></div>
+    </div>
+    <div class="subpanel" style="margin-top:14px">
+      <label class="field-label" for="diagramEditor">Mermaid source</label>
+      <textarea id="diagramEditor" class="control source-editor" spellcheck="false">${source.trim()}</textarea>
+      <div class="actions" style="margin-top:10px"><button class="btn primary" id="renderEditedDiagram">Render changes</button><button class="btn" id="resetDiagram">Reset source</button><button class="btn" id="downloadSvg">Export SVG</button></div>
+    </div>
+    <div class="related-viva" style="margin-top:22px"><h3 style="font-size:17px;margin:0 0 10px">Diagram-related viva</h3>
+      ${(experimentViva[vivaKey] || experimentViva.overview).map(q=>`<details class="mini-viva"><summary>${safeText(q[0])}</summary><p>${safeText(q[1])}</p></details>`).join("")}
+    </div>`;
+  const host = document.getElementById("projectDiagram");
+  let zoom = 0.65;
+  const applyZoom = () => { const svg=host.querySelector("svg"); if(svg){ svg.style.width = `${zoom*100}%`; svg.style.minWidth = `${zoom*100}%`; svg.style.maxWidth = "none"; svg.style.height = "auto"; } };
+  renderMermaidInto(host, source, expKey).then(applyZoom);
+  document.getElementById("zoomIn").addEventListener("click",()=>{zoom=Math.min(1.5,zoom+0.1);applyZoom();});
+  document.getElementById("zoomOut").addEventListener("click",()=>{zoom=Math.max(0.25,zoom-0.1);applyZoom();});
+  document.getElementById("zoomReset").textContent = "Fit / 65%";
+  document.getElementById("zoomReset").addEventListener("click",()=>{zoom=0.65;applyZoom();});
+  document.getElementById("renderEditedDiagram").addEventListener("click", async () => {
+    currentDiagramSource = document.getElementById("diagramEditor").value;
+    await renderMermaidInto(host, currentDiagramSource, "edited"); applyZoom();
+    showToast(currentDiagramSvg ? "Diagram updated" : "Please correct the Mermaid syntax");
+  });
+  document.getElementById("resetDiagram").addEventListener("click", () => {
+    document.getElementById("diagramEditor").value = source.trim(); currentDiagramSource = source;
+    renderMermaidInto(host, source, expKey).then(applyZoom); showToast("Source reset");
+  });
+  document.getElementById("downloadSvg").addEventListener("click", () => {
+    const svg = host.querySelector("svg"); if (!svg) return showToast("Render a valid diagram first");
+    const blob = new Blob([new XMLSerializer().serializeToString(svg)], {type:"image/svg+xml;charset=utf-8"});
+    const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href=url; a.download=`${document.getElementById("projectSelect").value}-${expKey}.svg`; a.click(); URL.revokeObjectURL(url); showToast("SVG export started");
+  });
+}
+function populateProjectExperiments() {
+  document.getElementById("projectExperiment").innerHTML = projectExperimentOptions.map(([v,t])=>`<option value="${v}">${safeText(t)}</option>`).join("");
+}
+document.getElementById("projectSelect").addEventListener("change", renderProject);
+document.getElementById("projectExperiment").addEventListener("change", renderProject);
+document.getElementById("diagramMode").addEventListener("change", renderProject);
+document.getElementById("copyProjectContent").addEventListener("click", async () => {
+  const text = document.getElementById("projectContent").innerText;
+  try { await navigator.clipboard.writeText(text); showToast("Project content copied"); }
+  catch { showToast("Clipboard access unavailable"); }
+});
+document.getElementById("copyDiagramSource").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(currentDiagramSource); showToast("Mermaid source copied"); }
+  catch { showToast("Clipboard access unavailable"); }
+});
+document.getElementById("printProject").addEventListener("click", () => {
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==="projectView"));
+  window.print();
+});
+
+function renderViva() {
+  const unit = document.getElementById("vivaUnit").value;
+  const q = document.getElementById("vivaSearch").value.trim().toLowerCase();
+  const filtered = viva.filter(v=>(unit==="all" || String(v[0])===unit) && (v[1].toLowerCase().includes(q) || v[2].toLowerCase().includes(q)));
+  document.getElementById("vivaQuestions").innerHTML = filtered.map(v=>`
+    <details class="viva-dropdown question" data-viva-index="${viva.indexOf(v)}">
+      <summary><span>${safeText(v[1])}</span><span class="qmeta">UNIT ${v[0]}</span></summary>
+      <div class="viva-answer show">${safeText(v[2])}</div>
+    </details>`).join("") || `<div class="empty-state">No questions match your search.</div>`;
+}
+document.getElementById("vivaUnit").addEventListener("change", renderViva);
+document.getElementById("vivaSearch").addEventListener("input", renderViva);
+document.getElementById("expandAll").addEventListener("click", () => {
+  document.querySelectorAll("#vivaQuestions details").forEach(d=>d.open=true);
+});
+document.getElementById("collapseAll").addEventListener("click", () => {
+  document.querySelectorAll("#vivaQuestions details").forEach(d=>d.open=false);
+});
+document.getElementById("randomViva").addEventListener("click", () => {
+  const cards = [...document.querySelectorAll("#vivaQuestions details")];
+  if (!cards.length) return showToast("No questions in this filter");
+  cards.forEach(c=>c.style.outline="");
+  const card = cards[Math.floor(Math.random()*cards.length)];
+  card.open = true;
+  card.style.outline="2px solid var(--accent-2)";
+  card.scrollIntoView({behavior:"smooth",block:"center"});
+});
+document.querySelectorAll(".tab").forEach(tab=>tab.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t===tab)));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===tab.dataset.view));
+}));
+populateProjectExperiments();
+renderTemplateList();
+renderTemplate();
+updateProgress();
+renderViva();
+renderProject();
+window.addEventListener("mermaid-ready", renderProject);
+</script>
+
+</div><!-- /guideApp -->
+</body>
+</html>
