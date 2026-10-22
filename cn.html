@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Networks Practical & Viva Guide</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#58657a;--accent:#3156d3;--line:#dce3ef;--soft:#edf2ff;--green:#18794e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{padding:28px 18px 20px;background:linear-gradient(135deg,#14234b,#3156d3);color:white}
+header .wrap,main{max-width:1100px;margin:auto}h1{margin:0 0 6px;font-size:clamp(24px,4vw,36px)}header p{margin:0;color:#e1e8ff}
+main{padding:18px}
+.tabs{display:flex;gap:8px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5}
+.tabbtn{border:1px solid var(--line);background:white;padding:12px 18px;border-radius:12px;font-weight:750;cursor:pointer;color:var(--ink)}
+.tabbtn.active{background:var(--accent);color:white;border-color:var(--accent)}
+.panel{display:none}.panel.active{display:block}
+.note{background:#fff8df;border:1px solid #f0df9b;padding:12px 14px;border-radius:12px;color:#594a17;margin:12px 0 18px}
+.search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin:0 0 14px;font:inherit;background:white}
+details.exp{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;overflow:hidden;box-shadow:0 2px 8px #16254a08}
+details.exp>summary{padding:15px 16px;cursor:pointer;font-weight:800;list-style:none;display:flex;gap:10px;align-items:center}
+details.exp>summary::-webkit-details-marker{display:none}details.exp>summary:before{content:"＋";font-size:18px;color:var(--accent)}details[open].exp>summary:before{content:"−"}
+.badge{font-size:11px;text-transform:uppercase;letter-spacing:.04em;background:var(--soft);color:var(--accent);padding:4px 8px;border-radius:20px;margin-left:auto;white-space:nowrap}
+.content{padding:0 16px 18px;border-top:1px solid var(--line)}h2{font-size:21px;margin:22px 0 8px}h3{font-size:16px;margin:16px 0 5px}p{margin:7px 0}ul,ol{padding-left:23px;margin:7px 0}li{margin:4px 0}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#111827;color:#e5efff;border-radius:10px;padding:13px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#edf0f7;padding:2px 5px;border-radius:4px;font-family:ui-monospace,monospace}pre code{background:transparent;padding:0}
+.q{padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin:7px 0;background:#fff}.q b{color:var(--accent)}.answer{color:var(--muted);margin-top:3px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px}td,th{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}th{background:#eef2fb}
+.small{font-size:13px;color:var(--muted)}.codewrap{position:relative;margin:10px 0 14px}.codewrap pre{margin:0;padding-top:42px}.copybtn{position:absolute;right:8px;top:8px;border:1px solid #53627b;background:#263449;color:#fff;border-radius:7px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer}.copybtn:hover{background:#3b4b65}.copybtn.copied{background:#18794e;border-color:#18794e}.code-desc{font-size:13px;color:var(--muted);margin:0 0 6px}.where{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#334155;background:#e7ebf3;padding:3px 7px;border-radius:5px;margin:0 0 6px}.tag{display:inline-block;background:#e7f7ee;color:var(--green);border-radius:5px;padding:2px 6px;font-size:12px;margin-right:4px}
+@media(max-width:650px){main{padding:12px}.tabs{top:0}.tabbtn{flex:1;padding:10px 8px}.badge{display:none}td,th{padding:6px}}
+
+/* Simulated endpoint/browser error demo */
+#errorLanding{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:9vh 22px 36px;background:#fff;color:#202124}
+.error-inner{width:min(790px,100%);font-family:Arial,Helvetica,sans-serif}
+.error-icon{margin-bottom:28px;line-height:0}
+.error-inner h1{font-size:28px;font-weight:500;color:#202124;margin:0 0 28px;letter-spacing:0}
+.error-inner p{color:#5f6368;margin:8px 0;font-size:16px;line-height:1.55}
+.error-inner p strong{font-weight:700;color:#202124}
+.error-inner .diagnostic{color:#1a73e8;margin-top:30px}
+.error-inner .error-code{font-size:12px;color:#5f6368;margin-top:32px}
+.error-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:88px}
+.error-actions button{border:1px solid #dadce0;border-radius:6px;background:#1a73e8;padding:10px 26px;cursor:pointer;font-weight:600;color:white;font-size:14px;box-shadow:0 1px 2px #0002}
+.demo-hint{display:none!important}.inline-open{border:0;background:transparent;color:#1a73e8;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+#guideApp{display:none}
+#guideApp.visible{display:block}
+
+</style>
+</head>
+<body>
+
+<div id="errorLanding" role="main">
+  <div class="error-inner">
+    <div class="error-icon" aria-hidden="true">
+      <svg width="42" height="48" viewBox="0 0 42 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 2.5H25L36.5 14V44.5H7V2.5Z" stroke="#5F6368" stroke-width="2.5"/>
+        <path d="M25 3V14H36" stroke="#5F6368" stroke-width="2.5"/>
+        <path d="M14 19V23M28 19V23M14 34L18 30L22 34L26 30L30 34" stroke="#5F6368" stroke-width="2.5" stroke-linecap="square"/>
+      </svg>
+    </div>
+    <h1>This site can’t be reached</h1>
+    <p><strong>unstop.com</strong>’s DNS address could not be found. Diagnosing the problem.</p>
+    <p class="diagnostic">Try running Windows Network Diagnostics.</p>
+    <p class="error-code">DNS_PROBE_STARTED</p>
+    <div class="error-actions">
+      <button class="primary" id="retryDemo" onclick="window.location.reload()">
+    Reload
+</button>
+    </div>
+  </div>
+</div>
+<div id="guideApp">
+
+<header><div class="wrap"><h1>Computer Networks: Practical + Viva Guide</h1><p>12 experiment cards • procedures, commands/code, acronym full forms, and viva practice</p></div></header>
+<main>
+<div class="tabs" role="tablist">
+<button class="tabbtn active" data-tab="exps">1 · Experiments</button>
+<button class="tabbtn" data-tab="theory">2 · Theory & Viva</button>
+</div>
+<div class="note"><b>Use this as a study companion.</b> Experiment titles and details are based on the uploaded CN practical record where identifiable. The record's numbering/section headings appear inconsistent in places, so the cards are organized by the 12 practical topics identified from it. For software-dependent steps, menus/commands may vary by installed version. Never run scanning commands against networks you do not own or have permission to test.</div>
+
+<section id="exps" class="panel active">
+<input class="search" id="expSearch" placeholder="Search experiments, code, commands, software…">
+<div id="expList"></div>
+</section>
+<section id="theory" class="panel">
+<input class="search" id="theorySearch" placeholder="Search theory, acronyms, viva questions…">
+<div id="theoryList"></div>
+</section>
+<p class="small">Tip: use Ctrl/Cmd+F to find a command or acronym. Expand each experiment card. Code is instructional; adapt paths, interface names, IP addresses and ports to your lab.</p>
+</main>
+</div><!-- /guideApp -->
+<script>
+const data = [
+{
+n:1,title:"Comparative Analysis of Network Simulators",kind:"Software / theory",
+does:"Compare tools used to model or practise computer networks without requiring a full physical network. Compare their purpose, interface, scripting, cost/licensing and typical use.",
+full:[["NS-2","Network Simulator 2"],["NS-3","Network Simulator 3"],["OMNeT++","Objective Modular Network Testbed in C++"],["OPNET","Optimized Network Engineering Tools (historical expansion commonly used)"],["GUI","Graphical User Interface"],["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["LAN","Local Area Network"],["WAN","Wide Area Network"]],
+steps:["Choose the simulators specified by your instructor (the record discusses NS-2, NS-3, OMNeT++, OPNET/Riverbed Modeler and Cisco Packet Tracer).","Compare developer/community, licence, interface, scripting/programming, protocol support, visualization, learning curve and use cases.","Write one strength and one limitation for each tool.","Conclude that the right tool depends on whether the task is protocol research, detailed simulation, or learning/configuring Cisco-style networks."],
+commands:"No single mandatory command. For a lab comparison, open each installed tool and record its version/about page. Do not claim a tool is installed unless you have checked.",
+code:"No program required. Compare the tools by their main use and interaction style.",
+questions:[["What is a network simulator?","Software that models network behavior so protocols and designs can be tested without building the entire physical network."],["Why use simulation?","It reduces cost and risk and makes repeatable experiments possible."],["What is NS-2?","A discrete-event network simulator used in networking research and education."],["What is NS-3?","A newer network simulator project with its own architecture and APIs."],["What is OMNeT++?","A modular, component-based discrete-event simulation framework."],["What is Cisco Packet Tracer mainly used for?","Learning network concepts and practising configurations in a simulated Cisco-like environment."],["What is GNS3 used for?","Building virtual network labs, often using emulated network operating systems."],["What is Wireshark?","A packet analyzer for capturing and inspecting network traffic."],["What is packet loss?","Packets that fail to reach their destination."],["What is throughput?","The rate of successful data delivery over a period."],["What is latency?","The time taken for data to travel from source to destination."],["Which simulator should you choose?","Choose based on required fidelity, supported protocols, ease of use, licensing and resources."]]
+},
+{
+n:2,title:"TCP/IP Utility / Networking Commands",kind:"Command based",
+does:"Use built-in commands to inspect IP configuration, test reachability, resolve names, view routes and inspect local network information.",
+full:[["TCP/IP","Transmission Control Protocol / Internet Protocol"],["IP","Internet Protocol"],["DNS","Domain Name System"],["DHCP","Dynamic Host Configuration Protocol"],["MAC","Media Access Control"],["ARP","Address Resolution Protocol"],["ICMP","Internet Control Message Protocol"],["NIC","Network Interface Card"],["TTL","Time To Live"]],
+steps:["Open Command Prompt on Windows or a terminal on Linux.","Run one command at a time and read its output; record what it shows.","Compare name resolution, reachability, path tracing, interface configuration and routing-table commands.","If a command is unavailable, use the OS equivalent shown below."],
+commands:"Windows:\nping 8.8.8.8\nipconfig\nipconfig /all\ntracert example.com\nnslookup example.com\nnetstat -ano\narp -a\nroute print\npathping example.com\ngetmac\n\nLinux equivalents (some options differ):\nping -c 4 8.8.8.8\nip addr\nip route\ntraceroute example.com   # may need installation\ntracepath example.com    # if available\nnslookup example.com\ndig example.com          # if installed\nss -tuln\nip neigh\nip link",
+code:"Example quick interpretation:\n- ping: reachability + round-trip time (if ICMP replies are allowed)\n- ipconfig /all or ip addr: local interface configuration\n- tracert / traceroute: path hops\n- nslookup / dig: DNS lookup\n- netstat / ss: connections and listening ports\n- arp -a / ip neigh: IP-to-link-layer neighbor entries\n- route print / ip route: routing table\n- getmac / ip link: interface MAC address\n- pathping: path plus loss statistics on Windows",
+questions:[["What does ping test?","Whether a destination responds to ICMP echo requests and the approximate round-trip time."],["Does failed ping always mean a host is down?","No; a firewall may block ICMP or the route may be restricted."],["What does ipconfig show?","Windows network-interface IP configuration."],["What extra information does ipconfig /all show?","Detailed adapter information such as MAC address, DHCP status and DNS servers."],["What does tracert do?","Shows intermediate hops toward a destination using TTL behavior."],["What is DNS used for?","Translating domain names to IP addresses and storing other DNS records."],["What does nslookup do?","Queries DNS name servers."],["What does netstat show?","Network connections, listening endpoints and related statistics/options."],["What is ARP?","A protocol used on IPv4 LANs to resolve an IP address to a link-layer address."],["What does route print show?","The Windows routing table."],["What is getmac used for?","Displaying MAC addresses associated with network adapters."],["What is the difference between ping and tracert?","Ping tests reachability/latency; tracert attempts to show the path."],["What is a default gateway?","The router/interface used to reach destinations outside the local subnet."]]
+},
+{
+n:3,title:"TCP Socket Programming in C — Chatbot and Calculator",kind:"C code",
+does:"Create client-server applications over TCP. The server listens on a port; clients connect and exchange text messages or calculator requests.",
+full:[["TCP","Transmission Control Protocol"],["IP","Internet Protocol"],["API","Application Programming Interface"],["ACK","Acknowledgment"],["I/O","Input/Output"],["AF_INET","Address Family: IPv4"],["SOCK_STREAM","Stream socket type commonly used with TCP"]],
+steps:["Save the server and client code into separate files, e.g. server.c and client.c.","Compile each program using a C compiler.","Start the server first; verify the port is not already in use.","Run the client in another terminal and connect to the server IP/port.","For the chatbot, send/receive messages until the exit word is used. For calculator, send a valid operation and operands.","If using separate computers, allow the server port through the lab firewall and use the server's reachable IP."],
+commands:"Linux/macOS with GCC:\ngcc server.c -o server\ngcc client.c -o client\n./server\n./client 127.0.0.1\n\nWindows: use the compiler/toolchain available in your lab. The record uses TCP ports 5000 (chatbot) and 5001 (calculator); keep client and server port numbers identical.",
+code:"TCP SOCKET FLOW (learn this order):\nSERVER: socket() → bind() → listen() → accept() → recv()/read() ↔ send()/write() → close()\nCLIENT: socket() → connect() → send()/write() ↔ recv()/read() → close()\n\nMinimal POSIX server skeleton (illustrative; add error handling and protocol logic):\n#include <stdio.h>\n#include <string.h>\n#include <unistd.h>\n#include <arpa/inet.h>\n#include <sys/socket.h>\nint main(void) {\n  int s, c; struct sockaddr_in a = {0}; char buf[1024];\n  s = socket(AF_INET, SOCK_STREAM, 0);\n  a.sin_family = AF_INET; a.sin_addr.s_addr = htonl(INADDR_ANY);\n  a.sin_port = htons(5000);\n  bind(s, (struct sockaddr*)&a, sizeof(a));\n  listen(s, 5); c = accept(s, NULL, NULL);\n  int n = (int)read(c, buf, sizeof(buf)-1);\n  if (n > 0) { buf[n] = '\\0'; printf(\"Client: %s\\\\n\", buf); write(c, \"Received\", 8); }\n  close(c); close(s); return 0;\n}\n\nThis is a teaching skeleton, not a complete robust server: check every return value, loop for multiple messages, and handle partial reads/writes in a real program.",
+questions:[["What is a socket?","A software endpoint used by a program to send/receive data over a network."],["What is TCP?","A connection-oriented transport protocol that provides an ordered byte stream and reliability mechanisms."],["What is the client-server model?","A server offers a service and a client initiates a request or connection."],["What does socket() do?","Creates a socket endpoint."],["What does bind() do?","Associates a local address and port with a socket."],["What does listen() do?","Marks a stream socket as passive and sets a pending-connection queue limit."],["What does accept() do?","Accepts a pending connection and returns a connected socket."],["What does connect() do?","Initiates a connection to a server endpoint."],["What do send()/recv() do?","Send and receive data on a socket."],["Why do client and server ports need to match?","The client must connect to the port on which the server is listening."],["What is localhost/127.0.0.1?","The loopback address referring to the same machine."],["Why is TCP reliable?","It uses acknowledgments, sequence numbers, retransmission and ordering mechanisms."],["What happens if the port is already in use?","Binding may fail; choose a free port or stop the process using it."],["Why can one read() return fewer bytes than requested?","TCP is a byte stream; message boundaries are not preserved and reads may be partial."]]
+},
+{
+n:4,title:"Router Terminal Security — Cisco Packet Tracer",kind:"Commands + software",
+does:"Protect access to a simulated router using privileged-mode, console and virtual terminal passwords; encrypt plaintext passwords in the configuration and save the setup.",
+full:[["CLI","Command-Line Interface"],["EXEC","Executive mode (Cisco IOS command mode)"],["VTY","Virtual Teletype terminal lines"],["IOS","Internetwork Operating System"],["SSH","Secure Shell"],["TFTP","Trivial File Transfer Protocol"]],
+steps:["Open Packet Tracer and place a router and a PC; connect them with a console cable if using console access.","Open the router CLI and enter privileged EXEC mode.","Enter global configuration mode and set an enable secret.","Configure console line and VTY line access passwords; enable login on those lines.","Enable service password encryption; note that this obfuscation is not strong modern encryption.","Return to privileged mode and save the running configuration to startup configuration.","Verify the configuration with show commands."],
+commands:"enable\nconfigure terminal\nenable secret classSecret\nline console 0\npassword consolePass\nlogin\nexit\nline vty 0 4\npassword remotePass\nlogin\nexit\nservice password-encryption\nend\ncopy running-config startup-config\nshow running-config\nshow startup-config\n\nUse your instructor's required passwords; these are examples only.",
+code:"Command sequence to remember:\nRouter> enable\nRouter# configure terminal\nRouter(config)# enable secret <secret>\nRouter(config)# line console 0\nRouter(config-line)# password <password>\nRouter(config-line)# login\nRouter(config-line)# exit\nRouter(config)# line vty 0 4\nRouter(config-line)# password <password>\nRouter(config-line)# login\nRouter(config-line)# exit\nRouter(config)# service password-encryption\nRouter(config)# end\nRouter# copy running-config startup-config",
+questions:[["Why configure router security?","To reduce unauthorized access to the device and its configuration."],["What does enable secret do?","Sets a protected password for privileged EXEC mode."],["What is console access?","Local management access through the router's console port."],["What are VTY lines?","Virtual terminal lines used for remote CLI sessions."],["What does login do under a line?","Requires line authentication using the configured line password or method."],["What does service password-encryption do?","Obfuscates certain plaintext passwords in the configuration; it is not strong encryption."],["What is running-config?","The active configuration currently used by the router."],["What is startup-config?","The saved configuration loaded during startup."],["Why use copy running-config startup-config?","To preserve the current configuration across a reload."],["What is privileged EXEC mode?","The higher-privilege CLI mode reached with enable."],["What is SSH preferred over Telnet for remote administration?","SSH encrypts the session; Telnet sends data, including credentials, without encryption."],["Does service password-encryption make a router fully secure?","No; use strong secrets, secure management protocols, access controls and updated software."]]
+},
+{
+n:5,title:"TCP and UDP Traffic Generation using NS-2",kind:"Tcl + AWK + commands",
+does:"Build a simulated network and generate TCP traffic using FTP and UDP traffic using CBR. Produce trace output, view packet flow with NAM, and calculate packet-loss statistics.",
+full:[["NS-2","Network Simulator 2"],["Tcl","Tool Command Language"],["AWK","A pattern-scanning and text-processing language"],["NAM","Network Animator"],["FTP","File Transfer Protocol"],["CBR","Constant Bit Rate"],["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["LAN","Local Area Network"]],
+steps:["Create a Tcl script that initializes the simulator, opens a trace file and NAM file, creates nodes and links, and defines a finish procedure.","Attach a TCP agent to a source node and a TCPSink to the receiver; attach an FTP application to the TCP agent.","Attach a UDP agent to another source and a Null receiver; configure a CBR application on the UDP agent.","Schedule application start/stop times and schedule finish.","Run the script with NS-2; inspect the trace output and open the NAM visualization if installed.","Use AWK or the provided script to count sent/dropped packets and calculate packet loss."],
+commands:"Typical commands (paths vary by installation):\nns traffic.tcl\nnam out.nam\nawk -f loss.awk out.tr\n\nCheck the exact trace format before using an AWK script; NS-2 trace formats can differ.",
+code:"Illustrative Tcl skeleton (adapt to your NS-2 version):\nset ns [new Simulator]\nset tr [open out.tr w]\n$ns trace-all $tr\nset nf [open out.nam w]\n$ns namtrace-all $nf\n\nset n0 [$ns node]\nset n1 [$ns node]\nset n2 [$ns node]\nset n3 [$ns node]\n$ns duplex-link $n0 $n2 1Mb 10ms DropTail\n$ns duplex-link $n1 $n2 1Mb 10ms DropTail\n$ns duplex-link $n2 $n3 1.7Mb 20ms DropTail\n\nset tcp [new Agent/TCP]\n$ns attach-agent $n0 $tcp\nset sink [new Agent/TCPSink]\n$ns attach-agent $n3 $sink\n$ns connect $tcp $sink\nset ftp [new Application/FTP]\n$ftp attach-agent $tcp\n\nset udp [new Agent/UDP]\n$ns attach-agent $n1 $udp\nset null [new Agent/Null]\n$ns attach-agent $n3 $null\n$ns connect $udp $null\nset cbr [new Application/Traffic/CBR]\n$cbr set packetSize_ 512\n$cbr set rate_ 200Kb\n$cbr attach-agent $udp\n\nproc finish {} {\n global ns tr nf\n $ns flush-trace\n close $tr\n close $nf\n exit 0\n}\n$ns at 0.5 \"$ftp start\"\n$ns at 1.0 \"$cbr start\"\n$ns at 4.0 \"$ftp stop\"\n$ns at 4.5 \"$cbr stop\"\n$ns at 5.0 \"finish\"\n$ns run\n\nThis is a compact teaching example; ensure the topology and traffic match the experiment record.",
+questions:[["What is NS-2?","A discrete-event network simulator used to study network protocols and traffic."],["What is Tcl used for in NS-2?","Scripting the topology, agents, applications and event schedule."],["What does FTP model here?","A bulk data transfer application running over TCP."],["What does CBR mean?","Constant Bit Rate; it generates traffic at a configured rate."],["How do TCP and UDP differ?","TCP provides reliable ordered stream delivery; UDP is connectionless with lower protocol overhead."],["What is a trace file?","A log of simulation events such as packet enqueue, send, receive and drop."],["What is NAM?","Network Animator, used to visualize a simulation."],["What is AWK used for?","Processing structured text such as trace files to calculate metrics."],["How is packet loss calculated?","Commonly (packets sent − packets received) / packets sent × 100%, with counts defined consistently."],["What is DropTail?","A queue discipline that drops arriving packets when the queue is full."],["What is a TCPSink?","The receiving endpoint/agent for TCP traffic in NS-2."],["What is a Null agent?","A sink agent commonly used as the destination for UDP traffic in NS-2."],["What does simulation time mean?","The virtual time of events inside the model, not necessarily wall-clock runtime."]]
+},
+{
+n:6,title:"Star Topology using Cisco Packet Tracer",kind:"Software + commands",
+does:"Create a star network with end devices connected to a central switch, assign addresses in the same subnet, and test connectivity.",
+full:[["LAN","Local Area Network"],["PC","Personal Computer"],["IP","Internet Protocol"],["MAC","Media Access Control"],["NIC","Network Interface Card"],["ICMP","Internet Control Message Protocol"],["CLI","Command-Line Interface"]],
+steps:["Open Packet Tracer and add one 2960 switch and five PCs (or use the count required by your record).","Connect each PC's FastEthernet interface to a separate switch port using copper straight-through cable.","Open each PC's Desktop > IP Configuration and assign a unique IPv4 address and the same subnet mask, e.g. 192.168.1.2–192.168.1.6 with mask 255.255.255.0.","Wait for link indicators to turn green.","From one PC, open Command Prompt and ping another PC's address.","If ping fails, check cables, interface status, duplicate IPs and subnet masks."],
+commands:"Example addressing:\nPC0 192.168.1.2 / 255.255.255.0\nPC1 192.168.1.3 / 255.255.255.0\nPC2 192.168.1.4 / 255.255.255.0\nPC3 192.168.1.5 / 255.255.255.0\nPC4 192.168.1.6 / 255.255.255.0\n\nFrom PC command prompt:\nping 192.168.1.3\n\nA default gateway is not needed for communication within the same subnet.",
+code:"Implementation checklist:\n1. Place a 2960 switch and five PCs.\n2. Choose Connections → Copper Straight-Through.\n3. Connect PC FastEthernet0 to a switch FastEthernet port.\n4. Configure unique IPv4 addresses and matching masks.\n5. Test PC-to-PC connectivity with ping.\n6. Save the Packet Tracer project.",
+questions:[["What is a star topology?","A topology in which devices connect to a central device, usually a switch."],["Why is a switch used?","It forwards Ethernet frames based on learned MAC addresses."],["What happens if the central switch fails?","The connected devices generally lose communication through that switch."],["Which cable is commonly used from PC to switch?","Copper straight-through Ethernet cable."],["Do PCs in the same subnet need a gateway to communicate locally?","No, not for direct same-subnet communication."],["Why must IP addresses be unique?","Duplicate addresses cause address conflicts and unreliable communication."],["What does a subnet mask do?","Separates the network portion of an IP address from the host portion."],["What does ping use?","ICMP Echo Request and Echo Reply, when permitted."],["What is a MAC address?","A link-layer address associated with a network interface."],["What is the role of ARP?","Resolving IPv4 addresses to MAC addresses on a local network."],["Why might the first ping take longer?","Address resolution and switch learning may happen first."],["What is the difference between a hub and switch?","A hub repeats bits to all ports; a switch selectively forwards frames."]]
+},
+{
+n:7,title:"Static Routing using GNS3",kind:"Software + router commands",
+does:"Configure routes manually so routers can forward packets between different IP networks.",
+full:[["GNS3","Graphical Network Simulator 3"],["IP","Internet Protocol"],["CLI","Command-Line Interface"],["OSPF","Open Shortest Path First"],["LAN","Local Area Network"],["WAN","Wide Area Network"]],
+steps:["Create a small topology with at least two routers and LANs on opposite sides.","Assign IP addresses to router interfaces and end hosts; ensure interfaces are enabled.","Configure each router with a route to the remote network using the correct next-hop IP or exit interface.","Configure host default gateways.","Verify interface status and routing table, then ping across the routers.","If it fails, check subnet masks, next hops, interface state and return routes."],
+commands:"Cisco IOS-style example only (replace addresses/interfaces with your topology):\nRouter(config)# interface g0/0\nRouter(config-if)# ip address 192.168.1.1 255.255.255.0\nRouter(config-if)# no shutdown\nRouter(config-if)# exit\nRouter(config)# ip route 192.168.2.0 255.255.255.0 10.0.0.2\nRouter# show ip interface brief\nRouter# show ip route\nRouter# ping 192.168.2.10",
+code:"Static route format:\nip route <destination-network> <subnet-mask> <next-hop-IP | exit-interface>\n\nExample:\nip route 192.168.2.0 255.255.255.0 10.0.0.2\n\nRemember: configure the reverse route on the other router as well, unless it has another valid route.",
+questions:[["What is routing?","Selecting a path and forwarding packets between IP networks."],["What is static routing?","Routes manually configured by an administrator."],["What is a next hop?","The next router/interface toward the destination network."],["What does ip route configure?","A static route in Cisco IOS."],["Why is a return route needed?","Replies must also have a valid path back to the source network."],["What is a routing table?","A list of known destination networks and forwarding information."],["What does show ip route display?","The router's IPv4 routing table."],["What does no shutdown do?","Administratively enables an interface."],["What is a directly connected route?","A route to a network attached to an active local interface."],["What is a default route?","A fallback route used when no more-specific route matches."],["Static vs dynamic routing?","Static routes are manually configured; dynamic protocols learn and update routes."],["How do you troubleshoot failed pings?","Check addressing, masks, interfaces, gateways, routes, ACL/firewall and return path."]]
+},
+{
+n:8,title:"Dynamic Routing using OSPF in GNS3",kind:"Software + router commands",
+does:"Enable OSPF on routers so they exchange routing information and learn reachable networks automatically.",
+full:[["OSPF","Open Shortest Path First"],["IP","Internet Protocol"],["CLI","Command-Line Interface"],["LSA","Link-State Advertisement"],["LSDB","Link-State Database"],["SPF","Shortest Path First"],["LAN","Local Area Network"]],
+steps:["Build a multi-router topology in GNS3 and configure IP addresses on all router interfaces.","Ensure interfaces are enabled and directly connected links can reach their neighbor IPs.","Start OSPF on each router using the same process area where the lab requires it.","Advertise each participating network in the correct area; wildcard masks must match the intended interfaces.","Verify neighbors and learned routes.","Ping between end hosts and troubleshoot OSPF adjacency, area, masks and interface state if needed."],
+commands:"Cisco IOS-style example (replace network statements with your actual networks):\nRouter(config)# router ospf 1\nRouter(config-router)# network 10.0.0.0 0.0.0.255 area 0\nRouter(config-router)# network 192.168.1.0 0.0.0.255 area 0\nRouter# show ip ospf neighbor\nRouter# show ip route ospf\nRouter# show ip protocols\nRouter# ping 192.168.2.10",
+code:"OSPF starter pattern:\nrouter ospf 1\n network <network-address> <wildcard-mask> area 0\n\nWildcard mask is the inverse of the subnet mask. For 255.255.255.0, use 0.0.0.255. Area 0 is the backbone area in a conventional multi-area OSPF design.",
+questions:[["What does OSPF stand for?","Open Shortest Path First."],["What type of routing protocol is OSPF?","A link-state interior gateway routing protocol."],["What does OSPF use to calculate paths?","The Shortest Path First algorithm, commonly associated with Dijkstra's algorithm."],["What is an OSPF area?","A logical grouping used to structure an OSPF routing domain."],["What is Area 0?","The OSPF backbone area."],["What is an LSA?","A Link-State Advertisement carrying link-state information."],["What is an LSDB?","The link-state database built from LSAs."],["What is an OSPF neighbor adjacency?","A relationship between OSPF routers that exchange protocol information."],["What is a wildcard mask?","An inverse mask used in Cisco OSPF network statements to match addresses."],["How can you verify OSPF neighbors?","Use show ip ospf neighbor."],["How can you view OSPF-learned routes?","Use show ip route ospf or show ip route."],["Static routing vs OSPF?","Static routes are entered manually; OSPF routers exchange information and recalculate routes."],["Why might OSPF neighbors fail to form?","Possible causes include mismatched area, subnet, timers/authentication, passive interface or link failure."]]
+},
+{
+n:9,title:"Wireshark Packet Analysis — TCP/TLS/DNS and Security",kind:"Software + filters",
+does:"Capture traffic and inspect protocol headers and packet exchanges. Use the capture to identify endpoints, DNS lookups, TCP behavior and encrypted TLS sessions.",
+full:[["TLS","Transport Layer Security"],["DNS","Domain Name System"],["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["IP","Internet Protocol"],["HTTP","Hypertext Transfer Protocol"],["HTTPS","Hypertext Transfer Protocol Secure"],["MAC","Media Access Control"],["NIC","Network Interface Card"]],
+steps:["Open Wireshark and choose the correct active network interface.","Start capture; generate a small amount of permitted test traffic (e.g. visit a test website or run nslookup).","Stop capture after enough packets appear.","Use display filters to isolate protocols or hosts.","Select a packet and expand Ethernet, IP, TCP/UDP, DNS or TLS sections in the packet-details pane.","Record source/destination addresses, ports, flags and relevant fields. Remember that TLS encrypts application payloads."],
+commands:"Useful Wireshark display filters:\ndns\ntcp\nudp\narp\nicmp\nhttp\ntls\nip.addr == 192.168.1.10\ntcp.port == 443\ntcp.flags.syn == 1\n\nDisplay filters are not the same as capture filters. Use only on traffic you are authorized to inspect.",
+code:"Basic workflow:\n1. Select interface → Start capture.\n2. Generate test traffic.\n3. Stop capture.\n4. Enter a display filter such as dns or tcp.port == 443.\n5. Expand packet layers and note source/destination IPs, ports, flags and protocol fields.\n6. Save the capture only if permitted by your lab rules.",
+questions:[["What is Wireshark?","A network protocol analyzer that captures and displays packets."],["What is a packet capture?","A record of network packets observed on an interface or from a capture file."],["What is a display filter?","A filter applied to packets already captured to control what is shown."],["What does the dns filter show?","Packets decoded as DNS."],["What is DNS?","A distributed naming system that maps names to records such as IP addresses."],["What is TCP's three-way handshake?","SYN, SYN-ACK, ACK."],["What does TLS provide?","Cryptographic protection for data in transit, including confidentiality and integrity and usually server authentication."],["Can Wireshark normally show HTTPS plaintext?","Not without suitable decryption secrets/keys and configuration; the payload is encrypted."],["What does tcp.port == 443 match?","TCP packets with source or destination port 443."],["What is a source port?","The transport-layer port identifying the sending application endpoint."],["What is the difference between capture and display filters?","Capture filters restrict what is recorded; display filters only restrict what is shown."],["What is ARP used for?","Resolving IPv4 addresses to MAC addresses on a local link."],["Why should packet captures be handled carefully?","They may contain private information, credentials or sensitive metadata."]]
+},
+{
+n:10,title:"UDP Socket Programming in C — File Transfer",kind:"C code",
+does:"Use UDP datagrams to exchange data between a client and server. Unlike TCP, UDP does not establish a connection or guarantee delivery/order.",
+full:[["UDP","User Datagram Protocol"],["IP","Internet Protocol"],["API","Application Programming Interface"],["DNS","Domain Name System"],["I/O","Input/Output"],["AF_INET","Address Family: IPv4"],["SOCK_DGRAM","Datagram socket type commonly used with UDP"]],
+steps:["Create separate UDP server and client programs in C.","Create a datagram socket with socket(AF_INET, SOCK_DGRAM, 0).","On the server, bind to the required local IP/port.","Use recvfrom() to receive a datagram and learn the sender address; use sendto() to reply.","For a file transfer, split the file into datagrams and define a simple protocol with filename, sequence number, length and end-of-file marker.","For reliable file transfer, add acknowledgments, retransmission, duplicate handling and integrity checks; basic UDP itself does not supply these.","Compile and run server first, then client; test with a small text file."],
+commands:"Compile (Linux/POSIX environment):\ngcc udp_server.c -o udp_server\ngcc udp_client.c -o udp_client\n./udp_server\n./udp_client 127.0.0.1\n\nExact arguments depend on your program. Keep the server port and client destination port consistent.",
+code:"UDP socket call sequence:\nSERVER: socket() → bind() → recvfrom() → sendto() → close()\nCLIENT: socket() → sendto() → recvfrom() → close()\n\nIllustrative UDP message exchange (core idea, not a complete file-transfer program):\nint s = socket(AF_INET, SOCK_DGRAM, 0);\n/* server: bind(s, ...); */\nchar buf[1024];\nstruct sockaddr_in peer; socklen_t peerlen = sizeof(peer);\nint n = recvfrom(s, buf, sizeof(buf), 0,\n                 (struct sockaddr *)&peer, &peerlen);\nif (n >= 0) {\n    sendto(s, \"ACK\", 3, 0,\n           (struct sockaddr *)&peer, peerlen);\n}\nclose(s);\n\nFor actual files, handle chunking, binary data, final-chunk signaling, errors and packet loss.",
+questions:[["What does UDP stand for?","User Datagram Protocol."],["Is UDP connection-oriented?","No; it sends datagrams without a connection handshake."],["What is a datagram?","A self-contained message sent using a packet-oriented transport service."],["What does SOCK_DGRAM mean?","A datagram socket type commonly used with UDP."],["What does bind() do for a UDP server?","Associates the socket with a local IP address and port."],["What does recvfrom() do?","Receives a datagram and can return the sender's address."],["What does sendto() do?","Sends a datagram to a specified destination address."],["Does UDP guarantee delivery?","No."],["Does UDP guarantee ordering?","No."],["Why might UDP be used instead of TCP?","Lower overhead and no connection setup; suitable when the application handles timing/loss or can tolerate loss."],["Why is basic UDP file transfer risky?","Packets can be lost, duplicated or reordered without application-level recovery."],["How can reliability be added over UDP?","Sequence numbers, acknowledgments, retransmission, timeout and integrity checks."],["Give a common UDP application.","DNS commonly uses UDP for queries, though it can also use TCP."]]
+},
+{
+n:11,title:"Wireshark Capture Filters and TCP Flags",kind:"Software + filters",
+does:"Apply packet capture/display filters to isolate traffic and inspect TCP flags and packet headers, rather than examining every packet in a capture.",
+full:[["TCP","Transmission Control Protocol"],["UDP","User Datagram Protocol"],["IP","Internet Protocol"],["ICMP","Internet Control Message Protocol"],["ARP","Address Resolution Protocol"],["SYN","Synchronize (TCP flag)"],["ACK","Acknowledgment (TCP flag)"],["FIN","Finish (TCP flag)"],["RST","Reset (TCP flag)"],["HTTP","Hypertext Transfer Protocol"]],
+steps:["Choose the correct interface in Wireshark.","Optionally enter a capture filter before starting, if you want to restrict what is recorded.","Start capture and generate test traffic.","Stop capture and apply display filters to examine selected traffic.","Inspect TCP flags: SYN starts a connection, ACK acknowledges data/segments, FIN indicates orderly close, RST resets a connection.","Compare the packets with the TCP three-way handshake and connection termination."],
+commands:"Display filters:\ntcp\ntcp.flags.syn == 1\ntcp.flags.ack == 1\ntcp.flags.fin == 1\ntcp.flags.reset == 1\nicmp\narp\nip.addr == 192.168.1.10\n\nExamples of capture filters (BPF syntax):\ntcp\nudp port 53\nhost 192.168.1.10\n\nCapture-filter syntax differs from display-filter syntax.",
+code:"TCP three-way handshake:\nClient → Server: SYN\nServer → Client: SYN, ACK\nClient → Server: ACK\n\nTypical display filter for initial SYN packets:\ntcp.flags.syn == 1 && tcp.flags.ack == 0\n\nTo view packets sent to/from a particular host:\nip.addr == 192.168.1.10",
+questions:[["What is a capture filter?","A rule that limits which packets are captured and saved."],["What is a display filter?","A rule that hides packets from the current view without removing them from the capture."],["What does SYN mean?","Synchronize; it is used to initiate a TCP connection."],["What does ACK mean?","Acknowledgment; it indicates acknowledgment information is valid."],["What does FIN mean?","Finish; it is used for orderly TCP connection shutdown."],["What does RST mean?","Reset; it aborts or resets a TCP connection."],["Describe the TCP three-way handshake.","SYN → SYN-ACK → ACK."],["What is tcp.flags.syn == 1 filtering for?","TCP packets with the SYN flag set."],["Why might SYN and ACK both be set?","A server's SYN-ACK response acknowledges the client's SYN while synchronizing its own sequence number."],["What does udp port 53 mean as a capture filter?","Capture UDP traffic with port 53 as source or destination."],["What does host 192.168.1.10 mean in a capture filter?","Capture packets to or from that host."],["Can a capture filter be written exactly like a display filter?","No; the two syntaxes differ."],["What is ICMP often used for?","Network-layer control/diagnostic messages such as ping echo requests and replies."]]
+},
+{
+n:12,title:"DHCP Server and Client — Implementation and Analysis",kind:"Software + protocol analysis",
+does:"Observe or configure automatic IPv4 address assignment. A DHCP client can obtain an address, subnet mask, default gateway, DNS server and lease information from a DHCP server.",
+full:[["DHCP","Dynamic Host Configuration Protocol"],["IP","Internet Protocol"],["UDP","User Datagram Protocol"],["DNS","Domain Name System"],["MAC","Media Access Control"],["DORA","Discover, Offer, Request, Acknowledge"],["APIPA","Automatic Private IP Addressing"]],
+steps:["Use the lab's assigned environment (Packet Tracer or an authorized DHCP-enabled lab network).","For Packet Tracer, place a server and client PCs on a LAN and connect them to a switch.","Configure the server with a static IP and enable its DHCP service/pool, including pool name, default gateway, DNS server, starting address and subnet mask.","Set a client PC to obtain its address automatically using DHCP.","Check the assigned address, mask, gateway and DNS settings.","In Wireshark, if permitted, filter for DHCP/BOOTP and observe Discover, Offer, Request and Acknowledge messages.","Avoid enabling a second DHCP server on a real network without administrator permission."],
+commands:"Windows client:\nipconfig /release\nipconfig /renew\nipconfig /all\n\nLinux (command varies by distribution/network manager):\nip addr\nip route\n\nIn Packet Tracer, configure DHCP from the server's Services > DHCP panel, then select DHCP in each PC's IP Configuration. Menu names may vary by version.",
+code:"DORA sequence:\n1. DHCP Discover — client searches for DHCP servers.\n2. DHCP Offer — server offers an address and options.\n3. DHCP Request — client requests the offered lease.\n4. DHCP Acknowledgment (ACK) — server confirms the lease.\n\nCommon UDP ports: server 67, client 68.",
+questions:[["What does DHCP stand for?","Dynamic Host Configuration Protocol."],["Why is DHCP used?","To assign IP configuration automatically and reduce manual configuration errors."],["What does DORA stand for?","Discover, Offer, Request, Acknowledge."],["Which transport protocol does DHCP use?","UDP."],["What are the common DHCPv4 ports?","UDP 67 for servers and UDP 68 for clients."],["What information can DHCP provide?","IP address, subnet mask, default gateway, DNS servers and lease time."],["What is a DHCP lease?","A time-limited assignment of an IP address/configuration to a client."],["What happens if a client cannot reach a DHCP server?","It may fail to obtain a lease; some systems may use an automatic/link-local address, depending on OS."],["What is a DHCP scope/pool?","A range of addresses and options the server can lease to clients."],["Why should a DHCP server have a stable address?","Clients need to reach it reliably and the server's configuration must remain predictable."],["Can two unauthorized DHCP servers cause problems?","Yes; clients may receive incorrect or conflicting configuration."],["How do you renew a Windows DHCP lease?","Use ipconfig /renew."],["How can you see DHCP traffic in Wireshark?","Use a suitable display filter such as bootp or dhcp, depending on the Wireshark version."]]
+}
+];
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function acronymTable(full){return `<table><thead><tr><th>Acronym</th><th>Full form / meaning</th></tr></thead><tbody>${full.map(x=>`<tr><td><b>${esc(x[0])}</b></td><td>${esc(x[1])}</td></tr>`).join("")}</tbody></table>`}
+function qs(list){return list.map((q,i)=>`<div class="q"><b>Q${i+1}. ${esc(q[0])}</b><div class="answer">${esc(q[1])}</div></div>`).join("")}
+function makeCopyBlock(text, desc, where, isCommands=false){
+  if(isCommands){
+    const lines = String(text).split('\n');
+    const parts = [];
+    let pendingLabel = "";
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) continue;
+      // Keep explanatory headings/labels outside the copyable command blocks.
+      if (/^(Windows:|Linux equivalents.*:|Example addressing:|From PC command prompt:|Typical commands.*:|Compile.*:|Cisco IOS-style example.*:|Router CLI.*:|Display filters:|Examples of capture filters.*:|Useful Wireshark display filters:|Capture filters.*:|Common UDP ports:|DORA sequence:|TCP three-way handshake:|OSPF starter pattern:|Static route format:|Command sequence to remember:|Basic workflow:|Implementation checklist:|Windows client:|Linux \(command varies.*\):|In Packet Tracer,|Example:|Example quick interpretation:)/i.test(line)) {
+        pendingLabel = line.replace(/:$/, "");
+        parts.push(`<p class="code-desc"><b>${esc(pendingLabel)}</b></p>`);
+        continue;
+      }
+      // Do not turn prose or protocol descriptions into fake executable commands.
+      if (/^(No program required|Each command|Use only|The exact|A default gateway|A wildcard mask|Display filters are|Capture-filter syntax|This is|For actual|Common UDP|Remember:|If using|Check the exact|Exact arguments|In Packet Tracer,|For a lab comparison|Tool \| Main use|NS-2\/NS-3 \|)/i.test(line)) {
+        parts.push(`<p class="code-desc">${esc(line)}</p>`);
+        continue;
+      }
+      const inferred = commandWhere(line, where);
+      const isLikelyCommand = inferred !== "Reference / explanation" &&
+        !/^(TCP SOCKET FLOW|CLIENT:|SERVER:|1\.|2\.|3\.|4\.|5\.|6\.|PC[0-9]|Router>|Router#|Router\(config|Tool \|)/i.test(line);
+      if (isLikelyCommand) {
+        parts.push(`<div class="codewrap"><span class="where">${esc(inferred)}</span><button class="copybtn" type="button" onclick="copyText(this)">Copy command</button><pre><code>${esc(line)}</code></pre><p class="code-desc">${esc(commandDescription(line, inferred))}</p></div>`);
+      } else {
+        parts.push(`<p class="code-desc">${esc(line)}</p>`);
+      }
+    }
+    return `<p class="small">Each executable command is isolated so you can copy it independently. Explanations and headings are kept outside the copy blocks.</p>${parts.join("") || '<p class="small">No standalone commands listed for this experiment.</p>'}`;
+  }
+  return `<div class="codewrap"><span class="where">${esc(where)}</span><button class="copybtn" type="button" onclick="copyText(this)">Copy code</button><pre><code>${esc(text)}</code></pre><p class="code-desc">${esc(desc)}</p></div>`;
+}
+function commandWhere(line, fallback){
+ const s=line.trim();
+ if (/^(ping(?:\s|$)|ipconfig(?:\s|$)|tracert(?:\s|$)|nslookup(?:\s|$)|netstat(?:\s|$)|arp -a$|route print$|pathping(?:\s|$)|getmac(?:\s|$))/i.test(s))
+   return "Windows CMD / PowerShell";
+ if (/^(ip addr|ip route|ip link|ip neigh|ss |dig |traceroute |tracepath |ping -c|awk |ns |nam |gcc |\.\/server|\.\/client)/i.test(s))
+   return "Linux terminal";
+ if (/^(enable$|configure terminal$|enable secret |line console |line vty |password |login$|service password-encryption$|copy running-config|show running-config$|show startup-config$|interface |ip address |no shutdown$|ip route |show ip |router ospf|network )/i.test(s))
+   return "Cisco router CLI";
+ if (/^(tcp\.|udp\.|dns$|http$|tls$|arp$|icmp$|ip\.addr|tcp$|udp$)/i.test(s))
+   return "Wireshark display filter";
+ if (/^(host |udp port )/i.test(s))
+   return "Wireshark capture filter";
+ if (/^(#include|int main|int s =|if \(|set |proc |global |close |exit 0|\$ns|\$ftp|\$cbr)/i.test(s))
+   return "Code editor / script file";
+ return "Reference / explanation";
+}
+function commandDescription(line, where){
+ const s=line.trim();
+ const map=[
+ [/^ping\b/i,"Tests reachability and reports round-trip timing when replies are allowed."],
+ [/^ipconfig \/all/i,"Shows detailed Windows adapter configuration, including DHCP, DNS and MAC details."],
+ [/^ipconfig \/release/i,"Releases the current DHCP-assigned IPv4 configuration."],
+ [/^ipconfig \/renew/i,"Requests/renews DHCP configuration from a DHCP server."],
+ [/^ipconfig\b/i,"Displays Windows IP configuration."],
+ [/^tracert\b/i,"Shows the route hops toward the destination on Windows."],
+ [/^traceroute\b/i,"Traces the route hops toward a destination on Linux/macOS."],
+ [/^tracepath\b/i,"Traces a path and can report path-MTU information on supported Linux systems."],
+ [/^nslookup\b/i,"Queries DNS to look up a hostname or address."],
+ [/^dig\b/i,"Queries DNS and displays detailed DNS response information."],
+ [/^netstat\b/i,"Displays network connections, listening ports and related statistics."],
+ [/^ss\b/i,"Displays socket information on Linux."],
+ [/^arp -a\b/i,"Displays the local IPv4 ARP cache on Windows."],
+ [/^ip neigh\b/i,"Displays the Linux neighbor cache (IP-to-link-layer mappings)."],
+ [/^route print\b/i,"Displays the Windows IP routing table."],
+ [/^getmac\b/i,"Displays MAC addresses for network adapters on Windows."],
+ [/^ip addr\b/i,"Displays IP addresses and interface state on Linux."],
+ [/^ip route\b/i,"Displays the Linux routing table."],
+ [/^ip link\b/i,"Displays Linux network interfaces and link-layer information."],
+ [/^ns\b/i,"Runs an NS-2 Tcl simulation script; run this in a terminal with NS-2 installed."],
+ [/^nam\b/i,"Opens the NS-2 Network Animator file, if NAM is installed."],
+ [/^awk\b/i,"Runs an AWK script to process the simulation trace file."],
+ [/^gcc\b/i,"Compiles the named C source file into an executable using GCC."],
+ [/^\.\/server\b/i,"Starts the compiled server program in the current Linux/macOS terminal directory."],
+ [/^\.\/client\b/i,"Starts the compiled client program; the example uses localhost as the server."],
+ [/^enable secret\b/i,"Sets the privileged EXEC password secret on a Cisco IOS-style router CLI."],
+ [/^enable$/i,"Enters privileged EXEC mode in the router CLI."],
+ [/^configure terminal$/i,"Enters global configuration mode on a Cisco IOS-style router."],
+ [/^line console\b/i,"Selects the local console line for configuration."],
+ [/^line vty\b/i,"Selects virtual terminal lines used for remote CLI access."],
+ [/^password\b/i,"Sets the line password in the selected router line configuration mode."],
+ [/^login$/i,"Requires login authentication on the selected router line."],
+ [/^service password-encryption$/i,"Obfuscates certain plaintext passwords in the router configuration; it is not strong encryption."],
+ [/^copy running-config startup-config$/i,"Saves the current router configuration for use after reboot."],
+ [/^show running-config$/i,"Displays the router's active configuration."],
+ [/^show startup-config$/i,"Displays the saved startup configuration."],
+ [/^interface\b/i,"Enters interface configuration mode for the named router interface."],
+ [/^ip address\b/i,"Assigns an IPv4 address and subnet mask to the selected router interface."],
+ [/^no shutdown$/i,"Administratively enables the selected router interface."],
+ [/^ip route\b/i,"Adds a static route on a Cisco IOS-style router."],
+ [/^show ip interface brief$/i,"Summarizes router interface IP addresses and operational status."],
+ [/^show ip route ospf$/i,"Displays OSPF-learned routes in the routing table."],
+ [/^show ip route$/i,"Displays the router's routing table."],
+ [/^router ospf\b/i,"Enters OSPF routing-process configuration mode."],
+ [/^network\b/i,"Advertises/matches a network for OSPF using the specified wildcard mask and area."],
+ [/^show ip ospf neighbor$/i,"Displays OSPF neighbor relationships."],
+ [/^show ip protocols$/i,"Displays routing-protocol parameters and configuration."],
+ [/^host\b/i,"In a Wireshark capture filter, limits capture to traffic to or from the specified host."],
+ [/^udp port\b/i,"In a Wireshark capture filter, selects UDP traffic using the specified port."],
+ [/^tcp$/i,"Wireshark capture filter: captures TCP packets."],
+ [/^udp$/i,"Wireshark capture filter: captures UDP packets."],
+ [/^dns$/i,"Wireshark display filter: shows packets decoded as DNS."],
+ [/^tcp\.port ==/i,"Wireshark display filter: shows TCP packets with the specified source or destination port."],
+ [/^tcp\.flags\./i,"Wireshark display filter: selects TCP packets based on the specified flag."],
+ [/^ip\.addr ==/i,"Wireshark display filter: shows packets to or from the specified IP address."],
+ [/^arp$/i,"Wireshark display filter: shows ARP packets."],
+ [/^icmp$/i,"Wireshark display filter: shows ICMP packets."],
+ [/^http$/i,"Wireshark display filter: shows packets decoded as HTTP."],
+ [/^tls$/i,"Wireshark display filter: shows packets decoded as TLS."]
+ ];
+ for(const [re,desc] of map){if(re.test(s)) return desc;}
+ if(where.includes("Router CLI")) return "Enter this in the router's CLI at the configuration mode indicated by the prompt.";
+ if(where.includes("Wireshark")) return "Enter this in Wireshark's appropriate filter bar; capture and display filters use different syntax.";
+ if(where.includes("PowerShell")||where.includes("CMD")) return "Run this in Windows PowerShell or Command Prompt, as indicated.";
+ if(where.includes("Linux")) return "Run this in a Linux terminal; the required tool may need to be installed.";
+ return "Run this command in the indicated application or terminal; replace example values with your lab's actual values.";
+}
+function expCard(d){return `<details class="exp" data-search="${esc((d.title+' '+d.kind+' '+d.does+' '+d.full.flat().join(' ')+' '+d.steps.join(' ')+' '+d.commands+' '+d.code).toLowerCase())}"><summary>Experiment ${d.n}: ${esc(d.title)} <span class="badge">${esc(d.kind)}</span></summary><div class="content"><h3>What it does</h3><p>${esc(d.does)}</p><h3>Detailed implementation steps</h3><ol>${d.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol><h3>Commands / filters</h3>${makeCopyBlock(d.commands,"Each command is shown separately with a short explanation.","",true)}<h3>Code / sequence / checklist</h3>${d.n===1 ? `<table><thead><tr><th>Tool</th><th>Main use</th><th>Interaction</th></tr></thead><tbody><tr><td>NS-2 / NS-3</td><td>Protocol and network simulation</td><td>Scripts + trace analysis</td></tr><tr><td>OMNeT++</td><td>Modular discrete-event simulation</td><td>Models + IDE</td></tr><tr><td>Packet Tracer</td><td>Learning and device configuration</td><td>GUI</td></tr><tr><td>GNS3</td><td>Emulated virtual network devices</td><td>GUI + device CLI</td></tr><tr><td>Wireshark</td><td>Capture and inspect network traffic</td><td>GUI + filters</td></tr></tbody></table><p class="code-desc">No program is required for this comparison; use the table to compare each tool.</p>` : makeCopyBlock(d.code,"This block contains the code or sequence/checklist for this experiment. Read the notes and replace example values as needed before running it.","Code editor / relevant terminal",false)}<h3>Related full forms</h3>${acronymTable(d.full)}<h3>Possible viva questions with short answers</h3>${qs(d.questions)}</div></details>`}
+function theoryCard(d){return `<details class="exp" data-search="${esc((d.title+' '+d.does+' '+d.full.flat().join(' ')+' '+d.questions.flat().join(' ')).toLowerCase())}"><summary>Experiment ${d.n}: ${esc(d.title)} <span class="badge">${d.questions.length} viva Qs</span></summary><div class="content"><h3>1. What the experiment does</h3><p>${esc(d.does)}</p><h3>2. Acronyms and full forms</h3>${acronymTable(d.full)}<h3>3. Possible viva questions</h3>${qs(d.questions)}</div></details>`}
+document.getElementById('expList').innerHTML=data.map(expCard).join("");
+document.getElementById('theoryList').innerHTML=data.map(theoryCard).join("");
+document.querySelectorAll('.tabbtn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===btn.dataset.tab));}));
+function bindSearch(inputId,listId){document.getElementById(inputId).addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll(`#${listId} details.exp`).forEach(d=>{d.style.display=d.dataset.search.includes(q)?'':'none';});});}
+bindSearch('expSearch','expList');bindSearch('theorySearch','theoryList');
+async function copyText(btn){
+ const code=btn.parentElement.querySelector('pre code');
+ if(!code)return;
+ const text=code.innerText;
+ try{await navigator.clipboard.writeText(text);}
+ catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
+ const old=btn.textContent;btn.textContent='Copied!';btn.classList.add('copied');
+ setTimeout(()=>{btn.textContent=old;btn.classList.remove('copied');},1200);
+}
+
+// Default visual DNS-error page; keyboard shortcut reveals the actual study guide.
+const landingPage = document.getElementById('errorLanding');
+const guideApp = document.getElementById('guideApp');
+function openStudyGuide() {
+  landingPage.style.display = 'none';
+  guideApp.classList.add('visible');
+  window.scrollTo(0, 0);
+}
+document.getElementById('retryDemo').addEventListener('click', () => {
+  // Simulate the browser retrying a failed DNS lookup.
+  window.location.reload();
+});
+document.addEventListener('keydown', e => {
+  // Shift + / (usually ?) opens the guide from the DNS page; from the guide, it reloads the file.
+  const isShortcut = e.key === '?' || (e.shiftKey && (e.key === '/' || e.code === 'Slash'));
+  if (isShortcut && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    e.preventDefault();
+    if (guideApp.classList.contains('visible')) {
+      window.location.reload();
+    } else {
+      openStudyGuide();
+    }
+  }
+});
+
+</script>
+</body></html>
