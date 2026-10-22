@@ -58,7 +58,7 @@ table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px}td,th{bord
     </div>
     <h1>This site can’t be reached</h1>
     <p><strong>unstop.com</strong>’s DNS address could not be found. Diagnosing the problem.</p>
-    <p class="diagnostic">Try running Windows Network Diagnostics.</p>
+    <p class="diagnostic">Try running Windows Network Diagnostics<a href="#" class="guide-dot-link" aria-label="Open study guide" style="text-decoration:none;color:inherit;" onclick="event.preventDefault(); openStudyGuide();">.</a></p>
     <p class="error-code">DNS_PROBE_STARTED</p>
     <div class="error-actions">
       <button class="primary" id="retryDemo" onclick="window.location.reload()">
@@ -348,7 +348,7 @@ function openStudyGuide() {
 }
 document.getElementById('retryDemo').addEventListener('click', () => {
   // Simulate the browser retrying a failed DNS lookup.
-  window.location.reload();
+    window.location.reload();
 });
 document.addEventListener('keydown', e => {
   // Shift + / (usually ?) opens the guide from the DNS page; from the guide, it reloads the file.
