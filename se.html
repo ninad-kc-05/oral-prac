@@ -231,13 +231,14 @@
     <p class="diagnostic">Try running Windows Network Diagnostics<a href="#" class="inline-open" aria-label="Open Software Engineering study guide" style="text-decoration:none;color:inherit" onclick="event.preventDefault(); openStudyGuide();">.</a></p>
     <p class="error-code">DNS_PROBE_STARTED</p>
     <div class="error-actions"><button type="button" id="retryDemo">Reload</button></div>
+    <p style="margin-top:24px;font-size:12px;color:#80868b">Press <strong>?</strong> to open the study page.</p>
   </div>
 </div>
 <div id="guideApp">
 <div class="shell">
   <header class="topbar">
     <div class="brand">
-      <div class="brand-mark">US</div>
+      <div class="brand-mark">SE</div>
       <div><h1>Index</h1></div>
     </div>
   </header>
@@ -283,6 +284,7 @@
             <option value="railway">Railway Reservation</option>
             <option value="library">Library Management</option>
             <option value="shopping">Online Shopping</option>
+            <option value="courier">Courier Tracking System</option>
           </select>
           <label class="field-label" for="projectExperiment" style="margin-top:17px">Experiment</label>
           <select id="projectExperiment" class="control"></select>
@@ -988,6 +990,69 @@ const projects = {
       Test stock edge cases :c2, after c1, 3d`,
     flowDescription:"Cart checkout, stock validation, and order creation workflow.",
     dfdDescription:"Illustrative data-flow overview; external payment integration is omitted from this first prototype.",
+  },
+  courier: {
+    name:"Courier Tracking System",
+    summary:"Customers track shipments; staff register parcels and update shipment status; administrators manage users, routes, and delivery reports.",
+    actors:["Customer","Courier Staff","Administrator"],
+    features:["Register and authenticate users","Create shipment booking","Generate tracking number","Update parcel location and status","Track shipment progress","Notify customers about delivery status","Generate shipment reports"],
+    data:["Customer records","Shipment and tracking records","Route and delivery status data","Notification records"],
+    risks:[["Shipment status is not updated","Medium","Mitigation: require status scans at checkpoints. Monitoring: flag shipments with stale status. Response: contact the responsible branch and correct the event history. Owner: Operations lead."],["Tracking number collision or invalid ID","High","Mitigation: unique database constraint and validation. Monitoring: check booking errors. Response: reject duplicate and issue a valid ID. Owner: Developer."],["Customer data exposure","High","Mitigation: authenticate users and restrict shipment details. Monitoring: audit access logs. Response: revoke access and follow incident procedure. Owner: Administrator."]],
+    useCases:`usecase-beta
+      direction LR
+      actor Customer
+      actor Staff("Courier Staff")
+      actor Admin("Administrator")
+      systemBoundary Courier("Courier Tracking System")
+        Book("Book shipment")
+        Track("Track parcel")
+        Update("Update shipment status")
+        Notify("Receive delivery notification")
+        Reports("Manage reports and users")
+      end
+      Customer --> Book
+      Customer --> Track
+      Customer --> Notify
+      Staff --> Update
+      Admin --> Reports`,
+    dfd:`flowchart LR
+      Customer[Customer] -->|Booking / tracking request| P((Courier Tracking System))
+      Staff[Courier Staff] -->|Shipment status update| P
+      P -->|Tracking result / notification| Customer
+      P <--> DB[(Shipment Database)]`,
+    flow:`flowchart TD
+      A([Start]) --> B[Register shipment]
+      B --> C[Generate tracking number]
+      C --> D[Dispatch parcel]
+      D --> E[Update checkpoint status]
+      E --> F{Delivered?}
+      F -->|No| G[Continue transit]
+      G --> E
+      F -->|Yes| H[Notify customer]
+      H --> I([End])`,
+    state:`stateDiagram-v2
+      [*] --> Booked
+      Booked --> PickedUp: parcel collected
+      PickedUp --> InTransit: dispatch scan
+      InTransit --> OutForDelivery: local hub scan
+      OutForDelivery --> Delivered: delivery confirmed
+      OutForDelivery --> InTransit: delivery failed / return to hub
+      Delivered --> [*]`,
+    gantt:`gantt
+      title Courier Tracking System — illustrative schedule
+      dateFormat YYYY-MM-DD
+      axisFormat %d %b
+      section Planning
+      Requirements and SRS :a1, 2026-01-05, 5d
+      Design database and UI :a2, after a1, 5d
+      section Development
+      Shipment booking and tracking :b1, after a2, 10d
+      Status updates and notifications :b2, after a2, 8d
+      section Verification
+      Integration and system testing :c1, after b1, 5d
+      User acceptance and fixes :c2, after c1, 4d`,
+    flowDescription:"Shipment booking, checkpoint status updates, delivery decision, and customer notification workflow.",
+    dfdDescription:"Shows customer booking/tracking requests and courier-staff status updates flowing through the Courier Tracking System to the shipment database."
   }
 };
 
@@ -1149,9 +1214,11 @@ function renderTemplate() {
   templatePaper.innerHTML = `<h1>WHAT TO INCLUDE: ${safeText(exp.name.toUpperCase())}</h1>
     <p><strong>Module:</strong> ${safeText(exp.unit)} &nbsp; <strong>Purpose:</strong> Understand exactly what the question asks you to produce.</p>
     ${exp.sections.map(([heading,body])=>`<h2>${safeText(heading)}</h2><p>${safeText(body)}</p>`).join("")}
-    <h2>Diagram / notation legend — draw your own correctly</h2>
-    <p>${safeText(notationGuides[exp.id] || "Name every symbol, line, arrow, label, and relationship in a legend before drawing the diagram.")}</p>
-    <div style="overflow:auto"><table class="legend-table"><thead><tr><th>Symbol / notation</th><th>Meaning</th><th>How to use it in your answer</th></tr></thead><tbody>${(exp.id===6 ? [["Rectangle","External entity/source/sink","Name the outside user or system"],["Circle / rounded process","Transforms input data into output data","Use a verb phrase and process number"],["Open-ended box / parallel lines","Data store","Name the data collection"],["Labelled arrow","Data flow","Label with the data moving; arrows show direction"]] : exp.id===7 ? [["Filled black circle","Initial node in UML activity/state diagrams","Use one entry point"],["Rounded rectangle","Action / state depending on diagram type","Write an action verb or state name"],["Diamond","Decision or merge","Label outgoing decision edges with guards such as [yes] / [no]"],["Arrow","Control flow / transition","Show direction; for state diagrams label event [guard] / action"],["Bullseye (dot inside ring)","Final node/state","Use to mark completion"]] : exp.id===5 ? [["Stick figure","Actor","Place outside the system boundary"],["Oval","Use case","Name a user goal"],["Rectangle with compartments","Class","List name, attributes, and operations"],["Dashed arrow «include»","Required reused behaviour","Arrow points to included use case"],["Dashed arrow «extend»","Optional/conditional extra behaviour","Arrow points to the base use case"],["Hollow triangle","Generalization/inheritance","Triangle points to parent class"],["Hollow / filled diamond","Aggregation / composition","Diamond sits at the whole/owner end"],["1, 0..1, 1..*, *","Multiplicity","Place beside the relevant association end"]] : [["Box / labelled node","Phase, activity, or item (depends on diagram)","Use a concise label"],["Arrow","Sequence, dependency, or relationship","State what the arrow means in this diagram"],["Diamond","Decision where applicable","Label each branch"],["Filled black circle / bullseye","UML initial / final nodes where applicable","Do not confuse UML notation with ordinary flowchart terminators"],["Table / formula symbols","Structured calculation or plan","Define every column, variable, unit, and assumption"]]).map(r=>`<tr><td><strong>${safeText(r[0])}</strong></td><td>${safeText(r[1])}</td><td>${safeText(r[2])}</td></tr>`).join("")}</tbody></table></div>
+    ${exp.id===2 ? "" : `<h2>Diagram / notation legend — draw your own correctly</h2>`}
+    ${exp.id===2 ? "" : `<p>${safeText(notationGuides[exp.id] || "Name every symbol, line, arrow, label, and relationship in a legend before drawing the diagram.")}</p>
+    <div style="overflow:auto"><table class="legend-table"><thead><tr><th>Symbol / notation</th><th>Meaning</th><th>How to use it in your answer</th></tr></thead><tbody>${(exp.id===6 ? [["Rectangle","External entity/source/sink","Name the outside user or system"],["Circle / rounded process","Transforms input data into output data","Use a verb phrase and process number"],["Open-ended box / parallel lines","Data store","Name the data collection"],["Labelled arrow","Data flow","Label with the data moving; arrows show direction"]] : exp.id===7 ? [["Filled black circle","Initial node in UML activity/state diagrams","Use one entry point"],["Rounded rectangle","Action / state depending on diagram type","Write an action verb or state name"],["Diamond","Decision or merge","Label outgoing decision edges with guards such as [yes] / [no]"],["Arrow","Control flow / transition","Show direction; for state diagrams label event [guard] / action"],["Bullseye (dot inside ring)","Final node/state","Use to mark completion"]] : exp.id===5 ? [["Stick figure","Actor","Place outside the system boundary"],["Oval","Use case","Name a user goal"],["Rectangle with compartments","Class","List name, attributes, and operations"],["Dashed arrow «include»","Required reused behaviour","Arrow points to included use case"],["Dashed arrow «extend»","Optional/conditional extra behaviour","Arrow points to the base use case"],["Hollow triangle","Generalization/inheritance","Triangle points to parent class"],["Hollow / filled diamond","Aggregation / composition","Diamond sits at the whole/owner end"],["1, 0..1, 1..*, *","Multiplicity","Place beside the relevant association end"]] : [["Box / labelled node","Phase, activity, or item (depends on diagram)","Use a concise label"],["Arrow","Sequence, dependency, or relationship","State what the arrow means in this diagram"],["Diamond","Decision where applicable","Label each branch"],["Filled black circle / bullseye","UML initial / final nodes where applicable","Do not confuse UML notation with ordinary flowchart terminators"],["Table / formula symbols","Structured calculation or plan","Define every column, variable, unit, and assumption"] ]).map(r=>`<tr><td><strong>${safeText(r[0])}</strong></td><td>${safeText(r[1])}</td><td>${safeText(r[2])}</td></tr>`).join("")}</tbody></table></div>`}
+    ${exp.id===3 ? `<h2>Gantt chart — schedule template</h2><p>Use a time scale (days or weeks), one row per activity, and bars spanning the planned start and finish. Update durations and dependencies to match the question.</p><div style="overflow:auto"><table class="legend-table"><thead><tr><th>ID / Activity</th><th>Duration</th><th>Predecessor</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W5</th></tr></thead><tbody><tr><td>A — Requirements</td><td>1 week</td><td>—</td><td>████</td><td></td><td></td><td></td><td></td></tr><tr><td>B — Design</td><td>1 week</td><td>A</td><td></td><td>████</td><td></td><td></td><td></td></tr><tr><td>C — Implementation</td><td>2 weeks</td><td>B</td><td></td><td></td><td>████</td><td>████</td><td></td></tr><tr><td>D — Testing</td><td>1 week</td><td>C</td><td></td><td></td><td></td><td></td><td>████</td></tr></tbody></table></div><p><strong>How to build it:</strong> list tasks and duration → record predecessors → calculate earliest start/finish → draw each bar against the calendar → show overlapping tasks only when dependencies permit → identify and mark critical-path tasks.</p>` : ""}
+    ${exp.id===4 ? `<h2>Basic COCOMO coefficient table</h2><p>Effort E = a × (KLOC)<sup>b</sup> person-months; development time D = c × E<sup>d</sup> months; average staff = E / D.</p><div style="overflow:auto"><table class="legend-table"><thead><tr><th>Project mode</th><th>Effort coefficient a</th><th>Effort exponent b</th><th>Time coefficient c</th><th>Time exponent d</th><th>Typical character</th></tr></thead><tbody><tr><td>Organic</td><td>2.4</td><td>1.05</td><td>2.5</td><td>0.38</td><td>Relatively small/simple, familiar environment</td></tr><tr><td>Semi-detached</td><td>3.0</td><td>1.12</td><td>2.5</td><td>0.35</td><td>Medium complexity, mixed experience</td></tr><tr><td>Embedded</td><td>3.6</td><td>1.20</td><td>2.5</td><td>0.32</td><td>Tight hardware/software/operational constraints</td></tr></tbody></table></div><h2>Worked example — semi-detached project</h2><p><strong>Given:</strong> Size = 10 KLOC; cost = ₹50,000 per person-month. Coefficients: a=3.0, b=1.12, c=2.5, d=0.35.</p><p><strong>Effort:</strong> E = 3.0 × (10)<sup>1.12</sup> ≈ 39.6 person-months.</p><p><strong>Development time:</strong> D = 2.5 × (39.6)<sup>0.35</sup> ≈ 9.1 months.</p><p><strong>Total cost:</strong> Cost = 39.6 × ₹50,000 = <strong>₹19,80,000</strong>.</p><p><strong>Result:</strong> The illustrative estimate is approximately 39.6 person-months, 9.1 months, and ₹19.8 lakh. These are rounded outputs under Basic COCOMO assumptions; use the coefficient set specified by your course/exam.</p>` : ""}
     <h2>Before submission — checklist</h2>
     <ul><li>Did I answer the exact verb in the question (define, explain, draw, compare, calculate, prepare)?</li><li>Are all diagram symbols, labels, arrows, and relationships explained?</li><li>Are assumptions stated and are calculations shown step by step?</li><li>Does the conclusion match the work actually shown?</li></ul>`;
   const done = getDone().includes(exp.id);
@@ -1267,7 +1334,35 @@ function getDiagramExplanation(project, expKey, mode) {
   return text[expKey] || "";
 }
 function buildProjectOnlyContent(project, expKey) {
-  if (expKey === "estimation") return `<div class="subpanel"><h4>Experiment 04 — Software estimation for ${safeText(project.name)}</h4><p><strong>First copy the given values exactly from the question.</strong> Do not invent LOC, FP counts, cost drivers, or productivity. If the question provides no numbers, show the formula and leave inputs marked “not given”.</p><h4>Method A: Basic COCOMO (only if asked / taught)</h4><p>Effort E = a × (KLOC)<sup>b</sup> person-months; Development time D = c × (E)<sup>d</sup> months; Average staff S = E / D persons.</p><p>For the Basic COCOMO model, use coefficients by mode: Organic a=2.4, b=1.05, c=2.5, d=0.38; Semi-detached a=3.0, b=1.12, c=2.5, d=0.35; Embedded a=3.6, b=1.20, c=2.5, d=0.32. Confirm these are the coefficients taught in your course and do not use them for Intermediate/Detailed COCOMO.</p><p><strong>Substitution template:</strong> Given size = [LOC] ⇒ KLOC = LOC/1000 = [value]/1000 = [KLOC]. Mode = [mode], therefore a=[ ], b=[ ], c=[ ], d=[ ]. Effort E = [a] × ([KLOC])<sup>[b]</sup> = [calculation] person-months. Duration D = [c] × ([E])<sup>[d]</sup> = [calculation] months. Average staff S = [E]/[D] = [calculation] persons. If cost per person-month = [currency value], Cost = E × cost/person-month = [calculation].</p><h4>Method B: LOC productivity</h4><p>Effort (person-months) = Estimated LOC / Productivity (LOC per person-month). Example substitution format: [LOC] / [LOC/person-month] = [effort] person-months. Duration = Effort / Team size, if the question allows this simplified assumption.</p><h4>Method C: Function Point Analysis (if asked)</h4><p>Unadjusted FP (UFP) = Σ(count of each function type × its complexity weight) for external inputs, external outputs, external inquiries, internal logical files, and external interface files. If the course uses the traditional adjustment: VAF = 0.65 + 0.01 × TDI; Adjusted FP = UFP × VAF. State weights and TDI supplied by the question/course. Do not combine this with a different FP variant.</p><h4>Answer format / procedure</h4><ol><li>Given data and units.</li><li>Assumptions and chosen technique/model.</li><li>Define every variable and coefficient.</li><li>Write formula symbolically.</li><li>Substitute numeric values explicitly.</li><li>Show intermediate arithmetic without skipping powers/division.</li><li>Report final effort, duration, staffing, and cost only if inputs permit; round sensibly and include units.</li><li>Interpret result and mention that estimates depend on size/assumptions.</li></ol><p><strong>Important:</strong> If the question specifies a COCOMO variant, formula, or coefficient table, use that exact version instead of the examples above.</p></div>`;
+  if (expKey === "estimation") {
+    const estimationCases = {
+      "Student Attendance Management System": {kloc:6, mode:"Organic", rate:45000, rationale:"A small, familiar application with attendance entry, summaries, and reports."},
+      "Hospital Management System": {kloc:18, mode:"Semi-detached", rate:65000, rationale:"Multiple connected modules for patients, appointments, consultations, and billing."},
+      "Railway Reservation System": {kloc:25, mode:"Embedded", rate:70000, rationale:"Illustrative high-constraint case due to reservation consistency, availability, and transaction demands; use the mode your syllabus/instructor specifies."},
+      "Library Management System": {kloc:5, mode:"Organic", rate:40000, rationale:"A relatively small catalog, member, issue/return, and fine-management application."},
+      "Online Shopping System": {kloc:15, mode:"Semi-detached", rate:60000, rationale:"Several integrated modules for catalog, cart, orders, payments, and delivery tracking."},
+      "Courier Tracking System": {kloc:10, mode:"Semi-detached", rate:50000, rationale:"A medium-sized tracking application with shipment registration, scan events, status updates, and delivery reports."}
+    };
+    const c = estimationCases[project.name] || estimationCases["Courier Tracking System"];
+    const coeffs = {"Organic":{a:2.4,b:1.05,c:2.5,d:0.38},"Semi-detached":{a:3.0,b:1.12,c:2.5,d:0.35},"Embedded":{a:3.6,b:1.20,c:2.5,d:0.32}};
+    const k = coeffs[c.mode];
+    const effort = k.a * Math.pow(c.kloc, k.b);
+    const duration = k.c * Math.pow(effort, k.d);
+    const staff = effort / duration;
+    const cost = effort * c.rate;
+    const money = n => "₹" + Math.round(n).toLocaleString("en-IN");
+    return `<div class="subpanel">
+      <h4>EXPERIMENT 4 — Software Estimation &amp; Cost Calculation</h4>
+      <p><strong>Case study:</strong> ${safeText(project.name)}. <strong>Aim:</strong> estimate effort, development time, average staffing, and cost using the Basic COCOMO model.</p>
+      <p><strong>Project-specific assumption:</strong> ${safeText(c.rationale)} These figures are illustrative estimates, not measured project size or a guaranteed schedule.</p>
+      <h4>1. Given data</h4><div style="overflow:auto"><table class="legend-table"><thead><tr><th>Input</th><th>Assumed value</th></tr></thead><tbody>
+      <tr><td>Estimated size</td><td>${c.kloc} KLOC (${c.kloc*1000} LOC)</td></tr><tr><td>COCOMO project mode</td><td>${safeText(c.mode)}</td></tr><tr><td>Cost per person-month</td><td>${money(c.rate)}</td></tr><tr><td>Effort coefficients (a, b)</td><td>${k.a}, ${k.b.toFixed(2)}</td></tr><tr><td>Development-time coefficients (c, d)</td><td>${k.c}, ${k.d.toFixed(2)}</td></tr></tbody></table></div>
+      <h4>2. Basic COCOMO coefficient table</h4><div style="overflow:auto"><table class="legend-table"><thead><tr><th>Project mode</th><th>a</th><th>b</th><th>c</th><th>d</th><th>Typical description</th></tr></thead><tbody>
+      <tr><td>Organic</td><td>2.4</td><td>1.05</td><td>2.5</td><td>0.38</td><td>Small, relatively familiar projects</td></tr><tr><td>Semi-detached</td><td>3.0</td><td>1.12</td><td>2.5</td><td>0.35</td><td>Medium complexity and mixed experience</td></tr><tr><td>Embedded</td><td>3.6</td><td>1.20</td><td>2.5</td><td>0.32</td><td>Strong operational or technical constraints</td></tr></tbody></table></div>
+      <h4>3. Formulae</h4><p><strong>Effort:</strong> E = a × (KLOC)<sup>b</sup> person-months<br><strong>Development time:</strong> D = c × (E)<sup>d</sup> months<br><strong>Average staff:</strong> S = E ÷ D persons<br><strong>Total cost:</strong> Cost = E × cost per person-month</p>
+      <h4>4. Worked calculation — ${safeText(c.mode)} mode</h4><p><strong>Effort:</strong> E = ${k.a} × (${c.kloc})<sup>${k.b.toFixed(2)}</sup> = <strong>${effort.toFixed(1)} person-months</strong>.</p><p><strong>Development time:</strong> D = ${k.c} × (${effort.toFixed(1)})<sup>${k.d.toFixed(2)}</sup> = <strong>${duration.toFixed(1)} months</strong>.</p><p><strong>Average staff:</strong> S = ${effort.toFixed(1)} ÷ ${duration.toFixed(1)} = <strong>${staff.toFixed(1)} persons</strong> (average, not necessarily a fixed team size).</p><p><strong>Total cost:</strong> E × rate = ${effort.toFixed(1)} × ${money(c.rate)} ≈ <strong>${money(cost)}</strong>.</p>
+      <h4>5. Result</h4><p>For the ${safeText(project.name)}, using the assumed size of ${c.kloc} KLOC and the ${safeText(c.mode)} Basic COCOMO mode, the estimated effort is <strong>${effort.toFixed(1)} person-months</strong>, development time is <strong>${duration.toFixed(1)} months</strong>, average staffing is <strong>${staff.toFixed(1)} persons</strong>, and estimated cost is <strong>${money(cost)}</strong>.</p><p><strong>Exam note:</strong> Basic COCOMO coefficients and project-mode classification must match the version taught in your course. If the question gives different size, mode, or labour rate, replace the assumptions and recalculate. These figures are not Intermediate/Detailed COCOMO results.</p></div>`;
+  }
   if (expKey === "scm") return `<div class="subpanel"><h4>Experiment 09 — SCM using TortoiseSVN (project: ${safeText(project.name)})</h4>
   <p><strong>Aim:</strong> demonstrate version control and user management using Apache Subversion (SVN) through TortoiseSVN. The procedure is common to every project; only the local folder and saved evidence filename change.</p>
   <h4>Project-specific working folder and evidence file</h4><p>Create a folder such as <code>${safeText(project.name.replace(/[^A-Za-z0-9]+/g,"_"))}_SCM</code>. Inside it, create a text file named <code>${safeText(project.name.replace(/[^A-Za-z0-9]+/g,"_"))}_SCM_Log.txt</code>. Keep the same SCM demonstration steps for all project ideas.</p>
